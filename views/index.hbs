@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Welcome</title>
+</head>
+<body>
+<h1>Welcome</h1>
+<p>Here we're</p>
+<div>
+  <div id="messages">
+
+  </div>
+  <label for="msg"></label>
+  <input type="text" name="msg" id="msg">
+  <button id="send">Send</button>
+
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io('http://localhost:3000');
+
+  document.getElementById('send').addEventListener('click', (e) => {
+    e.preventDefault()
+    socket.emit('messageToServer', document.getElementById('msg').value, (msg) => {
+
+      console.log(msg);
+    })
+    document.getElementById('msg').value = ''
+  })
+
+  socket.on('messageToClient', (msg) => document.getElementById('messages').innerHTML += `<p>${msg}</p>`)
+
+</script>
+</body>
+</html>
