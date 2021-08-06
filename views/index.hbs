@@ -8,8 +8,8 @@
   <title>Welcome</title>
 </head>
 <body>
-<h1>Welcome</h1>
-<p>Here we're</p>
+<h1 style="text-align: center">Welcome NestJs API</h1>
+<!--<p>Here we're</p>
 <div>
   <div id="messages">
 
@@ -21,7 +21,7 @@
 </div>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-  const socket = io('http://localhost:3000');
+  const socket = io('http://localhost:3500');
 
   document.getElementById('send').addEventListener('click', (e) => {
     e.preventDefault()
@@ -31,9 +31,10 @@
     })
     document.getElementById('msg').value = ''
   })
+  
 
   socket.on('messageToClient', (msg) => document.getElementById('messages').innerHTML += `<p>${msg}</p>`)
 
-</script>
+</script>-->
 </body>
 </html>
