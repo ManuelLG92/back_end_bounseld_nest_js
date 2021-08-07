@@ -1,34 +1,59 @@
-import { Injectable } from '@nestjs/common';
-
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { Record } from './entity/records.entity';
+
 @Injectable()
 export class RecordsService {
-  records = Array<Record>();
+  constructor(
+    @InjectRepository(Record)
+    private readonly recordRepository: Repository<Record>,
+  ) {}
 
-  addNewConnection(socketId: string, userId: number) {
+  async addNewConnection(socketId: string, userId: number) {
     const record = new Record();
     record.socketId = socketId;
     record.userId = userId;
     record.openAt = new Date();
-    console.log(record, this.records);
-    this.records.push(record);
+    await this.recordRepository.save(record);
   }
 
-  closeConnection(socketId: string) {
-    const recordConnection = this.records.find(
-      (record) => record.socketId == socketId,
-    );
-    recordConnection.closedAt = new Date();
-    console.log(recordConnection, this.records);
+  async closeConnection(socketId: string) {
+    const currentConnection = await this.recordRepository.findOne({
+      where: {
+        socketId: socketId,
+      },
+    });
+    if (!currentConnection) throw new NotFoundException('Connection not found');
+    currentConnection.closedAt = new Date();
+    await this.recordRepository.save(currentConnection);
   }
 
-  getConnectionsByUserId(userId: number) {
-    console.log(this.records);
-    return this.records.filter((record) => record.userId == userId);
+  async getConnectionsByUserId(userId: number) {
+    return await this.recordRepository.find({
+      where: {
+        userId: userId,
+      },
+    });
   }
 
-  getAllConnections() {
-    console.log(this.records);
-    return this.records;
+  async getAllConnections() {
+    return await this.recordRepository.find();
+  }
+
+  async getConnectionsByUserIdAndDate(
+    userId: number,
+    from: string,
+    to: string,
+  ) {
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
+    return await this.recordRepository.find({
+      where: {
+        userId: userId,
+        openAt: MoreThanOrEqual(fromDate),
+        closedAt: LessThanOrEqual(toDate),
+      },
+    });
   }
 }

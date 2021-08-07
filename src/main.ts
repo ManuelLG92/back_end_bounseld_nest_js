@@ -14,8 +14,9 @@ async function bootstrap() {
   await app.listen(3500);
 
   const userService = app.get(UsersService);
-  userService.createFixturesUsers();
-  console.log(userService.getAllUsers());
+  await userService.createFixturesUsers();
+  const users = await userService.getAllUsers();
+  console.log(users);
 }
 
 bootstrap();

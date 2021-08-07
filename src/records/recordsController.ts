@@ -15,21 +15,32 @@ export class RecordsController {
   constructor(private readonly recordsService: RecordsService) {}
 
   @Get('/all')
-  getAll(@Res() res: Response) {
-    //return this.recordsService.records;
-
-    return res
-      .status(HttpStatus.OK)
-      .json(this.recordsService.getAllConnections());
+  async getAll(@Res() res: Response) {
+    const AllConnections = await this.recordsService.getAllConnections();
+    return res.status(HttpStatus.OK).json(AllConnections);
   }
 
   @Get('/user/:id')
-  findRecordsByUserId(
+  async findRecordsByUserId(
     @Param('id', ParseIntPipe) id: number,
     @Res() res: Response,
   ) {
-    const userConnections = this.recordsService.getConnectionsByUserId(id);
-    console.log(userConnections);
+    const userConnections = await this.recordsService.getConnectionsByUserId(
+      id,
+    );
     return res.status(HttpStatus.OK).json(userConnections);
+  }
+
+  @Get('/user/:id/from/:from/to/:to')
+  async findRecordsByUserIdAndDate(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('from') from: string,
+    @Param('to') to: string,
+    @Res() res: Response,
+  ) {
+    const userConnectionsByDate =
+      await this.recordsService.getConnectionsByUserIdAndDate(id, from, to);
+
+    return res.status(HttpStatus.OK).json(userConnectionsByDate);
   }
 }

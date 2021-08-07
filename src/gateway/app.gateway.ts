@@ -26,20 +26,19 @@ export class AppGateway
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  handleConnection(client: Socket, ...args: any[]): any {
+  async handleConnection(client: Socket, ...args: any[]): Promise<any> {
     const userIdFromRequest = client.handshake.query['userId'];
     if (typeof userIdFromRequest === 'string') {
-      this.recordsService.addNewConnection(
+      await this.recordsService.addNewConnection(
         client.id,
         parseInt(userIdFromRequest),
       );
     }
     this.logger.log(`Client connected ${client.id}`);
-    // console.log(client.handshake.query['userId']);
   }
 
-  handleDisconnect(client: Socket): any {
-    this.recordsService.closeConnection(client.id);
+  async handleDisconnect(client: Socket): Promise<any> {
+    await this.recordsService.closeConnection(client.id);
     this.logger.log(`Client disconnected ${client.id}`);
   }
 

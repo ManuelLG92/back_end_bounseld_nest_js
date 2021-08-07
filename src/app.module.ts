@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { RecordsModule } from './records/records.module';
 import { RecordsService } from './records/records.service';
+import { RecordsController } from './records/recordsController';
+import { AppGatewayModule } from './gateway/app.gateway.module';
 
 @Module({
   imports: [
@@ -18,11 +20,13 @@ import { RecordsService } from './records/records.service';
       database: 'bounsel',
       entities: ['dist/**/*.entity{.ts,.js}'],
       synchronize: true,
+      dropSchema: true,
     }),
     UsersModule,
     RecordsModule,
+    AppGatewayModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AppGateway, RecordsService],
+  providers: [AppService],
 })
 export class AppModule {}
