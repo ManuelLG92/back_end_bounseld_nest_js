@@ -1,10 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { Record } from './entity/records.entity';
 
 @Injectable()
 export class RecordsService {
+  private logger: Logger = new Logger();
   constructor(
     @InjectRepository(Record)
     private readonly recordRepository: Repository<Record>,
@@ -46,14 +47,39 @@ export class RecordsService {
     from: string,
     to: string,
   ) {
+    this.logger.log(`string from: ${from} - string to: ${to}`);
     const fromDate = new Date(from);
     const toDate = new Date(to);
+    this.logger.log(`Date from: ${fromDate} - Date to: ${toDate}`);
+
+    const dateToFormatted = this.getDateTimeFormatted(toDate);
+    const dateFromFormatted = this.getDateTimeFormatted(fromDate);
+
+    console.log(dateToFormatted, dateFromFormatted);
+
+    this.logger.log(
+      `Date from formatted: ${dateFromFormatted} - Date formatted to: ${dateToFormatted}`,
+    );
+
     return await this.recordRepository.find({
       where: {
         userId: userId,
-        openAt: MoreThanOrEqual(fromDate),
-        closedAt: LessThanOrEqual(toDate),
+        openAt: MoreThanOrEqual(dateFromFormatted),
+        closedAt: LessThanOrEqual(dateToFormatted),
       },
     });
+  }
+
+  getDateTimeFormatted(date: Date): Date {
+    const dateTime = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDay(),
+      date.getHours(),
+      date.getMinutes(),
+      date.getMilliseconds(),
+    );
+    console.log(dateTime);
+    return dateTime;
   }
 }

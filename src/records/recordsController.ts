@@ -40,7 +40,6 @@ export class RecordsController {
   ) {
     const userConnectionsByDate =
       await this.recordsService.getConnectionsByUserIdAndDate(id, from, to);
-
     return res.status(HttpStatus.OK).json(userConnectionsByDate);
   }
 }
