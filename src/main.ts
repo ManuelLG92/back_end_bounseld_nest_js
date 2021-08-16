@@ -1,8 +1,9 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { AppModule } from './app.module';
-import { UsersService } from './users/users.service';
+
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -11,12 +12,8 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
   app.enableCors();
+  app.useGlobalPipes(new ValidationPipe())
   await app.listen(3500);
-
-  const userService = app.get(UsersService);
-  await userService.createFixturesUsers();
-  const users = await userService.getAllUsers();
-  console.log(users);
 }
 
 bootstrap();

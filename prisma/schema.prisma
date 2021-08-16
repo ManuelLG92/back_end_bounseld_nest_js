@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                Int                @id @default(autoincrement())
+  name              String
+  surname           String
+  age               Int
+  gender            Gender
+  country           Country            @relation(fields: [countryId], references: [id])
+  countryId         Int
+  email             String             @unique
+  password          String
+  description       String?
+  nativeLanguages   NativeLanguage[]
+  learningLanguages LearningLanguage[]
+  reports           Report[]
+  role              Role               @default(USER)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  isActive          Boolean            @default(false)
+  isBanish          Boolean            @default(false)
+
+}
+
+model Language {
+  id                Int                @id @default(autoincrement())
+  name              String
+  nativeLanguages   NativeLanguage[]
+  learningLanguages LearningLanguage[]
+}
+
+model Country {
+  id   Int    @id @default(autoincrement())
+  name String
+  User User[]
+}
+
+model NativeLanguage {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int
+  language   Language @relation(fields: [languageId], references: [id])
+  languageId Int
+}
+
+model LearningLanguage {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int
+  language   Language @relation(fields: [languageId], references: [id])
+  languageId Int
+}
+
+model Report {
+  id     Int    @id @default(autoincrement())
+  user   User   @relation(fields: [userId], references: [id])
+  userId Int
+  reason Reason
+}
+
+enum Role {
+  USER
+  ADMIN
+  COLABORATOR
+}
+
+enum Reason {
+  SPAM
+  OFFENSIVE
+  HARRASMENT
+  OTHER
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  PREFER_NOT_SAY
+}
