@@ -17,8 +17,56 @@ let UserService = class UserService {
     constructor(prismaService) {
         this.prismaService = prismaService;
     }
+    async findAll() {
+        return await this.prismaService.user.findMany({
+            include: {
+                country: true,
+                learningLanguages: {
+                    include: {
+                        language: true,
+                    },
+                },
+                nativeLanguages: {
+                    include: {
+                        language: true,
+                    },
+                },
+            },
+        });
+    }
+    async findOne(id) {
+        return await this.prismaService.user.findUnique({
+            where: { id },
+            include: {
+                country: true,
+                learningLanguages: {
+                    include: {
+                        language: true,
+                    },
+                },
+                nativeLanguages: {
+                    include: {
+                        language: true,
+                    },
+                },
+            },
+        });
+    }
+    async update(id, updateUserInput) {
+        let user = await this.prismaService.user.findUnique({
+            where: { id },
+        });
+        if (!user)
+            throw common_1.NotFoundException;
+        let userPrisma = {};
+        Object.assign(userPrisma, updateUserInput);
+        user = await this.prismaService.user.update({
+            where: { id },
+            data: userPrisma,
+        });
+        return user;
+    }
     async create(createUserInput) {
-        console.log(createUserInput);
         let userData;
         userData = {
             name: createUserInput.name,
@@ -29,68 +77,36 @@ let UserService = class UserService {
             age: createUserInput.age,
             country: {
                 connect: {
-                    id: createUserInput.countryId
-                }
+                    id: createUserInput.countryId,
+                },
             },
-            description: ""
+            description: '',
         };
         const userCreated = await this.prismaService.user.create({
-            data: userData
+            data: userData,
         });
         return userCreated;
     }
-    async findAll() {
-        return await this.prismaService.user.findMany({
-            include: {
-                country: true,
-                learningLanguages: {
-                    include: {
-                        language: true
-                    }
-                },
-                nativeLanguages: {
-                    include: {
-                        language: true
-                    }
-                },
-            }
-        });
-    }
-    async findOne(id) {
-        return await this.prismaService.user.findUnique({
-            where: { id },
-            include: {
-                country: true,
-                learningLanguages: {
-                    include: {
-                        language: true
-                    }
-                },
-                nativeLanguages: {
-                    include: {
-                        language: true
-                    }
-                },
-            }
-        });
-    }
-    async update(id, updateUserInput) {
-        let user = await this.prismaService.user.findUnique({
-            where: { id }
-        });
-        console.log(user);
-        if (!user)
-            throw common_1.NotFoundException;
-        let userPrisma = {};
-        Object.assign(userPrisma, updateUserInput);
-        user = await this.prismaService.user.update({
-            where: { id },
-            data: userPrisma
-        });
-        return user;
-    }
-    remove(id) {
-        return `This action removes a #${id} user`;
+    async remove(id) {
+        try {
+            await this.prismaService.nativeLanguage.deleteMany({
+                where: { userId: id },
+            });
+            await this.prismaService.learningLanguage.deleteMany({
+                where: { userId: id },
+            });
+            await this.prismaService.report.deleteMany({
+                where: { userId: id },
+            });
+            await this.prismaService.user.delete({
+                where: { id: id },
+            });
+            return true;
+        }
+        catch (error) {
+            console.log(error);
+            return false;
+        }
     }
 };
 UserService = __decorate([

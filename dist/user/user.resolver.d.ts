@@ -1,9 +1,14 @@
 import { UserService } from './user.service';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
-export declare class UserResolver {
+import { OnModuleInit } from '@nestjs/common';
+import { ClientKafka } from '@nestjs/microservices';
+export declare class UserResolver implements OnModuleInit {
+    private clientKafka;
     private readonly userService;
-    constructor(userService: UserService);
+    private kafkaProducer;
+    constructor(clientKafka: ClientKafka, userService: UserService);
+    onModuleInit(): Promise<void>;
     createUser(createUserInput: CreateUserInput): Promise<import(".prisma/client").User>;
     findAll(): Promise<(import(".prisma/client").User & {
         country: import(".prisma/client").Country;
@@ -24,5 +29,8 @@ export declare class UserResolver {
         })[];
     }>;
     updateUser(updateUserInput: UpdateUserInput): Promise<import(".prisma/client").User>;
-    removeUser(id: number): string;
+    removeUser(id: number): Promise<boolean>;
+    sendEmail(message: any): {
+        reply: string;
+    };
 }

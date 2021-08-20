@@ -3,13 +3,16 @@ import { LanguageService } from './language.service';
 import { Language } from './entities/language.entity';
 import { CreateLanguageInput } from './dto/create-language.input';
 import { UpdateLanguageInput } from './dto/update-language.input';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Resolver(() => Language)
 export class LanguageResolver {
   constructor(private readonly languageService: LanguageService) {}
 
   @Mutation(() => Language)
-  createLanguage(@Args('createLanguageInput') createLanguageInput: CreateLanguageInput) {
+  createLanguage(
+    @Args('createLanguageInput') createLanguageInput: CreateLanguageInput,
+  ) {
     return this.languageService.create(createLanguageInput);
   }
 
@@ -24,12 +27,19 @@ export class LanguageResolver {
   }
 
   @Mutation(() => Language)
-  updateLanguage(@Args('updateLanguageInput') updateLanguageInput: UpdateLanguageInput) {
-    return this.languageService.update(updateLanguageInput.id, updateLanguageInput);
+  updateLanguage(
+    @Args('updateLanguageInput') updateLanguageInput: UpdateLanguageInput,
+  ) {
+    return this.languageService.update(
+      updateLanguageInput.id,
+      updateLanguageInput,
+    );
   }
 
   @Mutation(() => Language)
   removeLanguage(@Args('id', { type: () => Int }) id: number) {
     return this.languageService.remove(id);
   }
+
+
 }

@@ -6,20 +6,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserModule = void 0;
+exports.TestKafkaModule = void 0;
 const common_1 = require("@nestjs/common");
-const user_service_1 = require("./user.service");
-const user_resolver_1 = require("./user.resolver");
-const prisma_module_1 = require("../prisma/prisma/prisma.module");
+const test_kafka_service_1 = require("./test-kafka.service");
+const test_kafka_controller_1 = require("./test-kafka.controller");
 const microservices_1 = require("@nestjs/microservices");
-let UserModule = class UserModule {
+let TestKafkaModule = class TestKafkaModule {
 };
-UserModule = __decorate([
+TestKafkaModule = __decorate([
     common_1.Module({
         imports: [
             microservices_1.ClientsModule.register([
                 {
-                    name: 'KAFKA_BROKER',
+                    name: 'KAFKA_MODULE_BROKER_TEST',
                     transport: microservices_1.Transport.KAFKA,
                     options: {
                         client: {
@@ -27,14 +26,15 @@ UserModule = __decorate([
                             brokers: ['localhost:9094'],
                         },
                         consumer: {
-                            groupId: 'my-consumer-nest',
+                            groupId: 'my-consumer-nest-kafka-test',
                         },
                     },
                 },
             ]),
         ],
-        providers: [user_resolver_1.UserResolver, user_service_1.UserService],
+        controllers: [test_kafka_controller_1.TestKafkaController],
+        providers: [test_kafka_service_1.TestKafkaService],
     })
-], UserModule);
-exports.UserModule = UserModule;
-//# sourceMappingURL=user.module.js.map
+], TestKafkaModule);
+exports.TestKafkaModule = TestKafkaModule;
+//# sourceMappingURL=test-kafka.module.js.map

@@ -21,7 +21,7 @@ model User {
   email             String             @unique
   password          String
   description       String?
-  nativeLanguages   NativeLanguage[]
+  nativeLanguages   NativeLanguage[]  
   learningLanguages LearningLanguage[]
   reports           Report[]
   role              Role               @default(USER)

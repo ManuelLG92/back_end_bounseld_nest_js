@@ -11,6 +11,9 @@ import { LearningLanguageModule } from './learning-language/learning-language.mo
 import { CountryModule } from './country/country.module';
 import { LanguageModule } from './language/language.module';
 import { ReportModule } from './report/report.module';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { KafkaModule } from './kafka/kafka.module';
+import { TestKafkaModule } from './test-kafka/test-kafka.module';
 
 
 @Module({
@@ -20,13 +23,15 @@ import { ReportModule } from './report/report.module';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
     AppGatewayModule,
-    UserModule,
     PrismaModule,
     NativeLanguageModule,
     LearningLanguageModule,
     CountryModule,
     LanguageModule,
-    ReportModule
+    ReportModule,
+    KafkaModule,
+    UserModule,
+    TestKafkaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,15 +1,15 @@
 import { Global, Module } from '@nestjs/common';
-import { UserService } from './user.service';
-import { UserResolver } from './user.resolver';
-import { PrismaModule } from 'src/prisma/prisma/prisma.module';
+
+import { KafkaController } from './kafka.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 
+@Global()
 @Module({
   imports: [
     ClientsModule.register([
       {
-        name: 'KAFKA_BROKER',
+        name: 'KAFKA_MODULE_BROKER',
         transport: Transport.KAFKA,
         options: {
           client: {
@@ -17,12 +17,12 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
             brokers: ['localhost:9094'],
           },
           consumer: {
-            groupId: 'my-consumer-nest',
+            groupId: 'my-consumer-nest-kafka-module',
           },
         },
       },
     ]),
   ],
-  providers: [UserResolver, UserService],
+  controllers: [KafkaController],
 })
-export class UserModule {}
+export class KafkaModule {}

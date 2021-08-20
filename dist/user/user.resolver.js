@@ -18,12 +18,32 @@ const user_service_1 = require("./user.service");
 const user_entity_1 = require("./entities/user.entity");
 const create_user_input_1 = require("./dto/create-user.input");
 const update_user_input_1 = require("./dto/update-user.input");
+const common_1 = require("@nestjs/common");
+const microservices_1 = require("@nestjs/microservices");
 let UserResolver = class UserResolver {
-    constructor(userService) {
+    constructor(clientKafka, userService) {
+        this.clientKafka = clientKafka;
         this.userService = userService;
     }
-    createUser(createUserInput) {
-        return this.userService.create(createUserInput);
+    async onModuleInit() {
+        this.kafkaProducer = await this.clientKafka.connect();
+        this.clientKafka.subscribeToResponseOf('email_confirmation_received');
+    }
+    async createUser(createUserInput) {
+        const user = await this.userService.create(createUserInput);
+        if (user) {
+            await this.kafkaProducer.send({
+                topic: 'send_email',
+                messages: [
+                    {
+                        key: Math.random() + '',
+                        value: JSON.stringify({ userId: user.id, email: user.email }),
+                    },
+                ],
+            });
+            console.log('Se envia user.resolver send_mail');
+        }
+        return user;
     }
     findAll() {
         return this.userService.findAll();
@@ -37,13 +57,21 @@ let UserResolver = class UserResolver {
     removeUser(id) {
         return this.userService.remove(id);
     }
+    sendEmail(message) {
+        message = message.value;
+        console.log('Se recibe user.resolver email_confirmation_received');
+        console.log(message);
+        return {
+            reply: 'ok',
+        };
+    }
 };
 __decorate([
     graphql_1.Mutation(() => user_entity_1.User),
     __param(0, graphql_1.Args('createUserInput')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_user_input_1.CreateUserInput]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "createUser", null);
 __decorate([
     graphql_1.Query(() => [user_entity_1.User], { name: 'users' }),
@@ -66,15 +94,24 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UserResolver.prototype, "updateUser", null);
 __decorate([
-    graphql_1.Mutation(() => user_entity_1.User),
+    graphql_1.Mutation(() => Boolean),
     __param(0, graphql_1.Args('id', { type: () => graphql_1.Int })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
 ], UserResolver.prototype, "removeUser", null);
+__decorate([
+    microservices_1.MessagePattern('email_confirmation_received'),
+    __param(0, microservices_1.Payload()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], UserResolver.prototype, "sendEmail", null);
 UserResolver = __decorate([
     graphql_1.Resolver(() => user_entity_1.User),
-    __metadata("design:paramtypes", [user_service_1.UserService])
+    __param(0, common_1.Inject('KAFKA_BROKER')),
+    __metadata("design:paramtypes", [microservices_1.ClientKafka,
+        user_service_1.UserService])
 ], UserResolver);
 exports.UserResolver = UserResolver;
 //# sourceMappingURL=user.resolver.js.map
