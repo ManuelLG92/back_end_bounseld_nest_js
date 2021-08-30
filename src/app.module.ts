@@ -19,6 +19,10 @@ import { TestKafkaModule } from './test-kafka/test-kafka.module';
 @Module({
   imports: [
     GraphQLModule.forRoot({
+     cors: {
+    origin: 'http://localhost:8080',
+    credentials: true,
+  },
       introspection: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),

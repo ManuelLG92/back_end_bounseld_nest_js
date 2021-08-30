@@ -28,6 +28,10 @@ AppModule = __decorate([
     common_1.Module({
         imports: [
             graphql_1.GraphQLModule.forRoot({
+                cors: {
+                    origin: 'http://localhost:8080',
+                    credentials: true,
+                },
                 introspection: true,
                 autoSchemaFile: path_1.join(process.cwd(), 'src/schema.gql'),
             }),

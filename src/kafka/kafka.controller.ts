@@ -31,7 +31,7 @@ export class KafkaController implements OnModuleInit {
     });
     console.log(result);
   }
-
+  
   @MessagePattern('send_email')
   sendEmail(@Payload() message) {
     console.log('Se recibe en kafka.controller send_email');

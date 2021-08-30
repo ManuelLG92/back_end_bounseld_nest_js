@@ -27,6 +27,7 @@ async function bootstrap() {
   app.setViewEngine('hbs');
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe())
+  app.enableCors();
   await app.startAllMicroservices()
   await app.listen(3500);
 }
