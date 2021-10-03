@@ -9,7 +9,7 @@
 </head>
 <body>
 <h1 style="text-align: center">Welcome NestJs API</h1>
-<!--<p>Here we're</p>
+<p>Here we're</p>
 <div>
   <div id="messages">
 
@@ -18,10 +18,11 @@
   <input type="text" name="msg" id="msg">
   <button id="send">Send</button>
 
+  <button id='req'>Wanna chat</button>
 </div>
-<script src="/socket.io/socket.io.js"></script>
+<script src="http://localhost:3005/socket.io/socket.io.js"></script>
 <script>
-  const socket = io('http://localhost:3500');
+  const socket = io('http://localhost:3005');
 
   document.getElementById('send').addEventListener('click', (e) => {
     e.preventDefault()
@@ -29,12 +30,20 @@
 
       console.log(msg);
     })
+
     document.getElementById('msg').value = ''
   })
-  
+
+
+  document.getElementById('req').addEventListener('click', (e) => {
+    e.preventDefault()
+    socket.emit('messageToChat')
+  })
+
+  socket.on('requestToChat', (msg) => console.log(msg))
 
   socket.on('messageToClient', (msg) => document.getElementById('messages').innerHTML += `<p>${msg}</p>`)
 
-</script>-->
+</script>
 </body>
 </html>

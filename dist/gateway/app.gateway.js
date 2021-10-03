@@ -15,6 +15,7 @@ const common_1 = require("@nestjs/common");
 const socket_io_1 = require("socket.io");
 let AppGateway = class AppGateway {
     constructor() {
+        this.list = [];
         this.logger = new common_1.Logger();
     }
     afterInit(server) {
@@ -22,14 +23,27 @@ let AppGateway = class AppGateway {
     }
     async handleConnection(client, ...args) {
         const userIdFromRequest = client.handshake.query['userId'];
-        console.log('todo handle connection');
+        !this.list.includes(client.id) && this.list.push(client.id);
+        console.log(this.list);
+        console.log('todo handle connection', userIdFromRequest, args);
         this.logger.log(`Client connected ${client.id}`);
     }
     async handleDisconnect(client) {
         this.logger.log(`Client disconnected ${client.id}`);
     }
     handleMessageBroadCast(client, data) {
+        this.list.filter((el) => el != client.id);
+        console.log(this.list);
         this.wss.emit('messageToClient', data);
+    }
+    handleMessageBroadCastToChat(client, data) {
+        console.log('received message top chat req');
+        this.list.filter((el) => {
+            el != client.id &&
+                this.wss.to(el).emit('requestToChat', {
+                    data: 'Wanna chat',
+                });
+        });
     }
 };
 __decorate([
@@ -42,9 +56,14 @@ __decorate([
     __metadata("design:paramtypes", [socket_io_1.Socket, String]),
     __metadata("design:returntype", void 0)
 ], AppGateway.prototype, "handleMessageBroadCast", null);
+__decorate([
+    websockets_1.SubscribeMessage('messageToChat'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [socket_io_1.Socket, String]),
+    __metadata("design:returntype", void 0)
+], AppGateway.prototype, "handleMessageBroadCastToChat", null);
 AppGateway = __decorate([
-    websockets_1.WebSocketGateway(3005, { cors: true }),
-    __metadata("design:paramtypes", [])
+    websockets_1.WebSocketGateway(3005, { cors: true })
 ], AppGateway);
 exports.AppGateway = AppGateway;
 //# sourceMappingURL=app.gateway.js.map

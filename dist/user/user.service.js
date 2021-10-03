@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma/prisma.service");
-const language_entity_1 = require("../language/entities/language.entity");
 let UserService = class UserService {
     constructor(prismaService) {
         this.prismaService = prismaService;
@@ -58,7 +57,7 @@ let UserService = class UserService {
         });
         if (!user)
             throw common_1.NotFoundException;
-        let userPrisma = {};
+        const userPrisma = {};
         Object.assign(userPrisma, updateUserInput);
         user = await this.prismaService.user.update({
             where: { id },
@@ -67,7 +66,7 @@ let UserService = class UserService {
         return user;
     }
     async create(createUserInput) {
-        let userData;
+        let userData = null;
         userData = {
             name: createUserInput.name,
             surname: createUserInput.surname,
@@ -82,10 +81,9 @@ let UserService = class UserService {
             },
             description: '',
         };
-        const userCreated = await this.prismaService.user.create({
+        return await this.prismaService.user.create({
             data: userData,
         });
-        return userCreated;
     }
     async remove(id) {
         try {

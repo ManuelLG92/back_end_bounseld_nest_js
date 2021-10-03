@@ -1,8 +1,7 @@
-import { LearningLanguage } from '.prisma/client';
+import { LearningLanguage } from 'src/learning-language/entities/learning-language.entity';
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Country } from 'src/country/entities/country.entity';
 import { NativeLanguage } from 'src/native-language/entities/native-language.entity';
-
 
 @ObjectType()
 export class User {
@@ -15,13 +14,21 @@ export class User {
   @Field({ description: 'User surname', nullable: true })
   surname?: string;
 
-  @Field(() => Int, { description: 'User age',  nullable: true })
+  @Field(() => Int, { description: 'User age', nullable: true })
   age?: number;
 
-  @Field(() => Country , { description: 'User country', nullable: true })
+  @Field(() => Country, { description: 'User country', nullable: true })
   country?: string;
 
-  @Field(() => [NativeLanguage] , { description: 'User Native languages', nullable: true })
+  @Field(() => [NativeLanguage], {
+    description: 'User Native languages',
+    nullable: true,
+  })
   nativeLanguages?: NativeLanguage[];
 
+  @Field(() => [LearningLanguage], {
+    description: 'User learning languages',
+    nullable: true,
+  })
+  learningLanguages?: LearningLanguage[];
 }

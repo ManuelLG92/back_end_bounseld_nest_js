@@ -20,8 +20,6 @@ const learning_language_module_1 = require("./learning-language/learning-languag
 const country_module_1 = require("./country/country.module");
 const language_module_1 = require("./language/language.module");
 const report_module_1 = require("./report/report.module");
-const kafka_module_1 = require("./kafka/kafka.module");
-const test_kafka_module_1 = require("./test-kafka/test-kafka.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -42,9 +40,7 @@ AppModule = __decorate([
             country_module_1.CountryModule,
             language_module_1.LanguageModule,
             report_module_1.ReportModule,
-            kafka_module_1.KafkaModule,
             user_module_1.UserModule,
-            test_kafka_module_1.TestKafkaModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

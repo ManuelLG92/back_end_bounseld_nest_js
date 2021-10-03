@@ -9,7 +9,10 @@ export class NativeLanguageResolver {
   constructor(private readonly nativeLanguageService: NativeLanguageService) {}
 
   @Mutation(() => NativeLanguage)
-  createNativeLanguage(@Args('createNativeLanguageInput') createNativeLanguageInput: CreateNativeLanguageInput) {
+  createNativeLanguage(
+    @Args('createNativeLanguageInput')
+    createNativeLanguageInput: CreateNativeLanguageInput,
+  ) {
     return this.nativeLanguageService.create(createNativeLanguageInput);
   }
 
@@ -24,8 +27,14 @@ export class NativeLanguageResolver {
   }
 
   @Mutation(() => NativeLanguage)
-  updateNativeLanguage(@Args('updateNativeLanguageInput') updateNativeLanguageInput: UpdateNativeLanguageInput) {
-    return this.nativeLanguageService.update(updateNativeLanguageInput.id, updateNativeLanguageInput);
+  updateNativeLanguage(
+    @Args('updateNativeLanguageInput')
+    updateNativeLanguageInput: UpdateNativeLanguageInput,
+  ) {
+    return this.nativeLanguageService.update(
+      updateNativeLanguageInput.id,
+      updateNativeLanguageInput,
+    );
   }
 
   @Mutation(() => NativeLanguage)

@@ -71,13 +71,13 @@ model Report {
 enum Role {
   USER
   ADMIN
-  COLABORATOR
+  COLLABORATOR
 }
 
 enum Reason {
   SPAM
   OFFENSIVE
-  HARRASMENT
+  HARASSMENT
   OTHER
 }
 

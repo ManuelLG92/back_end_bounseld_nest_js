@@ -1,10 +1,8 @@
-import { HttpCode, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { PrismaService } from '../prisma/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
-import { Language } from 'src/language/entities/language.entity';
-import { throwHttpGraphQLError } from 'apollo-server-core/dist/runHttpQuery';
 
 @Injectable()
 export class UserService {
@@ -54,7 +52,7 @@ export class UserService {
     // console.log(user);
     if (!user) throw NotFoundException;
 
-    let userPrisma: Prisma.UserUpdateInput = {};
+    const userPrisma: Prisma.UserUpdateInput = {};
 
     Object.assign(userPrisma, updateUserInput);
 
@@ -66,9 +64,7 @@ export class UserService {
   }
 
   async create(createUserInput: CreateUserInput) {
-
-    let userData: Prisma.UserCreateInput;
-
+    let userData: Prisma.UserCreateInput | null = null;
     userData = {
       name: createUserInput.name,
       surname: createUserInput.surname,
@@ -84,11 +80,9 @@ export class UserService {
       description: '',
     };
 
-    const userCreated = await this.prismaService.user.create({
+    return await this.prismaService.user.create({
       data: userData,
     });
-
-    return userCreated;
   }
 
   async remove(id: number) {

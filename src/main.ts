@@ -5,11 +5,10 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { AppModule } from './app.module';
 
-
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-    app.connectMicroservice({
+  /*    app.connectMicroservice({
       transport: Transport.KAFKA,
       options: {
         client: {
@@ -20,15 +19,15 @@ async function bootstrap() {
           groupId: 'my-consumer-' + Math.random(),
         },
       },
-    });
+    });*/
 
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
   app.enableCors();
-  app.useGlobalPipes(new ValidationPipe())
+  app.useGlobalPipes(new ValidationPipe());
   app.enableCors();
-  await app.startAllMicroservices()
+  await app.startAllMicroservices();
   await app.listen(3500);
 }
 

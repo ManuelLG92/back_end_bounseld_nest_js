@@ -1,34 +1,30 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { Inject, OnModuleInit } from '@nestjs/common';
-import { ClientKafka, MessagePattern, Payload } from '@nestjs/microservices';
-import { Producer } from '@nestjs/microservices/external/kafka.interface';
 
-
+//import { ClientKafka, MessagePattern, Payload } from '@nestjs/microservices';
 
 @Resolver(() => User)
-export class UserResolver implements OnModuleInit {
-  private kafkaProducer: Producer;
+export class UserResolver {
+  //private kafkaProducer: Producer;
 
   constructor(
-    @Inject('KAFKA_BROKER')
+    /* @Inject('KAFKA_BROKER')
     private clientKafka: ClientKafka,
-
+*/
     private readonly userService: UserService,
   ) {}
 
-  async onModuleInit() {
+  /* async onModuleInit() {
     this.kafkaProducer = await this.clientKafka.connect();
     this.clientKafka.subscribeToResponseOf('email_confirmation_received');
-  }
+  }*/
 
   @Mutation(() => User)
   async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    const user = await this.userService.create(createUserInput);
-    if (user) {
+    /*    if (user) {
       await this.kafkaProducer.send({
         topic: 'send_email',
         messages: [
@@ -39,8 +35,8 @@ export class UserResolver implements OnModuleInit {
         ],
       });
       console.log('Se envia user.resolver send_mail');
-    }
-    return user;
+    }*/
+    return await this.userService.create(createUserInput);
   }
 
   @Query(() => [User], { name: 'users' })
@@ -63,7 +59,7 @@ export class UserResolver implements OnModuleInit {
     return this.userService.remove(id);
   }
 
-
+  /*
   @MessagePattern('email_confirmation_received')
   sendEmail(@Payload() message) {
     message = message.value;
@@ -72,6 +68,5 @@ export class UserResolver implements OnModuleInit {
     return {
       reply: 'ok',
     };
-  }
-
+  }*/
 }

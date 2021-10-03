@@ -11,28 +11,10 @@ const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
 const user_resolver_1 = require("./user.resolver");
 const prisma_module_1 = require("../prisma/prisma/prisma.module");
-const microservices_1 = require("@nestjs/microservices");
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
     common_1.Module({
-        imports: [
-            microservices_1.ClientsModule.register([
-                {
-                    name: 'KAFKA_BROKER',
-                    transport: microservices_1.Transport.KAFKA,
-                    options: {
-                        client: {
-                            clientId: 'hero',
-                            brokers: ['localhost:9094'],
-                        },
-                        consumer: {
-                            groupId: 'my-consumer-nest',
-                        },
-                    },
-                },
-            ]),
-        ],
         providers: [user_resolver_1.UserResolver, user_service_1.UserService],
     })
 ], UserModule);

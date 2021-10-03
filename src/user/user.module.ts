@@ -4,9 +4,8 @@ import { UserResolver } from './user.resolver';
 import { PrismaModule } from 'src/prisma/prisma/prisma.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
-
 @Module({
-  imports: [
+  /*  imports: [
     ClientsModule.register([
       {
         name: 'KAFKA_BROKER',
@@ -22,7 +21,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         },
       },
     ]),
-  ],
+  ],*/
   providers: [UserResolver, UserService],
 })
 export class UserModule {}

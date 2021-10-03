@@ -9,7 +9,9 @@ export class ReportResolver {
   constructor(private readonly reportService: ReportService) {}
 
   @Mutation(() => Report)
-  createReport(@Args('createReportInput') createReportInput: CreateReportInput) {
+  createReport(
+    @Args('createReportInput') createReportInput: CreateReportInput,
+  ) {
     return this.reportService.create(createReportInput);
   }
 
@@ -24,7 +26,9 @@ export class ReportResolver {
   }
 
   @Mutation(() => Report)
-  updateReport(@Args('updateReportInput') updateReportInput: UpdateReportInput) {
+  updateReport(
+    @Args('updateReportInput') updateReportInput: UpdateReportInput,
+  ) {
     return this.reportService.update(updateReportInput.id, updateReportInput);
   }
 

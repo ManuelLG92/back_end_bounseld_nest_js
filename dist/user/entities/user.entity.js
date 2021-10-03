@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
+const learning_language_entity_1 = require("../../learning-language/entities/learning-language.entity");
 const graphql_1 = require("@nestjs/graphql");
 const country_entity_1 = require("../../country/entities/country.entity");
 const native_language_entity_1 = require("../../native-language/entities/native-language.entity");
@@ -36,9 +37,19 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "country", void 0);
 __decorate([
-    graphql_1.Field(() => [native_language_entity_1.NativeLanguage], { description: 'User Native languages', nullable: true }),
+    graphql_1.Field(() => [native_language_entity_1.NativeLanguage], {
+        description: 'User Native languages',
+        nullable: true,
+    }),
     __metadata("design:type", Array)
 ], User.prototype, "nativeLanguages", void 0);
+__decorate([
+    graphql_1.Field(() => [learning_language_entity_1.LearningLanguage], {
+        description: 'User learning languages',
+        nullable: true,
+    }),
+    __metadata("design:type", Array)
+], User.prototype, "learningLanguages", void 0);
 User = __decorate([
     graphql_1.ObjectType()
 ], User);

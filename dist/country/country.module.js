@@ -15,10 +15,8 @@ let CountryModule = class CountryModule {
 };
 CountryModule = __decorate([
     common_1.Module({
-        imports: [
-            prisma_module_1.PrismaModule
-        ],
-        providers: [country_resolver_1.CountryResolver, country_service_1.CountryService]
+        imports: [prisma_module_1.PrismaModule],
+        providers: [country_resolver_1.CountryResolver, country_service_1.CountryService],
     })
 ], CountryModule);
 exports.CountryModule = CountryModule;

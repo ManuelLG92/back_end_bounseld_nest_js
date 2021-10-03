@@ -6,10 +6,15 @@ import { UpdateLearningLanguageInput } from './dto/update-learning-language.inpu
 
 @Resolver(() => LearningLanguage)
 export class LearningLanguageResolver {
-  constructor(private readonly learningLanguageService: LearningLanguageService) {}
+  constructor(
+    private readonly learningLanguageService: LearningLanguageService,
+  ) {}
 
   @Mutation(() => LearningLanguage)
-  createLearningLanguage(@Args('createLearningLanguageInput') createLearningLanguageInput: CreateLearningLanguageInput) {
+  createLearningLanguage(
+    @Args('createLearningLanguageInput')
+    createLearningLanguageInput: CreateLearningLanguageInput,
+  ) {
     return this.learningLanguageService.create(createLearningLanguageInput);
   }
 
@@ -24,8 +29,14 @@ export class LearningLanguageResolver {
   }
 
   @Mutation(() => LearningLanguage)
-  updateLearningLanguage(@Args('updateLearningLanguageInput') updateLearningLanguageInput: UpdateLearningLanguageInput) {
-    return this.learningLanguageService.update(updateLearningLanguageInput.id, updateLearningLanguageInput);
+  updateLearningLanguage(
+    @Args('updateLearningLanguageInput')
+    updateLearningLanguageInput: UpdateLearningLanguageInput,
+  ) {
+    return this.learningLanguageService.update(
+      updateLearningLanguageInput.id,
+      updateLearningLanguageInput,
+    );
   }
 
   @Mutation(() => LearningLanguage)
