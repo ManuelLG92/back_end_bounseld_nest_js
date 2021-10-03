@@ -1,10 +1,17 @@
 import { Gender } from '.prisma/client';
 import { InputType, Field } from '@nestjs/graphql';
-import {IsEmail, IsNotEmpty, IsOptional, Length, MaxLength, Min, MinLength } from "class-validator";
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  Length,
+  MaxLength,
+  Min,
+  MinLength,
+} from 'class-validator';
 
 @InputType()
 export class CreateUserInput {
-
   @Field({ description: 'Name between 2 and 100 characters' })
   @IsNotEmpty()
   @Length(2, 100)
@@ -40,11 +47,12 @@ export class CreateUserInput {
   @Length(8, 32)
   password: string;
 
-  @Field({ nullable: true,description: 'Optional description max 255 characters.' })
+  @Field({
+    nullable: true,
+    description: 'Optional description max 255 characters.',
+  })
   @IsOptional()
   @MaxLength(255)
   description?: string;
   // { description: 'Surname between 2 and 100 characters' }
 }
-
-

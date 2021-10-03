@@ -14,6 +14,7 @@ import { ReportModule } from './report/report.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KafkaModule } from './kafka/kafka.module';
 import { TestKafkaModule } from './test-kafka/test-kafka.module';
+import { CountryApiModule } from './country-api/country-api.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { TestKafkaModule } from './test-kafka/test-kafka.module';
     ReportModule,
     // KafkaModule,
     UserModule,
+    CountryApiModule,
     // TestKafkaModule,
   ],
   controllers: [AppController],
