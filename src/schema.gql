@@ -2,139 +2,19 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type LearningLanguage {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-type Country {
-  """Language Id"""
-  id: Int!
-
-  """language name"""
-  name: String
-}
-
-type Language {
-  """Language Id"""
-  id: Int!
-
-  """language name"""
-  name: String
-}
-
-type NativeLanguage {
-  """Native language ID by User"""
-  id: Int!
-
-  """User"""
-  user: User
-
-  """Language"""
-  language: Language
-}
-
-type User {
-  """User Id"""
-  id: Int!
-
-  """User name"""
-  name: String
-
-  """User surname"""
-  surname: String
-
-  """User age"""
-  age: Int
-
-  """User country"""
-  country: Country
-
-  """User Native languages"""
-  nativeLanguages: [NativeLanguage!]
-
-  """User learning languages"""
-  learningLanguages: [LearningLanguage!]
-}
-
 type Report {
   """Example field (placeholder)"""
   exampleField: Int!
 }
 
 type Query {
-  nativeLanguage(id: Int!): NativeLanguage!
-  learningLanguage(id: Int!): LearningLanguage!
-  country(id: Int!): Country!
-  language(id: Int!): Language!
   report(id: Int!): Report!
-  users: [User!]!
-  user(id: Int!): User!
 }
 
 type Mutation {
-  createNativeLanguage(createNativeLanguageInput: CreateNativeLanguageInput!): NativeLanguage!
-  updateNativeLanguage(updateNativeLanguageInput: UpdateNativeLanguageInput!): NativeLanguage!
-  removeNativeLanguage(id: Int!): NativeLanguage!
-  createLearningLanguage(createLearningLanguageInput: CreateLearningLanguageInput!): LearningLanguage!
-  updateLearningLanguage(updateLearningLanguageInput: UpdateLearningLanguageInput!): LearningLanguage!
-  removeLearningLanguage(id: Int!): LearningLanguage!
-  createCountry(createCountryInput: CreateCountryInput!): Country!
-  updateCountry(updateCountryInput: UpdateCountryInput!): Country!
-  removeCountry(id: Int!): Country!
-  createLanguage(createLanguageInput: CreateLanguageInput!): Language!
-  updateLanguage(updateLanguageInput: UpdateLanguageInput!): Language!
-  removeLanguage(id: Int!): Language!
   createReport(createReportInput: CreateReportInput!): Report!
   updateReport(updateReportInput: UpdateReportInput!): Report!
   removeReport(id: Int!): Report!
-  createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUser: UpdateUserInput!): User!
-  removeUser(id: Int!): Boolean!
-}
-
-input CreateNativeLanguageInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateNativeLanguageInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input CreateLearningLanguageInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateLearningLanguageInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input CreateCountryInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateCountryInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input CreateLanguageInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateLanguageInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
 }
 
 input CreateReportInput {
@@ -145,58 +25,5 @@ input CreateReportInput {
 input UpdateReportInput {
   """Example field (placeholder)"""
   exampleField: Int
-  id: Int!
-}
-
-input CreateUserInput {
-  """Name between 2 and 100 characters"""
-  name: String!
-
-  """Surname between 2 and 100 characters"""
-  surname: String!
-
-  """This website is just for people over 18 years old."""
-  age: Float!
-
-  """Choose gender "MALE | FEMALE | PREFER_NOT:SAY"""
-  gender: String!
-
-  """Provide valid country ID."""
-  countryId: Float!
-
-  """Provide valid Email."""
-  email: String!
-
-  """Password between 8 and 32 characters"""
-  password: String!
-
-  """Optional description max 255 characters."""
-  description: String
-}
-
-input UpdateUserInput {
-  """Name between 2 and 100 characters"""
-  name: String
-
-  """Surname between 2 and 100 characters"""
-  surname: String
-
-  """This website is just for people over 18 years old."""
-  age: Float
-
-  """Choose gender "MALE | FEMALE | PREFER_NOT:SAY"""
-  gender: String
-
-  """Provide valid country ID."""
-  countryId: Float
-
-  """Provide valid Email."""
-  email: String
-
-  """Password between 8 and 32 characters"""
-  password: String
-
-  """Optional description max 255 characters."""
-  description: String
   id: Int!
 }

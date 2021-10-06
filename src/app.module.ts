@@ -4,17 +4,12 @@ import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { AppGatewayModule } from './gateway/app.gateway.module';
-import { UserModule } from './user/user.module';
 import { PrismaModule } from './prisma/prisma/prisma.module';
-import { NativeLanguageModule } from './native-language/native-language.module';
-import { LearningLanguageModule } from './learning-language/learning-language.module';
-import { CountryModule } from './country/country.module';
-import { LanguageModule } from './language/language.module';
 import { ReportModule } from './report/report.module';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+/*import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KafkaModule } from './kafka/kafka.module';
-import { TestKafkaModule } from './test-kafka/test-kafka.module';
-import { CountryApiModule } from './country-api/country-api.module';
+import { TestKafkaModule } from './test-kafka/test-kafka.module';*/
+import { UserRestModule } from './user-rest/user-rest.module';
 
 @Module({
   imports: [
@@ -28,14 +23,9 @@ import { CountryApiModule } from './country-api/country-api.module';
     }),
     AppGatewayModule,
     PrismaModule,
-    NativeLanguageModule,
-    LearningLanguageModule,
-    CountryModule,
-    LanguageModule,
     ReportModule,
     // KafkaModule,
-    UserModule,
-    CountryApiModule,
+    UserRestModule,
     // TestKafkaModule,
   ],
   controllers: [AppController],

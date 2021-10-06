@@ -13,13 +13,9 @@ const app_service_1 = require("./app.service");
 const graphql_1 = require("@nestjs/graphql");
 const path_1 = require("path");
 const app_gateway_module_1 = require("./gateway/app.gateway.module");
-const user_module_1 = require("./user/user.module");
 const prisma_module_1 = require("./prisma/prisma/prisma.module");
-const native_language_module_1 = require("./native-language/native-language.module");
-const learning_language_module_1 = require("./learning-language/learning-language.module");
-const country_module_1 = require("./country/country.module");
-const language_module_1 = require("./language/language.module");
 const report_module_1 = require("./report/report.module");
+const user_rest_module_1 = require("./user-rest/user-rest.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -35,12 +31,8 @@ AppModule = __decorate([
             }),
             app_gateway_module_1.AppGatewayModule,
             prisma_module_1.PrismaModule,
-            native_language_module_1.NativeLanguageModule,
-            learning_language_module_1.LearningLanguageModule,
-            country_module_1.CountryModule,
-            language_module_1.LanguageModule,
             report_module_1.ReportModule,
-            user_module_1.UserModule,
+            user_rest_module_1.UserRestModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
