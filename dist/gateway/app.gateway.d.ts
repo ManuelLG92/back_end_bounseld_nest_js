@@ -1,8 +1,10 @@
 import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit } from '@nestjs/websockets';
-import { Socket, Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 export declare class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
     wss: Server;
     private list;
+    private socketList;
+    private chatList;
     private logger;
     afterInit(server: Server): any;
     handleConnection(client: Socket, ...args: any[]): Promise<any>;

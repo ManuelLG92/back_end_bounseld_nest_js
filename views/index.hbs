@@ -9,7 +9,7 @@
 </head>
 <body>
 <h1 style="text-align: center">Welcome NestJs API</h1>
-<p>Here we're</p>
+<p id='title'>Here we're</p>
 <div>
   <div id="messages">
 
@@ -19,10 +19,17 @@
   <button id="send">Send</button>
 
   <button id='req'>Wanna chat</button>
+  <div id='users'>
+    <ol>
+    </ol>
+  </div>
 </div>
 <script src="http://localhost:3005/socket.io/socket.io.js"></script>
 <script>
-  const socket = io('http://localhost:3005');
+  const currentUser = randomNum()
+  const socket = io('http://localhost:3005', { query: `userId=${currentUser}` });
+  const users = document.querySelector('#users ol')
+  const userList = [...document.querySelectorAll('#users ol li')]
 
   document.getElementById('send').addEventListener('click', (e) => {
     e.preventDefault()
@@ -42,8 +49,45 @@
 
   socket.on('requestToChat', (msg) => console.log(msg))
 
-  socket.on('messageToClient', (msg) => document.getElementById('messages').innerHTML += `<p>${msg}</p>`)
+  socket.on('newConnection', ({user, list}) => {
 
+    document.getElementById('title').innerHTML += ' ' + user
+    console.log(list);
+    Array.isArray(list) && list.map(el => {
+      if (currentUser.toString() !== el.id) {
+        console.log(typeof currentUser, typeof  el.id)
+        users.innerHTML
+          += `<li style='cursor: pointer' id=${el.id} onclick='sentChatReq(${el.id})'>User: ${el.id}</li>`
+
+      }
+    }
+
+
+
+          )
+   /* users.innerHTML += `<li style='cursor: pointer' id=${user} onclick='sentChatReq(${user})'>User: ${user}</li>`
+    console.log('connected', user);*/
+  })
+
+  socket.on('disconnectedClient', ({user}) => {
+    document.getElementById(user).remove()
+    console.log('disconected', user);
+  })
+
+  socket.on('messageToClient', (msg) => document.getElementById('messages').innerHTML += `<p>${msg}</p>`)
+  function randomNum() {
+    return Math.floor(Math.random() * (1000 - 1)) + 1
+  }
+
+  function sentChatReq(toReq) {
+  console.log('to chat id ' , toReq)
+  }
+
+  function addEvent(el) {
+    el.addEventListener('click', () => {
+      sentChatReq(el)
+    })
+  }
 </script>
 </body>
 </html>

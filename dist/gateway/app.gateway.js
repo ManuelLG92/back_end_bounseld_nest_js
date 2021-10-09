@@ -22,28 +22,39 @@ let AppGateway = class AppGateway {
         this.logger.log('Initialized');
     }
     async handleConnection(client, ...args) {
-        const userIdFromRequest = client.handshake.query['userId'];
-        !this.list.includes(client.id) && this.list.push(client.id);
-        console.log(this.list);
-        console.log('todo handle connection', userIdFromRequest, args);
+        var _a;
+        const userId = client.handshake.query['userId'];
+        const beforeInsert = (_a = this.socketList) !== null && _a !== void 0 ? _a : [];
+        console.log('before', beforeInsert);
+        !this.socketList
+            ? (this.socketList = [{ id: userId, socket: client.id }])
+            : this.socketList.push({ id: userId, socket: client.id });
+        console.log(this.socketList);
+        console.log('todo handle connection', userId, args);
         this.logger.log(`Client connected ${client.id}`);
+        this.wss.emit('newConnection', { user: userId, list: beforeInsert });
     }
     async handleDisconnect(client) {
+        var _a, _b;
+        const userId = (_a = this.socketList) === null || _a === void 0 ? void 0 : _a.filter((el) => el.socket === client.id);
+        this.wss.emit('disconnectedClient', { user: userId });
+        this.socketList = (_b = this.socketList) === null || _b === void 0 ? void 0 : _b.filter((el) => el.socket !== client.id);
         this.logger.log(`Client disconnected ${client.id}`);
     }
     handleMessageBroadCast(client, data) {
         this.list.filter((el) => el != client.id);
+        this.socketList.filter((c) => c.socket != client.id);
         console.log(this.list);
         this.wss.emit('messageToClient', data);
     }
     handleMessageBroadCastToChat(client, data) {
-        console.log('received message top chat req');
-        this.list.filter((el) => {
-            el != client.id &&
-                this.wss.to(el).emit('requestToChat', {
-                    data: 'Wanna chat',
-                });
-        });
+        const from = getValueFromQuery(client, 'from');
+        const to = getValueFromQuery(client, 'to');
+        if ((from === null || from === void 0 ? void 0 : from.length) && (to === null || to === void 0 ? void 0 : to.length)) {
+            this.wss.to(to).emit('requestToChat', {
+                data: `${from} Wanna chat. Do you want accept?`,
+            });
+        }
     }
 };
 __decorate([
@@ -66,4 +77,8 @@ AppGateway = __decorate([
     websockets_1.WebSocketGateway(3005, { cors: true })
 ], AppGateway);
 exports.AppGateway = AppGateway;
+function getValueFromQuery(client, queryName) {
+    return (this.socketList[client.handshake.query[queryName]] =
+        client.id);
+}
 //# sourceMappingURL=app.gateway.js.map
