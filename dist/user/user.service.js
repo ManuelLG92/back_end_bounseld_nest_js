@@ -16,95 +16,35 @@ let UserService = class UserService {
     constructor(prismaService) {
         this.prismaService = prismaService;
     }
-    async findAll() {
-        return await this.prismaService.user.findMany({
-            include: {
-                country: true,
-                learningLanguages: {
-                    include: {
-                        language: true,
-                    },
-                },
-                nativeLanguages: {
-                    include: {
-                        language: true,
-                    },
-                },
-            },
+    async create(createUserRestDto) {
+        return await this.prismaService.user.create({
+            data: Object.assign({}, createUserRestDto),
         });
+    }
+    async findAll() {
+        return await this.prismaService.user.findMany();
     }
     async findOne(id) {
         return await this.prismaService.user.findUnique({
-            where: { id },
-            include: {
-                country: true,
-                learningLanguages: {
-                    include: {
-                        language: true,
-                    },
-                },
-                nativeLanguages: {
-                    include: {
-                        language: true,
-                    },
-                },
+            where: {
+                id: id,
             },
         });
     }
-    async update(id, updateUserInput) {
-        let user = await this.prismaService.user.findUnique({
-            where: { id },
-        });
-        if (!user)
-            throw common_1.NotFoundException;
-        const userPrisma = {};
-        Object.assign(userPrisma, updateUserInput);
-        user = await this.prismaService.user.update({
-            where: { id },
-            data: userPrisma,
-        });
-        return user;
-    }
-    async create(createUserInput) {
-        let userData = null;
-        userData = {
-            name: createUserInput.name,
-            surname: createUserInput.surname,
-            email: createUserInput.email,
-            password: createUserInput.password,
-            gender: createUserInput.gender,
-            age: createUserInput.age,
-            country: {
-                connect: {
-                    id: createUserInput.countryId,
-                },
+    async update(id, updateUserRestDto) {
+        return await this.prismaService.user.update({
+            where: {
+                id: id,
             },
-            description: '',
-        };
-        return await this.prismaService.user.create({
-            data: userData,
+            data: Object.assign({}, updateUserRestDto),
         });
     }
     async remove(id) {
-        try {
-            await this.prismaService.nativeLanguage.deleteMany({
-                where: { userId: id },
-            });
-            await this.prismaService.learningLanguage.deleteMany({
-                where: { userId: id },
-            });
-            await this.prismaService.report.deleteMany({
-                where: { userId: id },
-            });
-            await this.prismaService.user.delete({
-                where: { id: id },
-            });
-            return true;
-        }
-        catch (error) {
-            console.log(error);
-            return false;
-        }
+        return await this.prismaService.user.delete({
+            where: {
+                id: id,
+            },
+        });
     }
 };
 UserService = __decorate([

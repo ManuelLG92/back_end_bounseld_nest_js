@@ -10,29 +10,19 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const graphql_1 = require("@nestjs/graphql");
-const path_1 = require("path");
 const app_gateway_module_1 = require("./gateway/app.gateway.module");
 const prisma_module_1 = require("./prisma/prisma/prisma.module");
-const report_module_1 = require("./report/report.module");
-const user_rest_module_1 = require("./user-rest/user-rest.module");
+const user_module_1 = require("./user/user.module");
+const auth_module_1 = require("./auth/auth.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     common_1.Module({
         imports: [
-            graphql_1.GraphQLModule.forRoot({
-                cors: {
-                    origin: 'http://localhost:8080',
-                    credentials: true,
-                },
-                introspection: true,
-                autoSchemaFile: path_1.join(process.cwd(), 'src/schema.gql'),
-            }),
             app_gateway_module_1.AppGatewayModule,
             prisma_module_1.PrismaModule,
-            report_module_1.ReportModule,
-            user_rest_module_1.UserRestModule,
+            user_module_1.UserModule,
+            auth_module_1.AuthModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

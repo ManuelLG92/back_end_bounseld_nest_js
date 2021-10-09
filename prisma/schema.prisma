@@ -1,71 +1,40 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+}
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
-
 model User {
-  id                Int                @id @default(autoincrement())
-  name              String
-  surname           String
-  age               Int
-  gender            Gender
-  country           Country            @relation(fields: [countryId], references: [id])
-  countryId         Int
-  email             String             @unique
+  id                String   @id @default(uuid())
+  name              String?
+  surname           String?
+  age               Int?
+  email             String   @unique
   password          String
   description       String?
-  nativeLanguages   NativeLanguage[]  
-  learningLanguages LearningLanguage[]
+  role              Role?     @default(USER)
+  createdAt         DateTime? @default(now())
+  updatedAt         DateTime? @updatedAt
+  isActive          Boolean?  @default(false)
+  isBanish          Boolean?  @default(false)
+  country           String?
+  lastConnection    DateTime?
+  learningLanguages String[]
+  nativeLanguages   String[]
+  blackList         String[]
+  friends           String[]
+  gender            String?
   reports           Report[]
-  role              Role               @default(USER)
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
-  isActive          Boolean            @default(false)
-  isBanish          Boolean            @default(false)
-
-}
-
-model Language {
-  id                Int                @id @default(autoincrement())
-  name              String
-  nativeLanguages   NativeLanguage[]
-  learningLanguages LearningLanguage[]
-}
-
-model Country {
-  id   Int    @id @default(autoincrement())
-  name String
-  User User[]
-}
-
-model NativeLanguage {
-  id         Int      @id @default(autoincrement())
-  user       User     @relation(fields: [userId], references: [id])
-  userId     Int
-  language   Language @relation(fields: [languageId], references: [id])
-  languageId Int
-}
-
-model LearningLanguage {
-  id         Int      @id @default(autoincrement())
-  user       User     @relation(fields: [userId], references: [id])
-  userId     Int
-  language   Language @relation(fields: [languageId], references: [id])
-  languageId Int
 }
 
 model Report {
-  id     Int    @id @default(autoincrement())
-  user   User   @relation(fields: [userId], references: [id])
-  userId Int
+  id     String @id @default(uuid())
+  userId String
   reason Reason
+  user   User   @relation(fields: [userId], references: [id])
 }
 
 enum Role {
