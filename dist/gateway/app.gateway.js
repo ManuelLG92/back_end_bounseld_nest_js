@@ -13,8 +13,10 @@ exports.AppGateway = void 0;
 const websockets_1 = require("@nestjs/websockets");
 const common_1 = require("@nestjs/common");
 const socket_io_1 = require("socket.io");
+const globals_service_1 = require("../globals/globals.service");
 let AppGateway = class AppGateway {
-    constructor() {
+    constructor(globalService) {
+        this.globalService = globalService;
         this.list = [];
         this.logger = new common_1.Logger();
     }
@@ -74,7 +76,8 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AppGateway.prototype, "handleMessageBroadCastToChat", null);
 AppGateway = __decorate([
-    websockets_1.WebSocketGateway(3005, { cors: true })
+    websockets_1.WebSocketGateway(3005, { cors: true }),
+    __metadata("design:paramtypes", [globals_service_1.GlobalsService])
 ], AppGateway);
 exports.AppGateway = AppGateway;
 function getValueFromQuery(client, queryName) {

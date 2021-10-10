@@ -9,11 +9,14 @@ import {
 import { Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { ChatRoom, SocketConnection } from './interfaces';
+import { GlobalsService } from '../globals/globals.service';
 
 @WebSocketGateway(3005, { cors: true })
 export class AppGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
+  constructor(private globalService: GlobalsService) {}
+
   @WebSocketServer() wss: Server;
 
   private list: Array<string> = [];

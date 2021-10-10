@@ -37,6 +37,4 @@ export class CreateUserDto {
 
   @IsArray()
   learningLanguages: string[];
-
-  lastConnection: string;
 }

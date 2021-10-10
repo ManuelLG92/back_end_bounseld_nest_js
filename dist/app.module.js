@@ -14,11 +14,13 @@ const app_gateway_module_1 = require("./gateway/app.gateway.module");
 const prisma_module_1 = require("./prisma/prisma/prisma.module");
 const user_module_1 = require("./user/user.module");
 const auth_module_1 = require("./auth/auth.module");
+const globals_module_1 = require("./globals/globals.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     common_1.Module({
         imports: [
+            globals_module_1.GlobalsModule,
             app_gateway_module_1.AppGatewayModule,
             prisma_module_1.PrismaModule,
             user_module_1.UserModule,

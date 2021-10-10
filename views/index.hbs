@@ -70,8 +70,8 @@
   })
 
   socket.on('disconnectedClient', ({user}) => {
-    document.getElementById(user).remove()
     console.log('disconected', user);
+    document.getElementById(user).remove()
   })
 
   socket.on('messageToClient', (msg) => document.getElementById('messages').innerHTML += `<p>${msg}</p>`)

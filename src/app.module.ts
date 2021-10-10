@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-// import { GraphQLModule } from '@nestjs/graphql';
-import { join } from 'path';
 import { AppGatewayModule } from './gateway/app.gateway.module';
 import { PrismaModule } from './prisma/prisma/prisma.module';
 /*import { ClientsModule, Transport } from '@nestjs/microservices';
@@ -10,7 +8,7 @@ import { KafkaModule } from './kafka/kafka.module';
 import { TestKafkaModule } from './test-kafka/test-kafka.module';*/
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
-
+import { GlobalsModule } from './globals/globals.module';
 @Module({
   imports: [
     /*    GraphQLModule.forRoot({
@@ -21,6 +19,7 @@ import { AuthModule } from './auth/auth.module';
       introspection: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),*/
+    GlobalsModule,
     AppGatewayModule,
     PrismaModule,
     // KafkaModule,

@@ -2,14 +2,23 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '../prisma/prisma/prisma.service';
+import { GlobalsService } from '../globals/globals.service';
+
 @Injectable()
 export class UserService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private globalService: GlobalsService,
+  ) {}
 
   async create(createUserRestDto: CreateUserDto) {
+    createUserRestDto.password = await this.globalService.setData(
+      createUserRestDto.password,
+    );
     return await this.prismaService.user.create({
       data: {
         ...createUserRestDto,
+        isGoogleUser: false,
       },
     });
   }
@@ -27,6 +36,11 @@ export class UserService {
   }
 
   async update(id: string, updateUserRestDto: UpdateUserDto) {
+    if (updateUserRestDto.password) {
+      updateUserRestDto.password = await this.globalService.setData(
+        updateUserRestDto.password,
+      );
+    }
     return await this.prismaService.user.update({
       where: {
         id: id,
