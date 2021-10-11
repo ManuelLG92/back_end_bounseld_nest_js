@@ -9,13 +9,13 @@ import {
 import { Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { ChatRoom, SocketConnection } from './interfaces';
-import { GlobalsService } from '../globals/globals.service';
+import { AppGatewayService } from './app.gateway.service';
 
 @WebSocketGateway(3005, { cors: true })
 export class AppGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
-  constructor(private globalService: GlobalsService) {}
+  constructor(private service: AppGatewayService) {}
 
   @WebSocketServer() wss: Server;
 
@@ -32,22 +32,25 @@ export class AppGateway
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async handleConnection(client: Socket, ...args: any[]): Promise<any> {
     const userId = client.handshake.query['userId'] as string;
-    const beforeInsert = this.socketList ?? [];
-    console.log('before', beforeInsert);
-
+    this.wss.emit('newConnection', {
+      user: userId,
+      list: await this.service.getUsersList(),
+    });
+    await this.service.setUserAndSocket(userId, client.id);
+    /*    const beforeInsert = this.socketList ?? [];
     !this.socketList
       ? (this.socketList = [{ id: userId, socket: client.id }])
-      : this.socketList.push({ id: userId, socket: client.id });
-    console.log(this.socketList);
-    console.log('todo handle connection', userId, args);
+      : this.socketList.push({ id: userId, socket: client.id });*/
     this.logger.log(`Client connected ${client.id}`);
-    this.wss.emit('newConnection', { user: userId, list: beforeInsert });
   }
 
   async handleDisconnect(client: Socket): Promise<any> {
-    const userId = this.socketList?.filter((el) => el.socket === client.id);
+    // const userId = this.socketList?.filter((el) => el.socket === client.id);
+    const userId = await this.service.removeUserFromList(client.id);
+    console.log(userId);
     this.wss.emit('disconnectedClient', { user: userId });
-    this.socketList = this.socketList?.filter((el) => el.socket !== client.id);
+    //this.socketList = this.socketList?.filter((el) => el.socket !== client.id);
+    // await this.service.removeUserFromList(client.id);
     this.logger.log(`Client disconnected ${client.id}`);
   }
 
@@ -60,11 +63,14 @@ export class AppGateway
   }
 
   @SubscribeMessage('messageToChat')
-  handleMessageBroadCastToChat(client: Socket, data: string): void {
+  async handleMessageBroadCastToChat(
+    client: Socket,
+    data: string,
+  ): Promise<void> {
     // let from = client.handshake.query['from'] as string;
     // let to = client.handshake.query['to'] as string;
-    const from = getValueFromQuery(client, 'from');
-    const to = getValueFromQuery(client, 'to');
+    const from = await getValueFromQuery(client, 'from');
+    const to = await getValueFromQuery(client, 'to');
     if (from?.length && to?.length) {
       this.wss.to(to).emit('requestToChat', {
         data: `${from} Wanna chat. Do you want accept?`,
@@ -81,7 +87,6 @@ export class AppGateway
   }
 }
 
-function getValueFromQuery(client: Socket, queryName: string) {
-  return (this.socketList[client.handshake.query[queryName] as string] =
-    client.id);
+async function getValueFromQuery(client: Socket, queryName: string) {
+  return (await client.handshake.query[queryName]) as string;
 }

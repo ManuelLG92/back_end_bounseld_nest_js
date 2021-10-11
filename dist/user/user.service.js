@@ -12,13 +12,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma/prisma.service");
+const globals_service_1 = require("../globals/globals.service");
 let UserService = class UserService {
-    constructor(prismaService) {
+    constructor(prismaService, globalService) {
         this.prismaService = prismaService;
+        this.globalService = globalService;
     }
     async create(createUserRestDto) {
+        createUserRestDto.password = await this.globalService.setData(createUserRestDto.password);
         return await this.prismaService.user.create({
-            data: Object.assign({}, createUserRestDto),
+            data: Object.assign(Object.assign({}, createUserRestDto), { isGoogleUser: false }),
         });
     }
     async findAll() {
@@ -32,6 +35,9 @@ let UserService = class UserService {
         });
     }
     async update(id, updateUserRestDto) {
+        if (updateUserRestDto.password) {
+            updateUserRestDto.password = await this.globalService.setData(updateUserRestDto.password);
+        }
         return await this.prismaService.user.update({
             where: {
                 id: id,
@@ -49,7 +55,8 @@ let UserService = class UserService {
 };
 UserService = __decorate([
     common_1.Injectable(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        globals_service_1.GlobalsService])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

@@ -58,19 +58,13 @@
         console.log(typeof currentUser, typeof  el.id)
         users.innerHTML
           += `<li style='cursor: pointer' id=${el.id} onclick='sentChatReq(${el.id})'>User: ${el.id}</li>`
-
       }
-    }
+    })
 
-
-
-          )
-   /* users.innerHTML += `<li style='cursor: pointer' id=${user} onclick='sentChatReq(${user})'>User: ${user}</li>`
-    console.log('connected', user);*/
   })
 
   socket.on('disconnectedClient', ({user}) => {
-    console.log('disconected', user);
+    console.log('disconected', typeof user,user);
     document.getElementById(user).remove()
   })
 

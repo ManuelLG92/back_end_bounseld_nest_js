@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AppGateway } from './app.gateway';
 //import { RedisClient } from '../redis';
-import { AppRedisService } from './app.gateway.service';
+import { AppGatewayService } from './app.gateway.service';
 
 @Module({
   imports: [],
-  providers: [AppGateway, AppRedisService],
+  providers: [AppGateway, AppGatewayService],
 })
 export class AppGatewayModule {}

@@ -9,12 +9,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppGatewayModule = void 0;
 const common_1 = require("@nestjs/common");
 const app_gateway_1 = require("./app.gateway");
+const app_gateway_service_1 = require("./app.gateway.service");
 let AppGatewayModule = class AppGatewayModule {
 };
 AppGatewayModule = __decorate([
     common_1.Module({
         imports: [],
-        providers: [app_gateway_1.AppGateway],
+        providers: [app_gateway_1.AppGateway, app_gateway_service_1.AppGatewayService],
     })
 ], AppGatewayModule);
 exports.AppGatewayModule = AppGatewayModule;
