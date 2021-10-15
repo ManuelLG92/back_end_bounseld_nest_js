@@ -1,9 +1,9 @@
 import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { GlobalsService } from '../globals/globals.service';
+import { AppGatewayService } from './app.gateway.service';
 export declare class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
-    private globalService;
-    constructor(globalService: GlobalsService);
+    private service;
+    constructor(service: AppGatewayService);
     wss: Server;
     private list;
     private socketList;
@@ -13,5 +13,5 @@ export declare class AppGateway implements OnGatewayInit, OnGatewayConnection, O
     handleConnection(client: Socket, ...args: any[]): Promise<any>;
     handleDisconnect(client: Socket): Promise<any>;
     handleMessageBroadCast(client: Socket, data: string): void;
-    handleMessageBroadCastToChat(client: Socket, data: string): void;
+    handleMessageBroadCastToChat(client: Socket, data: string): Promise<void>;
 }

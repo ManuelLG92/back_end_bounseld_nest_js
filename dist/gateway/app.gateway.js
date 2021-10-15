@@ -13,10 +13,10 @@ exports.AppGateway = void 0;
 const websockets_1 = require("@nestjs/websockets");
 const common_1 = require("@nestjs/common");
 const socket_io_1 = require("socket.io");
-const globals_service_1 = require("../globals/globals.service");
+const app_gateway_service_1 = require("./app.gateway.service");
 let AppGateway = class AppGateway {
-    constructor(globalService) {
-        this.globalService = globalService;
+    constructor(service) {
+        this.service = service;
         this.list = [];
         this.logger = new common_1.Logger();
     }
@@ -24,23 +24,18 @@ let AppGateway = class AppGateway {
         this.logger.log('Initialized');
     }
     async handleConnection(client, ...args) {
-        var _a;
         const userId = client.handshake.query['userId'];
-        const beforeInsert = (_a = this.socketList) !== null && _a !== void 0 ? _a : [];
-        console.log('before', beforeInsert);
-        !this.socketList
-            ? (this.socketList = [{ id: userId, socket: client.id }])
-            : this.socketList.push({ id: userId, socket: client.id });
-        console.log(this.socketList);
-        console.log('todo handle connection', userId, args);
+        this.wss.emit('newConnection', {
+            user: userId,
+            list: await this.service.getUsersList(),
+        });
+        await this.service.setUserAndSocket(userId, client.id);
         this.logger.log(`Client connected ${client.id}`);
-        this.wss.emit('newConnection', { user: userId, list: beforeInsert });
     }
     async handleDisconnect(client) {
-        var _a, _b;
-        const userId = (_a = this.socketList) === null || _a === void 0 ? void 0 : _a.filter((el) => el.socket === client.id);
+        const userId = await this.service.removeUserFromList(client.id);
+        console.log(userId);
         this.wss.emit('disconnectedClient', { user: userId });
-        this.socketList = (_b = this.socketList) === null || _b === void 0 ? void 0 : _b.filter((el) => el.socket !== client.id);
         this.logger.log(`Client disconnected ${client.id}`);
     }
     handleMessageBroadCast(client, data) {
@@ -49,9 +44,9 @@ let AppGateway = class AppGateway {
         console.log(this.list);
         this.wss.emit('messageToClient', data);
     }
-    handleMessageBroadCastToChat(client, data) {
-        const from = getValueFromQuery(client, 'from');
-        const to = getValueFromQuery(client, 'to');
+    async handleMessageBroadCastToChat(client, data) {
+        const from = await getValueFromQuery(client, 'from');
+        const to = await getValueFromQuery(client, 'to');
         if ((from === null || from === void 0 ? void 0 : from.length) && (to === null || to === void 0 ? void 0 : to.length)) {
             this.wss.to(to).emit('requestToChat', {
                 data: `${from} Wanna chat. Do you want accept?`,
@@ -73,15 +68,14 @@ __decorate([
     websockets_1.SubscribeMessage('messageToChat'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [socket_io_1.Socket, String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], AppGateway.prototype, "handleMessageBroadCastToChat", null);
 AppGateway = __decorate([
     websockets_1.WebSocketGateway(3005, { cors: true }),
-    __metadata("design:paramtypes", [globals_service_1.GlobalsService])
+    __metadata("design:paramtypes", [app_gateway_service_1.AppGatewayService])
 ], AppGateway);
 exports.AppGateway = AppGateway;
-function getValueFromQuery(client, queryName) {
-    return (this.socketList[client.handshake.query[queryName]] =
-        client.id);
+async function getValueFromQuery(client, queryName) {
+    return (await client.handshake.query[queryName]);
 }
 //# sourceMappingURL=app.gateway.js.map

@@ -67,8 +67,6 @@ export class AppGateway
     client: Socket,
     data: string,
   ): Promise<void> {
-    // let from = client.handshake.query['from'] as string;
-    // let to = client.handshake.query['to'] as string;
     const from = await getValueFromQuery(client, 'from');
     const to = await getValueFromQuery(client, 'to');
     if (from?.length && to?.length) {
