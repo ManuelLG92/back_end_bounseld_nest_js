@@ -18,10 +18,9 @@ let UserService = class UserService {
         this.prismaService = prismaService;
         this.globalService = globalService;
     }
-    async create(createUserRestDto) {
-        createUserRestDto.password = await this.globalService.setData(createUserRestDto.password);
+    async create(createUserRestDto, reqDetails) {
         return await this.prismaService.user.create({
-            data: Object.assign(Object.assign({}, createUserRestDto), { isGoogleUser: false }),
+            data: Object.assign(Object.assign({}, createUserRestDto), { password: await this.globalService.setData(createUserRestDto.password), isGoogleUser: false, ctx: reqDetails }),
         });
     }
     async findAll() {

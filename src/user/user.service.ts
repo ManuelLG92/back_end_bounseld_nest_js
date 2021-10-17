@@ -3,6 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '../prisma/prisma/prisma.service';
 import { GlobalsService } from '../globals/globals.service';
+import { IRequestDetail } from '../decorators';
 
 @Injectable()
 export class UserService {
@@ -11,14 +12,16 @@ export class UserService {
     private globalService: GlobalsService,
   ) {}
 
-  async create(createUserRestDto: CreateUserDto) {
-    createUserRestDto.password = await this.globalService.setData(
+  async create(createUserRestDto: CreateUserDto, reqDetails: IRequestDetail) {
+    /*    createUserRestDto.password = await this.globalService.setData(
       createUserRestDto.password,
-    );
+    );*/
     return await this.prismaService.user.create({
       data: {
         ...createUserRestDto,
+        password: await this.globalService.setData(createUserRestDto.password),
         isGoogleUser: false,
+        ctx: reqDetails,
       },
     });
   }

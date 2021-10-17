@@ -15,11 +15,13 @@ const prisma_module_1 = require("./prisma/prisma/prisma.module");
 const user_module_1 = require("./user/user.module");
 const auth_module_1 = require("./auth/auth.module");
 const globals_module_1 = require("./globals/globals.module");
+const nestjs_pino_1 = require("nestjs-pino");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     common_1.Module({
         imports: [
+            nestjs_pino_1.LoggerModule.forRoot(),
             globals_module_1.GlobalsModule,
             app_gateway_module_1.AppGatewayModule,
             prisma_module_1.PrismaModule,

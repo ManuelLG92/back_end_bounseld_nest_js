@@ -29,6 +29,7 @@ model User {
   friends           String[]
   gender            String?
   reports           Report[]
+  ctx               Json?
 }
 
 model Report {

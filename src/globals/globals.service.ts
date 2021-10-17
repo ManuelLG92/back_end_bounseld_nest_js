@@ -6,7 +6,7 @@ export class GlobalsService {
     return await bcrypt.hash(value, await bcrypt.genSalt());
   }
 
-  async getData(value: string, hash: string) {
+  async compareData(value: string, hash: string) {
     return await bcrypt.compare(value, hash);
   }
 }
