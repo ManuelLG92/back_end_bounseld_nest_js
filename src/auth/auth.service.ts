@@ -16,9 +16,14 @@ export class AuthService {
     };
   }
 
-  async jwtCreateAndRefresh(payload, ctx: IRequestDetail) {
+  async jwtCreateAndRefresh(id, ctx: IRequestDetail) {
     return {
-      access_token: this.jwtService.sign({ payload, ...ctx }),
+      access_token: this.jwtService.sign({ id, ...ctx }),
     };
+  }
+
+  async checkData(req: any, payload: any) {
+    // return req.ip === payload.ip && req.id === payload.id;
+    return req.ip === payload.ip;
   }
 }

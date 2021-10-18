@@ -1,13 +1,13 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  UseGuards,
+  Get,
+  Param,
+  Patch,
+  Post,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -36,13 +36,18 @@ export class UserController {
   async login(@Req() req, @RequestDetails() ctx: IRequestDetail) {
     console.log(`Login: user: ${req.ip} | ctx: ${JSON.stringify(ctx)}`);
     //this.logger.warn(`Login access user ${req.user.username} -- raw ${req.rawHeaders}`);
+    //return await this.authService.jwtCreateAndRefresh(req.user, ctx);
     return await this.authService.jwtCreateAndRefresh(req.user, ctx);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   async getProfile(@Req() req) {
-    return req.user;
+    if (await this.authService.checkData(req, req.user)) {
+      return req.user;
+    }
+    console.log(req.user);
+    return 'mp aith';
   }
 
   @Get()
