@@ -2,7 +2,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '../prisma/prisma/prisma.service';
 import { GlobalsService } from '../globals/globals.service';
-import { IRequestDetail } from '../decorators';
+import { IRequestDetail } from '../util';
 export declare class UserService {
     private prismaService;
     private globalService;
