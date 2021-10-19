@@ -1,19 +1,19 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-
-export type IRequestDetail = {
-  originalUrl?: string;
-  hostname?: string;
-  ip?: string;
-  userAgent?: string;
-  /*  city?: string;
-  region?: string;
-  timezone?: string;
-  countryCode?: string;
-  browser?: string;
-  operatingSystem?: string;
-  'x-transaction-id'?: string;*/
+import { IRequestDetail } from '../util';
+/* export type IRequestDetail = {
+ originalUrl?: string;
+ hostname?: string;
+ ip?: string;
+ userAgent?: string;
+ /*  ?: string;
+ region?: string;
+ timezone?: string;
+ countryCode?: string;
+ browser?: string;
+ operatingSystem?: string;
+ 'x-transaction-id'?: string;
 };
-
+*/
 export const RequestDetails = createParamDecorator(
   (_data: string, context: ExecutionContext): IRequestDetail => {
     return parseRequestDetails(context.switchToHttp().getRequest());

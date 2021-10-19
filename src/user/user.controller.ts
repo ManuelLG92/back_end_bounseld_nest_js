@@ -14,7 +14,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard, LocalAuthGuard } from '../auth/guards';
 import { AuthService } from '../auth/auth.service';
-import { IRequestDetail, RequestDetails } from '../decorators';
+import { RequestDetails } from '../decorators';
+import { IRequestDetail } from '../util';
 
 @Controller('user')
 export class UserController {
