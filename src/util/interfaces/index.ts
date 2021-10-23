@@ -1,2 +1,2 @@
-export * from './IJwt';
+export * from './TJwt';
 export * from './IRequestDetail';

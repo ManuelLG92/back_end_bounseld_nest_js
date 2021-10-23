@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Req,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -35,20 +36,17 @@ export class UserController {
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Req() req, @RequestDetails() ctx: IRequestDetail) {
-    console.log(`Login: user: ${req.ip} | ctx: ${JSON.stringify(ctx)}`);
-    //this.logger.warn(`Login access user ${req.user.username} -- raw ${req.rawHeaders}`);
-    //return await this.authService.jwtCreateAndRefresh(req.user, ctx);
+    console.warn(`Login: user: ${req.ip} | ctx: ${JSON.stringify(ctx)}`);
     return await this.authService.jwtCreateAndRefresh(req.user, ctx);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  async getProfile(@Req() req) {
-    if (await this.authService.checkData(req, req.user)) {
+  async getProfile(@Req() req, @RequestDetails() ctx: IRequestDetail) {
+    if (await this.authService.checkData(req.user, ctx)) {
       return req.user;
     }
-    console.log(req.user);
-    return 'mp aith';
+    throw new UnauthorizedException('Access forbidden');
   }
 
   @Get()

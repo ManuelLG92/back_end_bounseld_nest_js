@@ -1,6 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { IRequestDetail } from '../util';
+import { IRequestDetail, TJwt } from '../util';
+import * as _ from 'lodash';
+
+type jwtDataCheck = {
+  ip?: string;
+  hostname?: string;
+  userAgent?: string;
+};
 
 @Injectable()
 export class AuthService {
@@ -22,8 +29,25 @@ export class AuthService {
     };
   }
 
-  async checkData(req: any, payload: any) {
-    // return req.ip === payload.ip && req.id === payload.id;
-    return req.ip === payload.ip;
+  async checkData(jwt: TJwt, context: IRequestDetail) {
+    return _.isEqual(
+      await this.jwtGetCheckType(jwt),
+      await this.reqGetCheckType(context),
+    );
+  }
+
+  async reqGetCheckType(req: IRequestDetail): Promise<jwtDataCheck> {
+    return {
+      ip: req.ip,
+      hostname: req.hostname,
+      userAgent: req.userAgent,
+    };
+  }
+  async jwtGetCheckType(jwt: TJwt): Promise<jwtDataCheck> {
+    return {
+      ip: jwt.ip,
+      hostname: jwt.hostname,
+      userAgent: jwt.userAgent,
+    };
   }
 }
