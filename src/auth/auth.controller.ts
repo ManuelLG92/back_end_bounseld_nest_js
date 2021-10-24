@@ -1,5 +1,5 @@
 import { Controller, Get, UseGuards, Req } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { AuthService } from './services';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('google')

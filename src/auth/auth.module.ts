@@ -1,5 +1,5 @@
-import { Global, Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { CacheModule, Global, Module } from '@nestjs/common';
+import * as services from './services';
 import { AuthController } from './auth.controller';
 import * as strategies from './strategies';
 import * as guards from './guards';
@@ -12,13 +12,14 @@ import { JwtModule } from '@nestjs/jwt';
       secret: process.env.SIGN,
       signOptions: { expiresIn: '1200s' },
     }),
+    CacheModule.register(),
   ],
   controllers: [AuthController],
   providers: [
-    AuthService,
+    ...Object.values(services),
     ...Object.values(strategies),
     ...Object.values(guards),
   ],
-  exports: [AuthService],
+  exports: [...Object.values(services)],
 })
 export class AuthModule {}

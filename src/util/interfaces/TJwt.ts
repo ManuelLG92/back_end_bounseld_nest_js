@@ -1,5 +1,5 @@
 export type TJwt = {
-  id: string;
+  email: string;
   ip?: string;
   originalUrl?: string;
   hostname?: string;

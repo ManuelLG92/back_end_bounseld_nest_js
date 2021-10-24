@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { IRequestDetail, TJwt } from '../util';
+import { IRequestDetail, TJwt } from '../../util';
 import * as _ from 'lodash';
 
 type jwtDataCheck = {
@@ -23,16 +23,16 @@ export class AuthService {
     };
   }
 
-  async jwtCreateAndRefresh(id, ctx: IRequestDetail) {
+  async jwtCreateAndRefresh(email: string, ctx: IRequestDetail) {
     return {
-      access_token: this.jwtService.sign({ id, ...ctx }),
+      access_token: this.jwtService.sign({ email, ...ctx }),
     };
   }
 
-  async checkData(jwt: TJwt, context: IRequestDetail) {
+  async checkData(jwt: TJwt, ctx: IRequestDetail) {
     return _.isEqual(
       await this.jwtGetCheckType(jwt),
-      await this.reqGetCheckType(context),
+      await this.reqGetCheckType(ctx),
     );
   }
 

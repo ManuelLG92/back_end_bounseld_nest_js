@@ -8,7 +8,6 @@ export const RequestDetails = createParamDecorator(
 );
 
 export const parseRequestDetails = (req: any): IRequestDetail => {
-  // console.log('request decorator', req.ip, req.userIp, req);
   return {
     ip: req.ip,
     originalUrl: req.originalUrl,
