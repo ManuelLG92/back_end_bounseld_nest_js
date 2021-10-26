@@ -7,7 +7,6 @@ import {
   Patch,
   Post,
   Req,
-  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -15,7 +14,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard, LocalAuthGuard } from '../auth/guards';
 import { AuthService } from '../auth/services';
-import { RequestDetails } from '../decorators';
+import { Auth, RequestDetails } from '../decorators';
 import { IRequestDetail } from '../util';
 
 @Controller('user')
@@ -42,10 +41,12 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  async getProfile(@Req() req, @RequestDetails() ctx: IRequestDetail) {
-    if (!(await this.authService.checkData(req.user, ctx))) {
-      throw new UnauthorizedException('Access forbidden');
-    }
+  async getProfile(
+    @Req() req,
+    @Auth() auth,
+    @RequestDetails() ctx: IRequestDetail,
+  ) {
+    // await this.authService.checkData(req.user, ctx);
     return await this.authService.jwtCreateAndRefresh(req.user, ctx);
   }
 

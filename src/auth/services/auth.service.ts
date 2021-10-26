@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { IRequestDetail, TJwt } from '../../util';
 import * as _ from 'lodash';
@@ -30,10 +30,13 @@ export class AuthService {
   }
 
   async checkData(jwt: TJwt, ctx: IRequestDetail) {
-    return _.isEqual(
+    const check = _.isEqual(
       await this.jwtGetCheckType(jwt),
       await this.reqGetCheckType(ctx),
     );
+    if (!check) {
+      throw new UnauthorizedException('Access forbidden');
+    }
   }
 
   async reqGetCheckType(req: IRequestDetail): Promise<jwtDataCheck> {
