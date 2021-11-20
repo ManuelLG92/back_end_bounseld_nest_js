@@ -1,6 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { IRequestDetail, TJwt } from '../../util';
+import { PrismaService } from '../../prisma/prisma/prisma.service';
+import { GlobalsService } from '../../globals/globals.service';
 import * as _ from 'lodash';
 
 type jwtDataCheck = {
@@ -11,7 +13,11 @@ type jwtDataCheck = {
 
 @Injectable()
 export class AuthService {
-  constructor(private jwtService: JwtService) {}
+  constructor(
+    private jwtService: JwtService,
+    private prismaService: PrismaService,
+    private globalsService: GlobalsService,
+  ) {}
   googleLogin(req) {
     if (!req.user) {
       return 'No user from google';
@@ -52,5 +58,15 @@ export class AuthService {
       hostname: jwt.hostname,
       userAgent: jwt.userAgent,
     };
+  }
+
+  async validateLogin(passwordPlain: string, passwordHashed: string) {
+    return await this.globalsService.compareData(passwordPlain, passwordHashed);
+  }
+
+  async findUser(email: string) {
+    return await this.prismaService.user.findFirst({
+      where: { email },
+    });
   }
 }

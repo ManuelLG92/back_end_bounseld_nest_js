@@ -1,12 +1,12 @@
 import {
-  IsArray,
+  //IsArray,
   IsEmail,
-  IsNumber,
-  IsOptional,
+  //IsNumber,
+  //IsOptional,
   IsString,
   Length,
-  MaxLength,
-  MinLength,
+  //MaxLength,
+  //MinLength,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -18,9 +18,9 @@ export class CreateUserDto {
   @Length(2, 100)
   surname: string;
 
-  @IsNumber()
+  /*  @IsNumber()
   @Length(2, 3)
-  age: number;
+  age: number; */
 
   @IsEmail()
   email: string;
@@ -29,7 +29,7 @@ export class CreateUserDto {
   @Length(8, 32)
   password: string;
 
-  @IsOptional()
+  /*@IsOptional()
   @IsString()
   @MaxLength(255)
   description?: string;
@@ -45,5 +45,5 @@ export class CreateUserDto {
   nativeLanguages: string[];
 
   @IsArray()
-  learningLanguages: string[];
+  learningLanguages: string[];*/
 }

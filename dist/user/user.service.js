@@ -29,7 +29,7 @@ let UserService = class UserService {
     async findOne(id) {
         return await this.prismaService.user.findUnique({
             where: {
-                id: id,
+                id
             },
         });
     }
@@ -39,7 +39,7 @@ let UserService = class UserService {
         }
         return await this.prismaService.user.update({
             where: {
-                id: id,
+                id
             },
             data: Object.assign({}, updateUserRestDto),
         });
@@ -47,7 +47,7 @@ let UserService = class UserService {
     async remove(id) {
         return await this.prismaService.user.delete({
             where: {
-                id: id,
+                id
             },
         });
     }

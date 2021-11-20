@@ -33,7 +33,7 @@ export class UserService {
   async findOne(id: string) {
     return await this.prismaService.user.findUnique({
       where: {
-        id: id,
+        id,
       },
     });
   }
@@ -46,7 +46,7 @@ export class UserService {
     }
     return await this.prismaService.user.update({
       where: {
-        id: id,
+        id,
       },
       data: {
         ...updateUserRestDto,
@@ -57,7 +57,7 @@ export class UserService {
   async remove(id: string) {
     return await this.prismaService.user.delete({
       where: {
-        id: id,
+        id,
       },
     });
   }

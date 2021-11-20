@@ -9,11 +9,11 @@ import { TestKafkaModule } from './test-kafka/test-kafka.module';*/
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { GlobalsModule } from './globals/globals.module';
-import { LoggerModule } from 'nestjs-pino';
+//import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
-    LoggerModule.forRoot(),
+    //LoggerModule.forRoot(),
     /*    GraphQLModule.forRoot({
       cors: {
         origin: 'http://localhost:8080',
