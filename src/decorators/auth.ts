@@ -12,7 +12,8 @@ export const Auth = createParamDecorator(
 );
 
 export const checkData = (req: any): void => {
-  console.log(req.headers['x-api-key'], 'apikey');
+  // console.log(req.headers['x-api-key'], 'apikey');
+  // console.log(req.user, 'user');
   const check = _.isEqual(
     {
       ip: req.user?.ip,

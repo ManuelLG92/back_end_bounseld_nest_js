@@ -13,13 +13,12 @@ export class UserService {
   ) {}
 
   async create(createUserRestDto: CreateUserDto, reqDetails: IRequestDetail) {
-    /*    createUserRestDto.password = await this.globalService.setData(
-      createUserRestDto.password,
-    );*/
     return await this.prismaService.user.create({
       data: {
         ...createUserRestDto,
-        password: await this.globalService.setData(createUserRestDto.password),
+        password: await this.globalService.encryptData(
+          createUserRestDto.password,
+        ),
         isGoogleUser: false,
         ctx: reqDetails,
       },
@@ -40,7 +39,7 @@ export class UserService {
 
   async update(id: string, updateUserRestDto: UpdateUserDto) {
     if (updateUserRestDto.password) {
-      updateUserRestDto.password = await this.globalService.setData(
+      updateUserRestDto.password = await this.globalService.encryptData(
         updateUserRestDto.password,
       );
     }

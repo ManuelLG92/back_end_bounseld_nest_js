@@ -31,25 +31,17 @@ export class KafkaController implements OnModuleInit {
     });
     console.log(result);
   }
-  
+
   @MessagePattern('send_email')
   sendEmail(@Payload() message) {
     console.log('Se recibe en kafka.controller send_email');
     message = message.value;
     console.log(message);
     this.clientKafka
-      .send('send_email_smtp', JSON.stringify({ key: `${message.email} processing` }))
+      .send(
+        'send_email_smtp',
+        JSON.stringify({ key: `${message.email} processing` }),
+      )
       .subscribe((reply) => console.log(reply));
   }
-
-/*   @MessagePattern('testing')
-  testingKafkareceiver(@Payload() message) {
-    console.log('Se recibe en testimg user.resolver kafka controller');
-    message = message.value;
-    console.log(message);
-    return {
-      received: "testing controll kafka " + message.key,
-    }
-
-  } */
 }

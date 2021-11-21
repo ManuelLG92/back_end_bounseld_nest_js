@@ -16,6 +16,7 @@ import { JwtAuthGuard, LocalAuthGuard } from '../auth/guards';
 import { AuthService } from '../auth/services';
 import { Auth, RequestDetails } from '../decorators';
 import { IRequestDetail } from '../util';
+import { UserDto } from './dto/userDto';
 
 @Controller('user')
 export class UserController {
@@ -35,8 +36,13 @@ export class UserController {
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Req() req, @RequestDetails() ctx: IRequestDetail) {
-    console.warn(`Login: user: ${req.user} | ctx: ${JSON.stringify(ctx)}`);
-    return await this.authService.jwtCreateAndRefresh(req.user, ctx);
+    console.warn(
+      `Login: user: ${JSON.stringify(req.user)} | ctx: ${JSON.stringify(ctx)}`,
+    );
+    return {
+      ...(await this.authService.jwtCreateAndRefresh(req.user, ctx)),
+      ...new UserDto(req.user),
+    };
   }
 
   @UseGuards(JwtAuthGuard)
@@ -46,7 +52,7 @@ export class UserController {
     @Auth() auth,
     @RequestDetails() ctx: IRequestDetail,
   ) {
-    // await this.authService.checkData(req.user, ctx);
+    // console.log('req user', req.user);
     return await this.authService.jwtCreateAndRefresh(req.user, ctx);
   }
 

@@ -20,7 +20,7 @@ let UserService = class UserService {
     }
     async create(createUserRestDto, reqDetails) {
         return await this.prismaService.user.create({
-            data: Object.assign(Object.assign({}, createUserRestDto), { password: await this.globalService.setData(createUserRestDto.password), isGoogleUser: false, ctx: reqDetails }),
+            data: Object.assign(Object.assign({}, createUserRestDto), { password: await this.globalService.encryptData(createUserRestDto.password), isGoogleUser: false, ctx: reqDetails }),
         });
     }
     async findAll() {
@@ -29,17 +29,17 @@ let UserService = class UserService {
     async findOne(id) {
         return await this.prismaService.user.findUnique({
             where: {
-                id
+                id,
             },
         });
     }
     async update(id, updateUserRestDto) {
         if (updateUserRestDto.password) {
-            updateUserRestDto.password = await this.globalService.setData(updateUserRestDto.password);
+            updateUserRestDto.password = await this.globalService.encryptData(updateUserRestDto.password);
         }
         return await this.prismaService.user.update({
             where: {
-                id
+                id,
             },
             data: Object.assign({}, updateUserRestDto),
         });
@@ -47,7 +47,7 @@ let UserService = class UserService {
     async remove(id) {
         return await this.prismaService.user.delete({
             where: {
-                id
+                id,
             },
         });
     }

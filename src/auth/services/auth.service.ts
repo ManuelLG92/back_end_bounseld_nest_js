@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { IRequestDetail, TJwt } from '../../util';
 import { PrismaService } from '../../prisma/prisma/prisma.service';
@@ -29,9 +33,14 @@ export class AuthService {
     };
   }
 
-  async jwtCreateAndRefresh(email: string, ctx: IRequestDetail) {
+  async jwtCreateAndRefresh(user: any, ctx: IRequestDetail) {
     return {
-      access_token: this.jwtService.sign({ email, ...ctx }),
+      accessToken: this.jwtService.sign({
+        id: user.id,
+        email: user.email,
+        password: user.password,
+        ...ctx,
+      }),
     };
   }
 
@@ -61,12 +70,28 @@ export class AuthService {
   }
 
   async validateLogin(passwordPlain: string, passwordHashed: string) {
-    return await this.globalsService.compareData(passwordPlain, passwordHashed);
+    return await this.globalsService.compareEncryptedData(
+      passwordPlain,
+      passwordHashed,
+    );
   }
 
-  async findUser(email: string) {
+  async authFindUserByEmail(email: string) {
     return await this.prismaService.user.findFirst({
       where: { email },
     });
+  }
+
+  async authCheckSameUser(req: any, requestId: string) {
+    const dbUser = await this.prismaService.user.findFirst({
+      where: {
+        id: req.user.id,
+        email: req.user.email,
+      },
+    });
+    if (dbUser?.id !== requestId) {
+      throw new BadRequestException('Bad Request');
+    }
+    return dbUser;
   }
 }
