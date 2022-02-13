@@ -5,6 +5,7 @@ import { SocketConnection } from './interfaces';
 export class AppGatewayService {
   private socketList: Array<SocketConnection>;
 
+  
   async setUserAndSocket(
     user: string,
     socket: string,

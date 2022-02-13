@@ -10,7 +10,9 @@ async function bootstrap() {
     app.setBaseViewsDir(path_1.join(__dirname, '..', 'views'));
     app.setViewEngine('hbs');
     app.enableCors();
-    app.useGlobalPipes(new common_1.ValidationPipe());
+    app.useGlobalPipes(new common_1.ValidationPipe({
+        whitelist: true,
+    }));
     app.enableCors();
     await app.startAllMicroservices();
     await app.listen(3500);

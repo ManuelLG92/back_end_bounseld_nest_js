@@ -36,6 +36,13 @@ export class UserService {
       },
     });
   }
+  async findOneByEmail(email: string) {
+    return await this.prismaService.user.findFirst({
+      where: {
+        email,
+      },
+    });
+  }
 
   async update(id: string, updateUserRestDto: UpdateUserDto) {
     if (updateUserRestDto.password) {

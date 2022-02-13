@@ -33,6 +33,13 @@ let UserService = class UserService {
             },
         });
     }
+    async findOneByEmail(email) {
+        return await this.prismaService.user.findFirst({
+            where: {
+                email,
+            },
+        });
+    }
     async update(id, updateUserRestDto) {
         if (updateUserRestDto.password) {
             updateUserRestDto.password = await this.globalService.encryptData(updateUserRestDto.password);

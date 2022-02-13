@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -30,6 +31,9 @@ export class UserController {
     @Body() createUserRestDto: CreateUserDto,
     @RequestDetails() ctx?: IRequestDetail,
   ) {
+    if (this.userRestService.findOneByEmail(createUserRestDto.email)) {
+      throw new BadRequestException(`User ${createUserRestDto.email} already registered.`);
+    }
     return this.userRestService.create(createUserRestDto, ctx);
   }
 

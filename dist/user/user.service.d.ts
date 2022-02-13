@@ -10,6 +10,7 @@ export declare class UserService {
     create(createUserRestDto: CreateUserDto, reqDetails: IRequestDetail): Promise<import(".prisma/client").User>;
     findAll(): Promise<import(".prisma/client").User[]>;
     findOne(id: string): Promise<import(".prisma/client").User>;
+    findOneByEmail(email: string): Promise<import(".prisma/client").User>;
     update(id: string, updateUserRestDto: UpdateUserDto): Promise<import(".prisma/client").User>;
     remove(id: string): Promise<import(".prisma/client").User>;
 }
