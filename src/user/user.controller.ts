@@ -27,14 +27,17 @@ export class UserController {
   ) {}
 
   @Post()
-  create(
+  async create(
     @Body() createUserRestDto: CreateUserDto,
     @RequestDetails() ctx?: IRequestDetail,
   ) {
-    if (this.userRestService.findOneByEmail(createUserRestDto.email)) {
-      throw new BadRequestException(`User ${createUserRestDto.email} already registered.`);
+    if (await this.userRestService.findOneByEmail(createUserRestDto.email)) {
+      throw new BadRequestException(
+        `User ${createUserRestDto.email} already registered.`,
+      );
     }
-    return this.userRestService.create(createUserRestDto, ctx);
+    const user = await this.userRestService.create(createUserRestDto, ctx);
+    return JSON.stringify({ id: user.id });
   }
 
   @UseGuards(LocalAuthGuard)
