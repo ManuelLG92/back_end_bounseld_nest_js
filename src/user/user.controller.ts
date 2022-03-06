@@ -36,7 +36,8 @@ export class UserController {
         `User ${createUserRestDto.email} already registered.`,
       );
     }
-    return this.userRestService.create(createUserRestDto, ctx);
+    const user = await this.userRestService.create(createUserRestDto, ctx);
+    return JSON.stringify({ id: user.id });
   }
 
   @UseGuards(LocalAuthGuard)
