@@ -24,13 +24,28 @@ model User {
   isBanish          Boolean?  @default(false)
   country           String?
   lastConnection    DateTime?
-  learningLanguages String[]
-  nativeLanguages   String[]
+  learningLanguages LearningLanguages[]
+  nativeLanguages   NativeLanguages[]
   blackList         String[]
   friends           String[]
   gender            String?
   reports           Report[]
   ctx               Json?
+}
+
+model NativeLanguages {
+  id       String @id @default(uuid())
+  code   String?
+  name   String?
+  user  User[]
+}
+
+model LearningLanguages {
+  id       String @id @default(uuid())
+  code   String?
+  name   String?
+  level   String?
+  user  User[]
 }
 
 model Report {

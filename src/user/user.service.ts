@@ -50,12 +50,24 @@ export class UserService {
         updateUserRestDto.password,
       );
     }
+
+    console.log(updateUserRestDto);
     return await this.prismaService.user.update({
       where: {
         id,
       },
       data: {
         ...updateUserRestDto,
+        nativeLanguages: {
+          create: {
+            ...updateUserRestDto.nativeLanguages
+          }
+        },
+        learningLanguages: {
+          create: {
+            ...updateUserRestDto.learningLanguages
+          }
+        }
       },
     });
   }

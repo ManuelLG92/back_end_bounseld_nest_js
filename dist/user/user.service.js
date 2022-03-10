@@ -44,11 +44,16 @@ let UserService = class UserService {
         if (updateUserRestDto.password) {
             updateUserRestDto.password = await this.globalService.encryptData(updateUserRestDto.password);
         }
+        console.log(updateUserRestDto);
         return await this.prismaService.user.update({
             where: {
                 id,
             },
-            data: Object.assign({}, updateUserRestDto),
+            data: Object.assign(Object.assign({}, updateUserRestDto), { nativeLanguages: {
+                    create: Object.assign({}, updateUserRestDto.nativeLanguages)
+                }, learningLanguages: {
+                    create: Object.assign({}, updateUserRestDto.learningLanguages)
+                } }),
         });
     }
     async remove(id) {

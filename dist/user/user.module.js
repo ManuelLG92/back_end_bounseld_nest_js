@@ -9,13 +9,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserModule = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
-const user_controller_1 = require("./user.controller");
+const Controllers = require("./controller/");
 const VO = require("./VO");
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
     common_1.Module({
-        controllers: [user_controller_1.UserController],
+        controllers: [...Object.values(Controllers)],
         providers: [user_service_1.UserService, ...Object.values(VO)],
     })
 ], UserModule);

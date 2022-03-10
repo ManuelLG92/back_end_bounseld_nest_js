@@ -36,6 +36,7 @@ export class UserController {
         `User ${createUserRestDto.email} already registered.`,
       );
     }
+    console.log('enter');
     const user = await this.userRestService.create(createUserRestDto, ctx);
     return JSON.stringify({ id: user.id });
   }
@@ -65,6 +66,7 @@ export class UserController {
 
   @Get()
   findAll() {
+    console.log('enter');
     return this.userRestService.findAll();
   }
 
