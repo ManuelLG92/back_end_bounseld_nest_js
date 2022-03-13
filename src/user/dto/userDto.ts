@@ -1,3 +1,5 @@
+import { LearningLanguages, NativeLanguages } from './create-user.dto';
+
 export interface IUserInterface {
   id: string;
   name: string;
@@ -7,8 +9,8 @@ export interface IUserInterface {
   gender?: string;
   age?: number;
   country?: string;
-  nativeLanguages: string[];
-  learningLanguages: string[];
+  nativeLanguages: NativeLanguages[];
+  learningLanguages: LearningLanguages[];
 }
 export class UserDto implements IUserInterface {
   id: string;
@@ -19,8 +21,8 @@ export class UserDto implements IUserInterface {
   description?: string;
   gender?: string;
   country?: string;
-  nativeLanguages: string[];
-  learningLanguages: string[];
+  nativeLanguages: NativeLanguages[];
+  learningLanguages: LearningLanguages[];
 
   constructor(props: any) {
     this.id = props.id;

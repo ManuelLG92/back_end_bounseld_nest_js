@@ -1,53 +1,15 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import {
-  CreateUserDto,
-  LearningLanguages,
-  NativeLanguages,
-} from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { PrismaService } from '../prisma/prisma/prisma.service';
-import { GlobalsService } from '../globals/globals.service';
-import { IRequestDetail } from '../util';
+import { PrismaService } from '../../prisma/prisma/prisma.service';
+import { UpdateUserDto } from '../dto/update-user.dto';
+import { LearningLanguages, NativeLanguages } from '../dto/create-user.dto';
+import { GlobalsService } from '../../globals/globals.service';
 
 @Injectable()
-export class UserService {
+export class UpdateService {
   constructor(
     private prismaService: PrismaService,
     private globalService: GlobalsService,
   ) {}
-
-  async create(createUserRestDto: CreateUserDto, reqDetails: IRequestDetail) {
-    return await this.prismaService.user.create({
-      data: {
-        ...createUserRestDto,
-        password: await this.globalService.encryptData(
-          createUserRestDto.password,
-        ),
-        isGoogleUser: false,
-        ctx: reqDetails,
-      },
-    });
-  }
-
-  async findAll() {
-    return await this.prismaService.user.findMany();
-  }
-
-  async findOne(id: string) {
-    return await this.prismaService.user.findUnique({
-      where: {
-        id,
-      },
-    });
-  }
-
-  async findOneByEmail(email: string) {
-    return await this.prismaService.user.findFirst({
-      where: {
-        email,
-      },
-    });
-  }
 
   async update(id: string, updateUserRestDto: UpdateUserDto) {
     if (updateUserRestDto.password) {
@@ -75,7 +37,7 @@ export class UserService {
       data: {
         ...updateUserRestDto,
         nativeLanguages: {
-          upsert: UserService.getItemsWithoutEmptyCodes(
+          upsert: UpdateService.getItemsWithoutEmptyCodes(
             updateUserRestDto.nativeLanguages,
           ).map((data) => ({
             create: data,
@@ -85,7 +47,7 @@ export class UserService {
         },
 
         learningLanguages: {
-          upsert: UserService.getItemsWithoutEmptyCodes(
+          upsert: UpdateService.getItemsWithoutEmptyCodes(
             updateUserRestDto.learningLanguages,
           ).map((data) => ({
             create: data,
@@ -117,14 +79,6 @@ export class UserService {
       if (item.code.length === 2) {
         return item;
       }
-    });
-  }
-
-  async remove(id: string) {
-    return await this.prismaService.user.delete({
-      where: {
-        id,
-      },
     });
   }
 }

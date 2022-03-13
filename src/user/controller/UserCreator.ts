@@ -1,27 +1,26 @@
-import { BadRequestException, Body, Controller, Get, Param, Post } from "@nestjs/common";
-import { RequestDetails } from "src/decorators";
-import { IRequestDetail } from "src/util";
-import { CreateUserDto } from "../dto/create-user.dto";
-import { UserService } from "../user.service";
+import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
+import { RequestDetails } from 'src/decorators';
+import { IRequestDetail } from 'src/util';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { CreateService, FindService } from '../services';
 
 @Controller('user')
 export class UserCreator {
   constructor(
-    private readonly userRestService: UserService,
-  ) { }
+    private readonly saver: CreateService,
+    private readonly finder: FindService,
+  ) {}
   @Post()
   async create(
     @Body() createUserRestDto: CreateUserDto,
     @RequestDetails() ctx?: IRequestDetail,
   ) {
-    if (await this.userRestService.findOneByEmail(createUserRestDto.email)) {
+    if (await this.finder.findOneByEmail(createUserRestDto.email)) {
       throw new BadRequestException(
         `User ${createUserRestDto.email} already registered.`,
       );
     }
-    console.log('enter');
-    const user = await this.userRestService.create(createUserRestDto, ctx);
+    const user = await this.saver.create(createUserRestDto, ctx);
     return JSON.stringify({ id: user.id });
   }
-
 }

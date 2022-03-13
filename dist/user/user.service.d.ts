@@ -12,5 +12,7 @@ export declare class UserService {
     findOne(id: string): Promise<import(".prisma/client").User>;
     findOneByEmail(email: string): Promise<import(".prisma/client").User>;
     update(id: string, updateUserRestDto: UpdateUserDto): Promise<import(".prisma/client").User>;
+    private cleanUpUserLanguages;
+    private static getItemsWithoutEmptyCodes;
     remove(id: string): Promise<import(".prisma/client").User>;
 }

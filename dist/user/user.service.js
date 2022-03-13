@@ -8,12 +8,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var UserService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma/prisma.service");
 const globals_service_1 = require("../globals/globals.service");
-let UserService = class UserService {
+let UserService = UserService_1 = class UserService {
     constructor(prismaService, globalService) {
         this.prismaService = prismaService;
         this.globalService = globalService;
@@ -44,16 +45,51 @@ let UserService = class UserService {
         if (updateUserRestDto.password) {
             updateUserRestDto.password = await this.globalService.encryptData(updateUserRestDto.password);
         }
-        console.log(updateUserRestDto);
+        const user = await this.prismaService.user.findFirst({
+            where: {
+                id,
+            },
+        });
+        if (!user) {
+            throw new common_1.UnauthorizedException('not found user');
+        }
+        await this.cleanUpUserLanguages(id);
         return await this.prismaService.user.update({
             where: {
                 id,
             },
             data: Object.assign(Object.assign({}, updateUserRestDto), { nativeLanguages: {
-                    create: Object.assign({}, updateUserRestDto.nativeLanguages)
+                    upsert: UserService_1.getItemsWithoutEmptyCodes(updateUserRestDto.nativeLanguages).map((data) => ({
+                        create: data,
+                        update: data,
+                        where: { id },
+                    })),
                 }, learningLanguages: {
-                    create: Object.assign({}, updateUserRestDto.learningLanguages)
+                    upsert: UserService_1.getItemsWithoutEmptyCodes(updateUserRestDto.learningLanguages).map((data) => ({
+                        create: data,
+                        update: data,
+                        where: { id },
+                    })),
                 } }),
+        });
+    }
+    async cleanUpUserLanguages(id) {
+        await this.prismaService.nativeLanguages.deleteMany({
+            where: {
+                user: { some: { id } },
+            },
+        });
+        await this.prismaService.learningLanguages.deleteMany({
+            where: {
+                user: { some: { id } },
+            },
+        });
+    }
+    static getItemsWithoutEmptyCodes(collection) {
+        return collection.filter((item) => {
+            if (item.code.length === 2) {
+                return item;
+            }
         });
     }
     async remove(id) {
@@ -64,7 +100,7 @@ let UserService = class UserService {
         });
     }
 };
-UserService = __decorate([
+UserService = UserService_1 = __decorate([
     common_1.Injectable(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
         globals_service_1.GlobalsService])
