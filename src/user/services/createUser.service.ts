@@ -5,7 +5,7 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { IRequestDetail } from '../../util';
 
 @Injectable()
-export class CreateService {
+export class CreateUserService {
   constructor(
     private prismaService: PrismaService,
     private globalService: GlobalsService,

@@ -5,7 +5,7 @@ import { LearningLanguages, NativeLanguages } from '../dto/create-user.dto';
 import { GlobalsService } from '../../globals/globals.service';
 
 @Injectable()
-export class UpdateService {
+export class UpdateUserService {
   constructor(
     private prismaService: PrismaService,
     private globalService: GlobalsService,
@@ -37,7 +37,7 @@ export class UpdateService {
       data: {
         ...updateUserRestDto,
         nativeLanguages: {
-          upsert: UpdateService.getItemsWithoutEmptyCodes(
+          upsert: UpdateUserService.getItemsWithoutEmptyCodes(
             updateUserRestDto.nativeLanguages,
           ).map((data) => ({
             create: data,
@@ -47,7 +47,7 @@ export class UpdateService {
         },
 
         learningLanguages: {
-          upsert: UpdateService.getItemsWithoutEmptyCodes(
+          upsert: UpdateUserService.getItemsWithoutEmptyCodes(
             updateUserRestDto.learningLanguages,
           ).map((data) => ({
             create: data,
