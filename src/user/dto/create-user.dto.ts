@@ -22,6 +22,11 @@ export interface LearningLanguages {
   level: string;
 }
 export class CreateUserDto {
+  @IsOptional()
+  @IsString()
+  @Length(2, 40)
+  id: string;
+
   @IsString()
   @Length(2, 100)
   name: string;
