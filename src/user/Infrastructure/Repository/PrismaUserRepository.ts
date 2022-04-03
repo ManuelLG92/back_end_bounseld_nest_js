@@ -1,17 +1,21 @@
 import { AppRepositoryService } from '../../../shared/Infrastructure/Repository/AppRepositoryService';
-import { CreateUserDto } from '../../dto/create-user.dto';
-import { IRequestDetail } from '../../../util';
-import { UserRepositoryPort } from '../../Application/UserRepositoryPort';
+import { UserRepositoryPort } from '../../Domain/UserRepositoryPort';
 import { IUser, User } from '../../Domain/User';
+import { PrismaService } from '../../../prisma/prisma/prisma.service';
 
-abstract class PrismaUserRepository implements UserRepositoryPort {
-  protected constructor(private appRepositoryService: AppRepositoryService) {}
+export class PrismaUserRepository
+  extends AppRepositoryService
+  implements UserRepositoryPort
+{
+  public constructor(private appRepositoryService: PrismaService) {
+    super();
+  }
 
-  async save(createUserRestDto: CreateUserDto, reqDetails: IRequestDetail) {
+  async save(user: IUser) {
     await this.appRepositoryService.user.upsert({
-      create: { ...createUserRestDto, ...reqDetails },
-      update: { ...createUserRestDto, ...reqDetails },
-      where: { id: createUserRestDto.id },
+      create: { ...user },
+      update: { ...user },
+      where: { id: user.id },
       // data: { ...createUserRestDto, ...reqDetails },
     });
   }
