@@ -2,13 +2,13 @@ import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { RequestDetails } from 'src/decorators';
 import { IRequestDetail } from 'src/util';
 import { CreateUserDto } from '../dto/create-user.dto';
-import { CreateUserService, FindUserService } from '../services';
+import { UserFinder, UserSaver } from '../Domain/Services/Persistence';
 
 @Controller('user')
 export class UserCreator {
   constructor(
-    private readonly saver: CreateUserService,
-    private readonly finder: FindUserService,
+    private readonly saver: UserSaver,
+    private readonly finder: UserFinder,
   ) {}
   @Post()
   async create(
@@ -20,7 +20,6 @@ export class UserCreator {
         `User ${createUserRestDto.email} already registered.`,
       );
     }
-    const user = await this.saver.create(createUserRestDto, ctx);
-    return JSON.stringify({ id: user.id });
+    return await this.saver.save({ ...createUserRestDto, ctx: ctx });
   }
 }

@@ -11,13 +11,14 @@ export class PrismaUserRepository
     super();
   }
 
-  async save(user: IUser) {
-    await this.appRepositoryService.user.upsert({
+  async save(user: IUser): Promise<string> {
+    const userObject = this.appRepositoryService.user.upsert({
       create: { ...user },
       update: { ...user },
       where: { id: user.id },
-      // data: { ...createUserRestDto, ...reqDetails },
     });
+
+    return User.fromObject(userObject)?.id;
   }
 
   async findAll(): Promise<IUser[]> {

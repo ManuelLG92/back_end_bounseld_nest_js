@@ -7,11 +7,18 @@ export interface IUser {
   surname: string;
   email: string;
   password: string;
-  age?: number;
   avatar: string;
+  age?: number;
+  isGoogleUser?: boolean;
   description?: string;
-  gender?: string;
+  isAdmin?: boolean;
+  isActive?: boolean;
+  isBanish?: boolean;
   country?: string;
+  blackList?: [];
+  friends?: [];
+  reports?: [];
+  gender?: string;
   nativeLanguages: NativeLanguages[];
   learningLanguages: LearningLanguages[];
   ctx: IRequestDetail;
@@ -23,11 +30,18 @@ export class User {
   surname: string;
   email: string;
   password: string;
-  age?: number;
   avatar: string;
+  age?: number;
+  isGoogleUser?: boolean;
   description?: string;
-  gender?: string;
+  isAdmin?: boolean;
+  isActive?: boolean;
+  isBanish?: boolean;
   country?: string;
+  blackList?: [];
+  friends?: [];
+  reports?: [];
+  gender?: string;
   nativeLanguages: NativeLanguages[];
   learningLanguages: LearningLanguages[];
   ctx: IRequestDetail;
@@ -38,28 +52,38 @@ export class User {
     surname: string,
     email: string,
     password: string,
-    age: number,
     avatar: string,
-    description: string,
-    gender: string,
-    country: string,
-    nativeLanguages: NativeLanguages[],
-    learningLanguages: LearningLanguages[],
-    ctx: IRequestDetail,
+    age?: number,
+    isGoogleUser?: boolean,
+    description?: string,
+    isAdmin?: boolean,
+    isActive?: boolean,
+    country?: string,
+    gender?: string,
+    nativeLanguages?: NativeLanguages[],
+    learningLanguages?: LearningLanguages[],
+    ctx?: IRequestDetail,
   ) {
-    this.id = id;
+    this.id = `id-${Math.random().toString()}`;
     this.name = name;
     this.surname = surname;
     this.email = email;
     this.password = password;
-    this.age = age;
     this.avatar = avatar;
+    this.age = age;
+    this.isGoogleUser = isGoogleUser ?? false;
     this.description = description;
+    this.isAdmin = isAdmin ?? false;
+    this.isActive = isActive ?? false;
     this.gender = gender;
     this.country = country;
     this.nativeLanguages = nativeLanguages;
     this.learningLanguages = learningLanguages;
     this.ctx = ctx;
+    this.isBanish = false;
+    this.blackList = [];
+    this.friends = [];
+    this.reports = [];
   }
 
   static async create(props: IUser) {
@@ -69,11 +93,14 @@ export class User {
       props.surname,
       props.email,
       props.password,
-      props.age,
       props.avatar,
+      props.age,
+      props.isGoogleUser,
       props.description,
-      props.gender,
+      props.isAdmin,
+      props.isActive,
       props.country,
+      props.gender,
       props.nativeLanguages,
       props.learningLanguages,
       props.ctx,

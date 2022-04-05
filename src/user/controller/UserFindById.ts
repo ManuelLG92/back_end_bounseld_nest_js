@@ -1,9 +1,9 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { FindUserService } from '../services';
+import { UserFinder } from '../Domain/Services/Persistence';
 
 @Controller('user')
 export class UserFindById {
-  constructor(private readonly findService: FindUserService) {}
+  constructor(private readonly findService: UserFinder) {}
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.findService.findOne(id);

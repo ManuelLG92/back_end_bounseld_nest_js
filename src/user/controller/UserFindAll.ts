@@ -1,12 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
-import { FindUserService } from '../services';
+import { UserFinder } from '../Domain/Services/Persistence';
 
 @Controller('user')
 export class UserFindAll {
-  constructor(private readonly findService: FindUserService) {}
+  constructor(private readonly findService: UserFinder) {}
   @Get()
   findAll() {
-    console.log('enter');
     return this.findService.findAll();
   }
 }

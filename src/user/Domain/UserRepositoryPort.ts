@@ -3,7 +3,7 @@ import { IUser } from './User';
 
 @Injectable()
 export abstract class UserRepositoryPort {
-  abstract save(user: IUser): Promise<void>;
+  abstract save(user: IUser): Promise<string>;
   abstract findAll(): Promise<IUser[]>;
   abstract findOne(id: string): Promise<IUser>;
   abstract findOneByEmail(email: string): Promise<IUser>;
