@@ -1,4 +1,5 @@
 export class StringVO {
+  
   protected value: string;
 
   protected constructor(value: string) {
@@ -9,7 +10,7 @@ export class StringVO {
     return new this(value);
   }
 
-  protected getValue(): string {
+  protected get(): string {
     return this.value;
   }
 }

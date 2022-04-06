@@ -1,5 +1,6 @@
 import { LearningLanguages, NativeLanguages } from '../dto/create-user.dto';
 import { IRequestDetail } from '../../util';
+import { ID } from 'src/shared/ValueObjects/id.valueObject';
 
 export interface IUser {
   id: string;
@@ -11,7 +12,7 @@ export interface IUser {
   age?: number;
   isGoogleUser?: boolean;
   description?: string;
-  isAdmin?: boolean;
+  roles?: [];
   isActive?: boolean;
   isBanish?: boolean;
   country?: string;
@@ -25,7 +26,7 @@ export interface IUser {
 }
 
 export class User {
-  id: string;
+  id: ID;
   name: string;
   surname: string;
   email: string;
@@ -34,7 +35,7 @@ export class User {
   age?: number;
   isGoogleUser?: boolean;
   description?: string;
-  isAdmin?: boolean;
+  role?: [];
   isActive?: boolean;
   isBanish?: boolean;
   country?: string;
@@ -47,7 +48,7 @@ export class User {
   ctx: IRequestDetail;
 
   constructor(
-    id: string,
+    id: ID,
     name: string,
     surname: string,
     email: string,
@@ -56,7 +57,7 @@ export class User {
     age?: number,
     isGoogleUser?: boolean,
     description?: string,
-    isAdmin?: boolean,
+    role?: [],
     isActive?: boolean,
     country?: string,
     gender?: string,
@@ -64,7 +65,7 @@ export class User {
     learningLanguages?: LearningLanguages[],
     ctx?: IRequestDetail,
   ) {
-    this.id = `id-${Math.random().toString()}`;
+    this.id = ID.generate()
     this.name = name;
     this.surname = surname;
     this.email = email;
@@ -73,7 +74,7 @@ export class User {
     this.age = age;
     this.isGoogleUser = isGoogleUser ?? false;
     this.description = description;
-    this.isAdmin = isAdmin ?? false;
+    this.role = [];
     this.isActive = isActive ?? false;
     this.gender = gender;
     this.country = country;
@@ -84,11 +85,12 @@ export class User {
     this.blackList = [];
     this.friends = [];
     this.reports = [];
+    this.role = role;
   }
 
   static async create(props: IUser) {
     return new this(
-      props.id,
+      ID.fromString(props.id),
       props.name,
       props.surname,
       props.email,
@@ -97,7 +99,7 @@ export class User {
       props.age,
       props.isGoogleUser,
       props.description,
-      props.isAdmin,
+      props.roles,
       props.isActive,
       props.country,
       props.gender,
@@ -113,6 +115,7 @@ export class User {
       name: props.name,
       surname: props.surname,
       email: props.email,
+      roles: props.roles,
       password: props.password,
       age: props.age,
       avatar: props.avatar,

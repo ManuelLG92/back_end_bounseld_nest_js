@@ -8,13 +8,16 @@ export class ID extends StringVO {
     this.validate(value);
   }
 
+  static fromString(value: string){
+    return new this(value);
+  }
   static generate(): ID {
-    return new ID(uuidV4());
+    return new this(uuidV4());
   }
 
   protected validate(value: string): void {
     if (!validate(value)) {
-      throw new BadRequestException(`Incorrect Uuid format "${value}"`);
+      throw new BadRequestException(`Incorrect Uuid format. "${value}"`);
     }
   }
 }
