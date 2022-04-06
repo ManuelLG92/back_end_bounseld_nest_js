@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import { StringVO } from './stringVO';
+import { StringVO } from '../../shared/ValueObjects/stringVO';
 
 export class EmailVo extends StringVO {
   protected constructor(value: string) {
@@ -8,7 +8,7 @@ export class EmailVo extends StringVO {
     this.validate;
   }
 
-  static create(value: string) {
+  static create(value: string): EmailVo {
     return new this(value);
   }
 
@@ -17,10 +17,11 @@ export class EmailVo extends StringVO {
   }
 
   validate(): void {
-    const regex = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
+    const regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
     if (!regex.test(this.valuePrimitive)) {
-      throw new BadRequestException(`Email not valid. "${this.valuePrimitive}"`);
+      throw new BadRequestException(
+        `Email not valid. "${this.valuePrimitive}"`,
+      );
     }
-
   }
 }

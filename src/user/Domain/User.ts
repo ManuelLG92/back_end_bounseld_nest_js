@@ -65,7 +65,7 @@ export class User {
     learningLanguages?: LearningLanguages[],
     ctx?: IRequestDetail,
   ) {
-    this.id = ID.generate()
+    this.id = ID.generate();
     this.name = name;
     this.surname = surname;
     this.email = email;

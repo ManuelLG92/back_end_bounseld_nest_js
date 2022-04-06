@@ -1,16 +1,26 @@
-export class StringVO {
-  
+import { BadRequestException } from '@nestjs/common';
+import { BaseVO } from './BaseVO';
+
+export class StringVO extends BaseVO {
   protected valuePrimitive: string;
 
   protected constructor(value: string) {
-    this.valuePrimitive = value;
+    super();
+    this.valuePrimitive = value.trim();
+    this.validate();
   }
 
-  static create(value: string) {
-    return new this(value);
+  static create(value: string): StringVO {
+    return new StringVO(value);
   }
 
   protected value(): string {
     return this.valuePrimitive;
+  }
+
+  validate(): void {
+    if (typeof this.valuePrimitive !== 'string') {
+      throw new BadRequestException('Just are allowed string type.');
+    }
   }
 }
