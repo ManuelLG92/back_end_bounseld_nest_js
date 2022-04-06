@@ -3,9 +3,11 @@ import { StringVO } from './stringVO';
 import { BadRequestException } from '@nestjs/common';
 
 export class ID extends StringVO {
-  constructor(value: string) {
-    super(value);
-    this.validate(value);
+
+
+  constructor(valuePrimitive: string) {
+    super(valuePrimitive);
+    this.validate(valuePrimitive);
   }
 
   static fromString(value: string){

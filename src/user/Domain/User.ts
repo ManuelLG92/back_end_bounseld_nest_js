@@ -1,6 +1,6 @@
 import { LearningLanguages, NativeLanguages } from '../dto/create-user.dto';
 import { IRequestDetail } from '../../util';
-import { ID } from 'src/shared/ValueObjects/id.valueObject';
+import { ID } from 'src/shared/ValueObjects/idVO';
 
 export interface IUser {
   id: string;

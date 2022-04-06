@@ -1,16 +1,16 @@
 export class StringVO {
   
-  protected value: string;
+  protected valuePrimitive: string;
 
   protected constructor(value: string) {
-    this.value = value;
+    this.valuePrimitive = value;
   }
 
   static create(value: string) {
     return new this(value);
   }
 
-  protected get(): string {
-    return this.value;
+  protected value(): string {
+    return this.valuePrimitive;
   }
 }
