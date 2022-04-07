@@ -15,7 +15,7 @@ export class GenderVO extends StringVO {
   }
 
   validate(): void {
-    const values = new EnumVO(gender);
+    const values = new ObjectVO(gender);
     if (!values.exists(this.valuePrimitive)) {
       throw new BadRequestException(
         `Gender field cannot be empty and the option are: ${Object.values(

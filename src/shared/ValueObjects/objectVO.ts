@@ -1,4 +1,4 @@
-class EnumVO {
+class ObjectVO {
   protected valuePrimitive = {};
 
   constructor(value: Record<string, unknown>) {
@@ -24,4 +24,5 @@ class EnumVO {
   deleteItem<T>(key: string): void {
     this.getItem(key) && delete this.valuePrimitive[key];
   }
+  
 }

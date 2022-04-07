@@ -1,4 +1,4 @@
-class CollectionVO {
+export class CollectionVO {
   protected collection = [];
   protected total = 0;
 
