@@ -27,8 +27,6 @@ model User {
   lastConnection    DateTime?
   learningLanguages LearningLanguages[]
   nativeLanguages   NativeLanguages[]
-  blackList         String[]
-  friends           String[]
   gender            String?
   reports           Report[]
   ctx               Json?

@@ -12,6 +12,8 @@ import { CollectionVO } from 'src/shared/ValueObjects/collectionVO';
 import { GenderVO } from '../VO/genderVO';
 import { StringNullableVO } from 'src/shared/ValueObjects/stringNullableVO';
 import { StringVO } from 'src/shared/ValueObjects/stringVO';
+import { RolesVO } from '../VO/rolesVO';
+import { BlackListVO } from '../VO/blackListVO';
 
 export interface IUser {
   id: string;
@@ -28,8 +30,6 @@ export interface IUser {
   isBanish?: boolean;
   country?: string;
   blackList?: [];
-  friends?: [];
-  reports?: [];
   gender?: string;
   nativeLanguages: NativeLanguages[];
   learningLanguages: LearningLanguages[];
@@ -50,9 +50,7 @@ export class User {
   isActive?: BooleanVO;
   isBanish?: BooleanVO;
   country?: StringVO;
-  blackList?: CollectionVO;
-  friends?: CollectionVO;
-  reports?: CollectionVO;
+  blackList?: BlackListVO;
   gender?: GenderVO;
   nativeLanguages: NativeLanguages[];
   learningLanguages: LearningLanguages[];
@@ -68,10 +66,8 @@ export class User {
     age?: AgeVO,
     isGoogleUser?: BooleanVO,
     description?: StringNullableVO,
-    role?: CollectionVO,
-    blackList?: CollectionVO,
-    friends?: CollectionVO,
-    reports?: CollectionVO,
+    role?: RolesVO,
+    blackList?: BlackListVO,
     isActive?: BooleanVO,
     country?: StringVO,
     gender?: GenderVO,
@@ -88,7 +84,7 @@ export class User {
     this.age = age;
     this.isGoogleUser = isGoogleUser;
     this.description = description;
-    this.role = CollectionVO.create();
+    this.role = RolesVO.create();
     this.isActive = isActive;
     this.gender = gender;
     this.country = country;
@@ -96,9 +92,7 @@ export class User {
     this.learningLanguages = learningLanguages;
     this.ctx = ctx;
     this.isBanish = BooleanVO.create(false);
-    this.blackList = CollectionVO.create();
-    this.friends = CollectionVO.create();
-    this.reports = CollectionVO.create();
+    this.blackList = BlackListVO.create();
   }
 
   static async create(props: IUser) {
@@ -112,10 +106,8 @@ export class User {
       AgeVO.create(props.age),
       BooleanVO.create(props.isGoogleUser),
       StringNullableVO.create(props.description),
-      CollectionVO.create(),
-      CollectionVO.create(),
-      CollectionVO.create(),
-      CollectionVO.create(),
+      RolesVO.create(props.roles),
+      BlackListVO.create(props.blackList),
       BooleanVO.create(false),
       StringVO.create(props.country),
       GenderVO.create(props.gender),
