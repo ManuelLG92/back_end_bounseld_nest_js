@@ -106,7 +106,7 @@ export class User {
       AgeVO.create(props.age),
       BooleanVO.create(props.isGoogleUser),
       StringNullableVO.create(props.description),
-      RolesVO.create(props.roles),
+      RolesVO.create(props.roles ?? ["user"]),
       BlackListVO.create(props.blackList),
       BooleanVO.create(false),
       StringVO.create(props.country),
