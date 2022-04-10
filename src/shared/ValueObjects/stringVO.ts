@@ -11,14 +11,14 @@ export class StringVO extends BaseVO {
   }
 
   static create(value: string): StringVO {
-    return new StringVO(value);
+    return new this(value);
   }
 
   protected value(): string {
     return this.valuePrimitive;
   }
 
-  validate(): void {
+  protected validate(): void {
     if (typeof this.valuePrimitive !== 'string') {
       throw new BadRequestException('Just are allowed string type.');
     }

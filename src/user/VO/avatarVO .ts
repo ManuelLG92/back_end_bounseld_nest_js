@@ -4,12 +4,12 @@ import { StringVO } from '../../shared/ValueObjects/stringVO';
 export class AvatarVO extends StringVO {
   public static MAX_LENGTH = 100;
 
-  protected constructor(value: string) {
+  public constructor(value: string) {
     super(value);
-    this.validate;
+    this.validate();
   }
 
-  validate(): void {
+  protected validate(): void {
     if (
       !this.valuePrimitive ||
       this.valuePrimitive?.length > AvatarVO.MAX_LENGTH

@@ -5,19 +5,17 @@ export class PasswordVO extends StringVO {
   public static MAX_LENGTH = 255;
   public static MIN_LENGTH = 8;
 
-  protected constructor(value: string) {
+  public constructor(value: string) {
     super(value);
     this.valuePrimitive = value.trim();
-    this.validate;
+    this.validate();
   }
 
-  validate(): void {
+  protected validate(): void {
     if (
-      !this.valuePrimitive 
-      ||
-      this.valuePrimitive?.length > PasswordVO.MAX_LENGTH 
-      ||
-      this.valuePrimitive?.length < PasswordVO.MIN_LENGTH 
+      !this.valuePrimitive ||
+      this.valuePrimitive?.length > PasswordVO.MAX_LENGTH ||
+      this.valuePrimitive?.length < PasswordVO.MIN_LENGTH
     ) {
       throw new BadRequestException(
         `Password field cannot be empty or longer than ${PasswordVO.MAX_LENGTH} `,

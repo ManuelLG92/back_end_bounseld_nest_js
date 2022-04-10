@@ -5,7 +5,7 @@ export class EmailVo extends StringVO {
   protected constructor(value: string) {
     super(value);
     this.valuePrimitive = EmailVo.format(value);
-    this.validate;
+    this.validate();
   }
 
   static create(value: string): EmailVo {
@@ -16,7 +16,7 @@ export class EmailVo extends StringVO {
     return email.trim().toLowerCase();
   }
 
-  validate(): void {
+  protected validate(): void {
     const regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
     if (!regex.test(this.valuePrimitive)) {
       throw new BadRequestException(

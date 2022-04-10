@@ -9,12 +9,12 @@ export enum gender {
 export class GenderVO extends StringVO {
   public static MAX_LENGTH = 100;
 
-  protected constructor(value: string) {
+  public constructor(value: string) {
     super(value);
-    this.validate;
+    this.validate();
   }
 
-  validate(): void {
+  protected validate(): void {
     const values = new ObjectVO(gender);
     if (!values.exists(this.valuePrimitive)) {
       throw new BadRequestException(

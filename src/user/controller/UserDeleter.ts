@@ -1,6 +1,6 @@
 import { Controller, Delete, Param, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards';
-import { UserRemover } from '../Domain/Services/Persistence';
+import { UserRemover } from '../Application/Port/Services';
 
 @Controller('user')
 export class UserDeleter {

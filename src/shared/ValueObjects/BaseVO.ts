@@ -1,3 +1,3 @@
 export abstract class BaseVO {
-  abstract validate(): void;
+  // protected abstract validate(): void;
 }

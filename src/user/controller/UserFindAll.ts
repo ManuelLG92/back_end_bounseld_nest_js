@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { UserFinder } from '../Domain/Services/Persistence';
+import { UserFinder } from '../Application/Port/Services';
 
 @Controller('user')
 export class UserFindAll {

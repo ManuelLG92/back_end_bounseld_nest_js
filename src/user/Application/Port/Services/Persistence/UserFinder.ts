@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { UserRepositoryPort } from '../../UserRepositoryPort';
-import { UserProviderConstants } from '../../../constants/repository';
+import { UserProviderConstants } from '../../../../constants/repository';
 
 @Injectable()
 export class UserFinder {

@@ -1,5 +1,3 @@
-import { CollectionVO } from "src/shared/ValueObjects/collectionVO";
+import { CollectionVO } from 'src/shared/ValueObjects/collectionVO';
 
-export class RolesVO extends CollectionVO {
-
-}
+export class RolesVO extends CollectionVO {}

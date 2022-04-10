@@ -24,5 +24,4 @@ class ObjectVO {
   deleteItem<T>(key: string): void {
     this.getItem(key) && delete this.valuePrimitive[key];
   }
-  
 }

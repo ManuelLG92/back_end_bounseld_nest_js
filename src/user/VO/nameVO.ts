@@ -4,13 +4,13 @@ import { StringVO } from '../../shared/ValueObjects/stringVO';
 export class NameVO extends StringVO {
   public static MAX_LENGTH = 100;
 
-  protected constructor(value: string) {
+  public constructor(value: string) {
     super(value);
     this.valuePrimitive = value.trim();
-    this.validate;
+    this.validate();
   }
 
-  validate(): void {
+  protected validate(): void {
     if (
       !this.valuePrimitive ||
       this.valuePrimitive?.length > NameVO.MAX_LENGTH

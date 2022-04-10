@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { UserRepositoryPort } from '../../UserRepositoryPort';
-import { UserProviderConstants } from '../../../constants/repository';
-import { IUser } from '../../User';
+import { UserProviderConstants } from '../../../../constants/repository';
+import { IUser } from '../../../../Domain/User';
 
 @Injectable()
 export class UserSaver {

@@ -2,7 +2,6 @@ import { BadRequestException } from '@nestjs/common';
 import { BaseVO } from './BaseVO';
 
 export class BooleanVO extends BaseVO {
-  
   protected valuePrimitive: boolean;
 
   protected constructor(value: boolean) {

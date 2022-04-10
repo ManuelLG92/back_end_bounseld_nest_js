@@ -1,5 +1,5 @@
 import { AppRepositoryService } from '../../../shared/Infrastructure/Repository/AppRepositoryService';
-import { UserRepositoryPort } from '../../Domain/UserRepositoryPort';
+import { UserRepositoryPort } from '../../Application';
 import { IUser, User } from '../../Domain/User';
 import { PrismaService } from '../../../prisma/prisma/prisma.service';
 

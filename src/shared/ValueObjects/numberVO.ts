@@ -2,7 +2,6 @@ import { BadRequestException } from '@nestjs/common';
 import { BaseVO } from './BaseVO';
 
 export class NumberVO extends BaseVO {
-  
   protected valuePrimitive: number;
 
   protected constructor(value: number) {
@@ -19,7 +18,7 @@ export class NumberVO extends BaseVO {
     return this.valuePrimitive;
   }
 
-  validate(): void {
+  protected validate(): void {
     if (typeof this.valuePrimitive !== 'number') {
       throw new BadRequestException('Just are allowed number type.');
     }

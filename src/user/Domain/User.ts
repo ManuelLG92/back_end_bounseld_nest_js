@@ -84,7 +84,7 @@ export class User {
     this.age = age;
     this.isGoogleUser = isGoogleUser;
     this.description = description;
-    this.role = RolesVO.create();
+    this.role = role;
     this.isActive = isActive;
     this.gender = gender;
     this.country = country;
@@ -98,19 +98,19 @@ export class User {
   static async create(props: IUser) {
     return new this(
       ID.fromString(props.id),
-      NameVO.create(props.name),
-      SurnameVO.create(props.surname),
+      new NameVO(props.name),
+      new SurnameVO(props.surname),
       EmailVo.create(props.email),
-      PasswordVO.create(props.password),
-      AvatarVO.create(props.avatar),
-      AgeVO.create(props.age),
+      new PasswordVO(props.password),
+      new AvatarVO(props.avatar),
+      new AgeVO(props.age),
       BooleanVO.create(props.isGoogleUser),
       StringNullableVO.create(props.description),
-      RolesVO.create(props.roles ?? ["user"]),
+      RolesVO.create(props.roles ?? ['user']),
       BlackListVO.create(props.blackList),
       BooleanVO.create(false),
       StringVO.create(props.country),
-      GenderVO.create(props.gender),
+      new GenderVO(props.gender),
       props.nativeLanguages,
       props.learningLanguages,
       props.ctx,
@@ -134,9 +134,5 @@ export class User {
       learningLanguages: props.learningLanguages,
       ctx: props.ctx,
     } as IUser;
-  }
-
-  toPersistence(){
-    
   }
 }

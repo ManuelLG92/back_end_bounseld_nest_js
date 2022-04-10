@@ -5,7 +5,7 @@ import { BadRequestException } from '@nestjs/common';
 export class ID extends StringVO {
   constructor(valuePrimitive: string) {
     super(valuePrimitive);
-    this.validate(valuePrimitive);
+    this.validate();
   }
 
   static fromString(value: string) {
@@ -15,9 +15,11 @@ export class ID extends StringVO {
     return new this(uuidV4());
   }
 
-  protected validate(value: string): void {
-    if (!validate(value)) {
-      throw new BadRequestException(`Incorrect Uuid format. "${value}"`);
+  protected validate(): void {
+    if (!validate(this.valuePrimitive)) {
+      throw new BadRequestException(
+        `Incorrect Uuid format. "${this.valuePrimitive}"`,
+      );
     }
   }
 }
