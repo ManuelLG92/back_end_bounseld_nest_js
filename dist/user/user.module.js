@@ -9,14 +9,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserModule = void 0;
 const common_1 = require("@nestjs/common");
 const Controllers = require("./controller/");
-const Services = require("./services/");
 const VO = require("./VO");
+const Application_1 = require("./Application");
+const PrismaUserRepository_1 = require("./Infrastructure/Repository/PrismaUserRepository");
+const repository_1 = require("./constants/repository");
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
     common_1.Module({
         controllers: [...Object.values(Controllers)],
-        providers: [...Object.values(Services), ...Object.values(VO)],
+        providers: [
+            ...Object.values(VO),
+            ...Object.values(Application_1.PortServices),
+            ...Object.values(Application_1.CommandHandlers),
+            {
+                provide: repository_1.UserProviderConstants.USER_REPOSITORY,
+                useClass: PrismaUserRepository_1.PrismaUserRepository,
+            },
+        ],
     })
 ], UserModule);
 exports.UserModule = UserModule;
