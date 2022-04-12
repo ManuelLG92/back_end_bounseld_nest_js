@@ -1,19 +1,13 @@
 import { LearningLanguages, NativeLanguages } from '../dto/create-user.dto';
 import { IRequestDetail } from '../../util';
 import { ID } from 'src/shared/ValueObjects/idVO';
-import { NameVO } from '../VO/nameVO';
-import { SurnameVO } from '../VO/surnameVO';
-import { EmailVo } from '../VO/emailVO';
-import { PasswordVO } from '../VO/passwordVO';
-import { AvatarVO } from '../VO/avatarVO ';
-import { AgeVO } from '../VO/ageVO';
+import { AgeVO, AvatarVO, BlackListVO, EmailVo, GenderVO, NameVO, PasswordVO, RolesVO, SurnameVO } from '../VO';
 import { BooleanVO } from 'src/shared/ValueObjects/booleanVO';
-import { CollectionVO } from 'src/shared/ValueObjects/collectionVO';
-import { GenderVO } from '../VO/genderVO';
 import { StringNullableVO } from 'src/shared/ValueObjects/stringNullableVO';
+import { CollectionVO } from 'src/shared/ValueObjects/collectionVO';
 import { StringVO } from 'src/shared/ValueObjects/stringVO';
-import { RolesVO } from '../VO/rolesVO';
-import { BlackListVO } from '../VO/blackListVO';
+import { GlobalsService } from 'src/globals/globals.service';
+
 
 export interface IUser {
   id: string;
@@ -37,7 +31,7 @@ export interface IUser {
 }
 
 export class User {
-  id: ID;
+  public readonly id: ID;
   name: NameVO;
   surname: SurnameVO;
   email: EmailVo;
@@ -101,7 +95,7 @@ export class User {
       new NameVO(props.name),
       new SurnameVO(props.surname),
       EmailVo.create(props.email),
-      new PasswordVO(props.password),
+      new PasswordVO(await GlobalsService.encryptData(props.password)),
       new AvatarVO(props.avatar),
       new AgeVO(props.age),
       BooleanVO.create(props.isGoogleUser),
@@ -133,6 +127,25 @@ export class User {
       nativeLanguages: props.nativeLanguages,
       learningLanguages: props.learningLanguages,
       ctx: props.ctx,
+    } as IUser;
+  }
+
+  toPersistence(): IUser {
+    return {
+      id: this.id.value(),
+      name: this.name.value(),
+      surname: this.surname.value(),
+      email: this.email.value(),
+      roles: this.role.items(),
+      password: this.password.value(),
+      age: this.age.value(),
+      avatar: this.avatar.value(),
+      description: this.description.value(),
+      gender: this.gender.value(),
+      country: this.country.value(),
+      nativeLanguages: this.nativeLanguages,
+      learningLanguages: this.learningLanguages,
+      ctx: this.ctx,
     } as IUser;
   }
 }

@@ -13,7 +13,7 @@ export class StringNullableVO extends BaseVO {
     return new this(value);
   }
 
-  protected value(): string | null {
+  public value(): string | null {
     return this.valuePrimitive;
   }
 

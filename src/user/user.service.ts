@@ -20,7 +20,7 @@ export class UserService {
     return await this.prismaService.user.create({
       data: {
         ...createUserRestDto,
-        password: await this.globalService.encryptData(
+        password: await GlobalsService.encryptData(
           createUserRestDto.password,
         ),
         isGoogleUser: false,
@@ -51,7 +51,7 @@ export class UserService {
 
   async update(id: string, updateUserRestDto: UpdateUserDto) {
     if (updateUserRestDto.password) {
-      updateUserRestDto.password = await this.globalService.encryptData(
+      updateUserRestDto.password = await await GlobalsService.encryptData(
         updateUserRestDto.password,
       );
     }

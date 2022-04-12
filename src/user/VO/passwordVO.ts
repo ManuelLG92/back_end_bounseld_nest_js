@@ -1,4 +1,4 @@
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, Global } from '@nestjs/common';
 import { StringVO } from '../../shared/ValueObjects/stringVO';
 
 export class PasswordVO extends StringVO {

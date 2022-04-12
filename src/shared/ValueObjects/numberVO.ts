@@ -14,7 +14,7 @@ export class NumberVO extends BaseVO {
     return new this(value);
   }
 
-  protected value(): number {
+  public value(): number {
     return this.valuePrimitive;
   }
 

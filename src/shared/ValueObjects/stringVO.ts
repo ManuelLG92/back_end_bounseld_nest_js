@@ -14,7 +14,7 @@ export class StringVO extends BaseVO {
     return new this(value);
   }
 
-  protected value(): string {
+  public value(): string {
     return this.valuePrimitive;
   }
 
