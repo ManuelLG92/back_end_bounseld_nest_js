@@ -1,13 +1,21 @@
 import { LearningLanguages, NativeLanguages } from '../dto/create-user.dto';
 import { IRequestDetail } from '../../util';
 import { ID } from 'src/shared/ValueObjects/idVO';
-import { AgeVO, AvatarVO, BlackListVO, EmailVo, GenderVO, NameVO, PasswordVO, RolesVO, SurnameVO } from '../VO';
+import {
+  AgeVO,
+  AvatarVO,
+  BlackListVO,
+  EmailVo,
+  GenderVO,
+  NameVO,
+  PasswordVO,
+  RolesVO,
+  SurnameVO,
+} from './ValueObjects';
 import { BooleanVO } from 'src/shared/ValueObjects/booleanVO';
 import { StringNullableVO } from 'src/shared/ValueObjects/stringNullableVO';
 import { CollectionVO } from 'src/shared/ValueObjects/collectionVO';
-import { StringVO } from 'src/shared/ValueObjects/stringVO';
 import { GlobalsService } from 'src/globals/globals.service';
-
 
 export interface IUser {
   id: string;
@@ -43,7 +51,7 @@ export class User {
   role?: CollectionVO;
   isActive?: BooleanVO;
   isBanish?: BooleanVO;
-  country?: StringVO;
+  country?: StringNullableVO;
   blackList?: BlackListVO;
   gender?: GenderVO;
   nativeLanguages: NativeLanguages[];
@@ -63,7 +71,7 @@ export class User {
     role?: RolesVO,
     blackList?: BlackListVO,
     isActive?: BooleanVO,
-    country?: StringVO,
+    country?: StringNullableVO,
     gender?: GenderVO,
     nativeLanguages?: NativeLanguages[],
     learningLanguages?: LearningLanguages[],
@@ -91,20 +99,20 @@ export class User {
 
   static async create(props: IUser) {
     return new this(
-      ID.fromString(props.id),
+      ID.generate(),
       new NameVO(props.name),
       new SurnameVO(props.surname),
       EmailVo.create(props.email),
       new PasswordVO(await GlobalsService.encryptData(props.password)),
-      new AvatarVO(props.avatar),
-      new AgeVO(props.age),
-      BooleanVO.create(props.isGoogleUser),
-      StringNullableVO.create(props.description),
+      new AvatarVO(props.avatar ?? null),
+      new AgeVO(props.age ?? null),
+      BooleanVO.create(props.isGoogleUser ?? false),
+      StringNullableVO.create(props.description ?? null),
       RolesVO.create(props.roles ?? ['user']),
-      BlackListVO.create(props.blackList),
+      BlackListVO.create(props.blackList ?? []),
       BooleanVO.create(false),
-      StringVO.create(props.country),
-      new GenderVO(props.gender),
+      StringNullableVO.create(props.country ?? null),
+      new GenderVO(props.gender ?? null),
       props.nativeLanguages,
       props.learningLanguages,
       props.ctx,

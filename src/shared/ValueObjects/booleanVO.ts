@@ -10,8 +10,8 @@ export class BooleanVO extends BaseVO {
     this.validate();
   }
 
-  static create(value: boolean) {
-    return new this(value);
+  static create(value: undefined | null | boolean) {
+    return new this(value ?? false);
   }
 
   protected value(): boolean {

@@ -13,15 +13,12 @@ export class NumberNullableVO extends BaseVO {
     return new this(value);
   }
 
-  protected value(): number | null {
+  public value(): number | null {
     return this.valuePrimitive;
   }
 
   validate(): void {
-    if (
-      typeof this.valuePrimitive !== 'number' ||
-      this.valuePrimitive !== null
-    ) {
+    if (typeof this.valuePrimitive !== 'number' || true) {
       throw new BadRequestException('Just are allowed number and null types.');
     }
   }

@@ -38,8 +38,8 @@ const app_service_1 = __webpack_require__(6);
 const app_gateway_module_1 = __webpack_require__(7);
 const prisma_module_1 = __webpack_require__(12);
 const user_module_1 = __webpack_require__(15);
-const auth_module_1 = __webpack_require__(78);
-const globals_module_1 = __webpack_require__(94);
+const auth_module_1 = __webpack_require__(79);
+const globals_module_1 = __webpack_require__(95);
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -371,13 +371,15 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.UserModule = void 0;
 const common_1 = __webpack_require__(1);
 const Controllers = __webpack_require__(16);
-const Application_1 = __webpack_require__(67);
-const PrismaUserRepository_1 = __webpack_require__(76);
+const Application_1 = __webpack_require__(35);
+const PrismaUserRepository_1 = __webpack_require__(77);
 const repository_1 = __webpack_require__(32);
+const cqrs_1 = __webpack_require__(65);
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
     common_1.Module({
+        imports: [cqrs_1.CqrsModule],
         controllers: [...Object.values(Controllers)],
         providers: [
             ...Object.values(Application_1.PortServices),
@@ -409,10 +411,10 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 __exportStar(__webpack_require__(17), exports);
-__exportStar(__webpack_require__(35), exports);
-__exportStar(__webpack_require__(36), exports);
-__exportStar(__webpack_require__(37), exports);
-__exportStar(__webpack_require__(62), exports);
+__exportStar(__webpack_require__(67), exports);
+__exportStar(__webpack_require__(68), exports);
+__exportStar(__webpack_require__(69), exports);
+__exportStar(__webpack_require__(72), exports);
 
 
 /***/ }),
@@ -432,7 +434,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var _a, _b, _c, _d;
+var _a, _b, _c, _d, _e;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.UserCreator = void 0;
 const common_1 = __webpack_require__(1);
@@ -440,16 +442,18 @@ const decorators_1 = __webpack_require__(18);
 const util_1 = __webpack_require__(22);
 const create_user_dto_1 = __webpack_require__(26);
 const Services_1 = __webpack_require__(28);
+const Application_1 = __webpack_require__(35);
+const cqrs_1 = __webpack_require__(65);
 let UserCreator = class UserCreator {
-    constructor(saver, finder) {
+    constructor(saver, finder, commandBus) {
         this.saver = saver;
         this.finder = finder;
+        this.commandBus = commandBus;
     }
     async create(createUserRestDto, ctx) {
-        if (await this.finder.findOneByEmail(createUserRestDto.email)) {
-            throw new common_1.BadRequestException(`User ${createUserRestDto.email} already registered.`);
-        }
-        return await this.saver.save(Object.assign(Object.assign({}, createUserRestDto), { ctx: ctx }));
+        await this.commandBus.execute(new Application_1.CreateUserCommand(Object.assign(Object.assign({}, createUserRestDto), { ctx: ctx })));
+        console.log('passed');
+        return 'created';
     }
 };
 __decorate([
@@ -462,7 +466,7 @@ __decorate([
 ], UserCreator.prototype, "create", null);
 UserCreator = __decorate([
     common_1.Controller('user'),
-    __metadata("design:paramtypes", [typeof (_c = typeof Services_1.UserSaver !== "undefined" && Services_1.UserSaver) === "function" ? _c : Object, typeof (_d = typeof Services_1.UserFinder !== "undefined" && Services_1.UserFinder) === "function" ? _d : Object])
+    __metadata("design:paramtypes", [typeof (_c = typeof Services_1.UserSaver !== "undefined" && Services_1.UserSaver) === "function" ? _c : Object, typeof (_d = typeof Services_1.UserFinder !== "undefined" && Services_1.UserFinder) === "function" ? _d : Object, typeof (_e = typeof cqrs_1.CommandBus !== "undefined" && cqrs_1.CommandBus) === "function" ? _e : Object])
 ], UserCreator);
 exports.UserCreator = UserCreator;
 
@@ -899,43 +903,24 @@ exports.UserSaver = UserSaver;
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.UserFindById = void 0;
-const common_1 = __webpack_require__(1);
-const Services_1 = __webpack_require__(28);
-let UserFindById = class UserFindById {
-    constructor(findService) {
-        this.findService = findService;
-    }
-    findOne(id) {
-        return this.findService.findOne(id);
-    }
-};
-__decorate([
-    common_1.Get(':id'),
-    __param(0, common_1.Param('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], UserFindById.prototype, "findOne", null);
-UserFindById = __decorate([
-    common_1.Controller('user'),
-    __metadata("design:paramtypes", [typeof (_a = typeof Services_1.UserFinder !== "undefined" && Services_1.UserFinder) === "function" ? _a : Object])
-], UserFindById);
-exports.UserFindById = UserFindById;
+exports.CommandHandlers = exports.PortServices = exports.UserRepositoryPort = void 0;
+__exportStar(__webpack_require__(36), exports);
+var Port_1 = __webpack_require__(66);
+Object.defineProperty(exports, "UserRepositoryPort", ({ enumerable: true, get: function () { return Port_1.UserRepositoryPort; } }));
+exports.PortServices = __webpack_require__(28);
+const UseCases_1 = __webpack_require__(36);
+exports.CommandHandlers = [UseCases_1.CreateUserCommandHandler];
 
 
 /***/ }),
@@ -943,43 +928,57 @@ exports.UserFindById = UserFindById;
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.UserFindAll = void 0;
-const common_1 = __webpack_require__(1);
-const Services_1 = __webpack_require__(28);
-let UserFindAll = class UserFindAll {
-    constructor(findService) {
-        this.findService = findService;
-    }
-    findAll() {
-        return this.findService.findAll();
-    }
-};
-__decorate([
-    common_1.Get(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], UserFindAll.prototype, "findAll", null);
-UserFindAll = __decorate([
-    common_1.Controller('user'),
-    __metadata("design:paramtypes", [typeof (_a = typeof Services_1.UserFinder !== "undefined" && Services_1.UserFinder) === "function" ? _a : Object])
-], UserFindAll);
-exports.UserFindAll = UserFindAll;
+__exportStar(__webpack_require__(37), exports);
 
 
 /***/ }),
 /* 37 */
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(38), exports);
+__exportStar(__webpack_require__(39), exports);
+
+
+/***/ }),
+/* 38 */
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.CreateUserCommand = void 0;
+class CreateUserCommand {
+    constructor(data) {
+        this.data = data;
+    }
+}
+exports.CreateUserCommand = CreateUserCommand;
+
+
+/***/ }),
+/* 39 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -992,73 +991,56 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-var _a, _b;
+var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.UserUpdater = void 0;
-const common_1 = __webpack_require__(1);
-const update_user_dto_1 = __webpack_require__(38);
+exports.CreateUserCommandHandler = void 0;
+const AppCommandHandler_1 = __webpack_require__(40);
+const CreateUserCommand_1 = __webpack_require__(38);
 const Services_1 = __webpack_require__(28);
-const User_1 = __webpack_require__(40);
-let UserUpdater = class UserUpdater {
-    constructor(userRestService) {
-        this.userRestService = userRestService;
+const User_1 = __webpack_require__(41);
+const AppCommandHandlerDecorator_1 = __webpack_require__(64);
+let CreateUserCommandHandler = class CreateUserCommandHandler extends AppCommandHandler_1.AppCommandHandler {
+    constructor(saver) {
+        super();
+        this.saver = saver;
     }
-    update(id, updateUserRestDto) {
-        console.log('user id patch', id);
-        return this.userRestService.save(Object.assign({}, User_1.User.fromObject(updateUserRestDto)));
+    async execute(command) {
+        const { data } = command;
+        const user = await User_1.User.create(data);
+        await this.saver.save(user.toPersistence());
     }
 };
-__decorate([
-    common_1.Patch(':id'),
-    __param(0, common_1.Param('id')),
-    __param(1, common_1.Body()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, typeof (_a = typeof update_user_dto_1.UpdateUserDto !== "undefined" && update_user_dto_1.UpdateUserDto) === "function" ? _a : Object]),
-    __metadata("design:returntype", void 0)
-], UserUpdater.prototype, "update", null);
-UserUpdater = __decorate([
-    common_1.Controller('user'),
-    __metadata("design:paramtypes", [typeof (_b = typeof Services_1.UserSaver !== "undefined" && Services_1.UserSaver) === "function" ? _b : Object])
-], UserUpdater);
-exports.UserUpdater = UserUpdater;
+CreateUserCommandHandler = __decorate([
+    AppCommandHandlerDecorator_1.AppCommandHandlerDecorator(CreateUserCommand_1.CreateUserCommand),
+    __metadata("design:paramtypes", [typeof (_a = typeof Services_1.UserSaver !== "undefined" && Services_1.UserSaver) === "function" ? _a : Object])
+], CreateUserCommandHandler);
+exports.CreateUserCommandHandler = CreateUserCommandHandler;
 
-
-/***/ }),
-/* 38 */
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.UpdateUserDto = void 0;
-const mapped_types_1 = __webpack_require__(39);
-const create_user_dto_1 = __webpack_require__(26);
-class UpdateUserDto extends mapped_types_1.PartialType(create_user_dto_1.CreateUserDto) {
-}
-exports.UpdateUserDto = UpdateUserDto;
-
-
-/***/ }),
-/* 39 */
-/***/ ((module) => {
-
-module.exports = require("@nestjs/mapped-types");
 
 /***/ }),
 /* 40 */
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AppCommandHandler = void 0;
+class AppCommandHandler {
+}
+exports.AppCommandHandler = AppCommandHandler;
+
+
+/***/ }),
+/* 41 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.User = void 0;
-const idVO_1 = __webpack_require__(41);
-const VO_1 = __webpack_require__(45);
-const booleanVO_1 = __webpack_require__(58);
-const stringNullableVO_1 = __webpack_require__(59);
-const stringVO_1 = __webpack_require__(43);
-const globals_service_1 = __webpack_require__(60);
+const idVO_1 = __webpack_require__(42);
+const ValueObjects_1 = __webpack_require__(46);
+const booleanVO_1 = __webpack_require__(61);
+const stringNullableVO_1 = __webpack_require__(50);
+const globals_service_1 = __webpack_require__(62);
 class User {
     constructor(id, name, surname, email, password, avatar, age, isGoogleUser, description, role, blackList, isActive, country, gender, nativeLanguages, learningLanguages, ctx) {
         this.id = idVO_1.ID.generate();
@@ -1078,11 +1060,11 @@ class User {
         this.learningLanguages = learningLanguages;
         this.ctx = ctx;
         this.isBanish = booleanVO_1.BooleanVO.create(false);
-        this.blackList = VO_1.BlackListVO.create();
+        this.blackList = ValueObjects_1.BlackListVO.create();
     }
     static async create(props) {
-        var _a;
-        return new this(idVO_1.ID.fromString(props.id), new VO_1.NameVO(props.name), new VO_1.SurnameVO(props.surname), VO_1.EmailVo.create(props.email), new VO_1.PasswordVO(await globals_service_1.GlobalsService.encryptData(props.password)), new VO_1.AvatarVO(props.avatar), new VO_1.AgeVO(props.age), booleanVO_1.BooleanVO.create(props.isGoogleUser), stringNullableVO_1.StringNullableVO.create(props.description), VO_1.RolesVO.create((_a = props.roles) !== null && _a !== void 0 ? _a : ['user']), VO_1.BlackListVO.create(props.blackList), booleanVO_1.BooleanVO.create(false), stringVO_1.StringVO.create(props.country), new VO_1.GenderVO(props.gender), props.nativeLanguages, props.learningLanguages, props.ctx);
+        var _a, _b, _c, _d, _e, _f, _g, _h;
+        return new this(idVO_1.ID.generate(), new ValueObjects_1.NameVO(props.name), new ValueObjects_1.SurnameVO(props.surname), ValueObjects_1.EmailVo.create(props.email), new ValueObjects_1.PasswordVO(await globals_service_1.GlobalsService.encryptData(props.password)), new ValueObjects_1.AvatarVO((_a = props.avatar) !== null && _a !== void 0 ? _a : null), new ValueObjects_1.AgeVO((_b = props.age) !== null && _b !== void 0 ? _b : null), booleanVO_1.BooleanVO.create((_c = props.isGoogleUser) !== null && _c !== void 0 ? _c : false), stringNullableVO_1.StringNullableVO.create((_d = props.description) !== null && _d !== void 0 ? _d : null), ValueObjects_1.RolesVO.create((_e = props.roles) !== null && _e !== void 0 ? _e : ['user']), ValueObjects_1.BlackListVO.create((_f = props.blackList) !== null && _f !== void 0 ? _f : []), booleanVO_1.BooleanVO.create(false), stringNullableVO_1.StringNullableVO.create((_g = props.country) !== null && _g !== void 0 ? _g : null), new ValueObjects_1.GenderVO((_h = props.gender) !== null && _h !== void 0 ? _h : null), props.nativeLanguages, props.learningLanguages, props.ctx);
     }
     static fromObject(props) {
         return {
@@ -1125,14 +1107,14 @@ exports.User = User;
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ID = void 0;
-const uuid_1 = __webpack_require__(42);
-const stringVO_1 = __webpack_require__(43);
+const uuid_1 = __webpack_require__(43);
+const stringVO_1 = __webpack_require__(44);
 const common_1 = __webpack_require__(1);
 class ID extends stringVO_1.StringVO {
     constructor(valuePrimitive) {
@@ -1155,20 +1137,20 @@ exports.ID = ID;
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ ((module) => {
 
 module.exports = require("uuid");
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.StringVO = void 0;
 const common_1 = __webpack_require__(1);
-const BaseVO_1 = __webpack_require__(44);
+const BaseVO_1 = __webpack_require__(45);
 class StringVO extends BaseVO_1.BaseVO {
     constructor(value) {
         super();
@@ -1191,7 +1173,7 @@ exports.StringVO = StringVO;
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -1203,7 +1185,7 @@ exports.BaseVO = BaseVO;
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -1218,40 +1200,16 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-__exportStar(__webpack_require__(46), exports);
-__exportStar(__webpack_require__(48), exports);
+__exportStar(__webpack_require__(47), exports);
 __exportStar(__webpack_require__(49), exports);
 __exportStar(__webpack_require__(51), exports);
-__exportStar(__webpack_require__(52), exports);
 __exportStar(__webpack_require__(53), exports);
 __exportStar(__webpack_require__(54), exports);
 __exportStar(__webpack_require__(55), exports);
-__exportStar(__webpack_require__(56), exports);
 __exportStar(__webpack_require__(57), exports);
-
-
-/***/ }),
-/* 46 */
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.AgeVO = void 0;
-const common_1 = __webpack_require__(1);
-const numberVO_1 = __webpack_require__(47);
-class AgeVO extends numberVO_1.NumberVO {
-    constructor(value) {
-        super(value);
-        this.validate();
-    }
-    validate() {
-        if (!this.valuePrimitive || this.valuePrimitive < AgeVO.MIN) {
-            throw new common_1.BadRequestException(`Age field cannot be empty or less than ${AgeVO.MIN} `);
-        }
-    }
-}
-exports.AgeVO = AgeVO;
-AgeVO.MIN = 8;
+__exportStar(__webpack_require__(58), exports);
+__exportStar(__webpack_require__(59), exports);
+__exportStar(__webpack_require__(60), exports);
 
 
 /***/ }),
@@ -1260,28 +1218,22 @@ AgeVO.MIN = 8;
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.NumberVO = void 0;
+exports.AgeVO = void 0;
 const common_1 = __webpack_require__(1);
-const BaseVO_1 = __webpack_require__(44);
-class NumberVO extends BaseVO_1.BaseVO {
+const numberNullableVO_1 = __webpack_require__(48);
+class AgeVO extends numberNullableVO_1.NumberNullableVO {
     constructor(value) {
-        super();
-        this.valuePrimitive = value;
+        super(value);
         this.validate();
     }
-    static create(value) {
-        return new this(value);
-    }
-    value() {
-        return this.valuePrimitive;
-    }
     validate() {
-        if (typeof this.valuePrimitive !== 'number') {
-            throw new common_1.BadRequestException('Just are allowed number type.');
+        if (this.valuePrimitive && this.valuePrimitive < AgeVO.MIN) {
+            throw new common_1.BadRequestException(`Age field cannot be empty or less than ${AgeVO.MIN} `);
         }
     }
 }
-exports.NumberVO = NumberVO;
+exports.AgeVO = AgeVO;
+AgeVO.MIN = 18;
 
 
 /***/ }),
@@ -1290,17 +1242,46 @@ exports.NumberVO = NumberVO;
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.NumberNullableVO = void 0;
+const common_1 = __webpack_require__(1);
+const BaseVO_1 = __webpack_require__(45);
+class NumberNullableVO extends BaseVO_1.BaseVO {
+    constructor(value) {
+        super();
+        this.valuePrimitive = value;
+    }
+    static create(value) {
+        return new this(value);
+    }
+    value() {
+        return this.valuePrimitive;
+    }
+    validate() {
+        if (typeof this.valuePrimitive !== 'number' || true) {
+            throw new common_1.BadRequestException('Just are allowed number and null types.');
+        }
+    }
+}
+exports.NumberNullableVO = NumberNullableVO;
+
+
+/***/ }),
+/* 49 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AvatarVO = void 0;
 const common_1 = __webpack_require__(1);
-const stringVO_1 = __webpack_require__(43);
-class AvatarVO extends stringVO_1.StringVO {
+const stringNullableVO_1 = __webpack_require__(50);
+class AvatarVO extends stringNullableVO_1.StringNullableVO {
     constructor(value) {
         super(value);
         this.validate();
     }
     validate() {
         var _a;
-        if (!this.valuePrimitive ||
+        if (this.valuePrimitive &&
             ((_a = this.valuePrimitive) === null || _a === void 0 ? void 0 : _a.length) > AvatarVO.MAX_LENGTH) {
             throw new common_1.BadRequestException(`Avatar field cannot be empty or longer than ${AvatarVO.MAX_LENGTH} `);
         }
@@ -1311,20 +1292,49 @@ AvatarVO.MAX_LENGTH = 100;
 
 
 /***/ }),
-/* 49 */
+/* 50 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.StringNullableVO = void 0;
+const common_1 = __webpack_require__(1);
+const BaseVO_1 = __webpack_require__(45);
+class StringNullableVO extends BaseVO_1.BaseVO {
+    constructor(value) {
+        super();
+        this.valuePrimitive = value;
+    }
+    static create(value) {
+        return new this(value);
+    }
+    value() {
+        return this.valuePrimitive;
+    }
+    validate() {
+        if (typeof this.valuePrimitive !== 'string' || true) {
+            throw new common_1.BadRequestException('Just are allowed string and null types.');
+        }
+    }
+}
+exports.StringNullableVO = StringNullableVO;
+
+
+/***/ }),
+/* 51 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.BlackListVO = void 0;
-const collectionVO_1 = __webpack_require__(50);
+const collectionVO_1 = __webpack_require__(52);
 class BlackListVO extends collectionVO_1.CollectionVO {
 }
 exports.BlackListVO = BlackListVO;
 
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -1354,7 +1364,7 @@ exports.CollectionVO = CollectionVO;
 
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -1382,14 +1392,14 @@ exports.Countries = Countries;
 
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.EmailVo = void 0;
 const common_1 = __webpack_require__(1);
-const stringVO_1 = __webpack_require__(43);
+const stringVO_1 = __webpack_require__(44);
 class EmailVo extends stringVO_1.StringVO {
     constructor(value) {
         super(value);
@@ -1413,28 +1423,30 @@ exports.EmailVo = EmailVo;
 
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.GenderVO = exports.gender = void 0;
 const common_1 = __webpack_require__(1);
-const stringVO_1 = __webpack_require__(43);
+const stringNullableVO_1 = __webpack_require__(50);
+const objectVO_1 = __webpack_require__(56);
 var gender;
 (function (gender) {
     gender["MALE"] = "male";
     gender["FEMALE"] = "female";
     gender["PREFER_NOT_SAY"] = "prefer_not_say";
 })(gender = exports.gender || (exports.gender = {}));
-class GenderVO extends stringVO_1.StringVO {
+class GenderVO extends stringNullableVO_1.StringNullableVO {
     constructor(value) {
         super(value);
         this.validate();
+        this.valuePrimitive = value;
     }
     validate() {
-        const values = new ObjectVO(gender);
-        if (!values.exists(this.valuePrimitive)) {
+        const values = new objectVO_1.ObjectVO(gender);
+        if (this.valuePrimitive && !values.exists(this.valuePrimitive)) {
             throw new common_1.BadRequestException(`Gender field cannot be empty and the option are: ${Object.values(gender)
                 .map((item) => item)
                 .join(', ')} `);
@@ -1446,14 +1458,45 @@ GenderVO.MAX_LENGTH = 100;
 
 
 /***/ }),
-/* 54 */
+/* 56 */
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ObjectVO = void 0;
+class ObjectVO {
+    constructor(value) {
+        this.valuePrimitive = {};
+        this.valuePrimitive = value;
+    }
+    exists(value) {
+        return Object.values(value).indexOf(value) >= 0;
+    }
+    add(value) {
+        Object.assign(this.valuePrimitive, value);
+    }
+    reset() {
+        this.valuePrimitive = {};
+    }
+    getItem(key) {
+        return this.valuePrimitive[key];
+    }
+    deleteItem(key) {
+        this.getItem(key) && delete this.valuePrimitive[key];
+    }
+}
+exports.ObjectVO = ObjectVO;
+
+
+/***/ }),
+/* 57 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.NameVO = void 0;
 const common_1 = __webpack_require__(1);
-const stringVO_1 = __webpack_require__(43);
+const stringVO_1 = __webpack_require__(44);
 class NameVO extends stringVO_1.StringVO {
     constructor(value) {
         super(value);
@@ -1473,14 +1516,14 @@ NameVO.MAX_LENGTH = 100;
 
 
 /***/ }),
-/* 55 */
+/* 58 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.PasswordVO = void 0;
 const common_1 = __webpack_require__(1);
-const stringVO_1 = __webpack_require__(43);
+const stringVO_1 = __webpack_require__(44);
 class PasswordVO extends stringVO_1.StringVO {
     constructor(value) {
         super(value);
@@ -1502,27 +1545,27 @@ PasswordVO.MIN_LENGTH = 8;
 
 
 /***/ }),
-/* 56 */
+/* 59 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.RolesVO = void 0;
-const collectionVO_1 = __webpack_require__(50);
+const collectionVO_1 = __webpack_require__(52);
 class RolesVO extends collectionVO_1.CollectionVO {
 }
 exports.RolesVO = RolesVO;
 
 
 /***/ }),
-/* 57 */
+/* 60 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.SurnameVO = void 0;
 const common_1 = __webpack_require__(1);
-const stringVO_1 = __webpack_require__(43);
+const stringVO_1 = __webpack_require__(44);
 class SurnameVO extends stringVO_1.StringVO {
     constructor(value) {
         super(value);
@@ -1541,14 +1584,14 @@ SurnameVO.MAX_LENGTH = 100;
 
 
 /***/ }),
-/* 58 */
+/* 61 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.BooleanVO = void 0;
 const common_1 = __webpack_require__(1);
-const BaseVO_1 = __webpack_require__(44);
+const BaseVO_1 = __webpack_require__(45);
 class BooleanVO extends BaseVO_1.BaseVO {
     constructor(value) {
         super();
@@ -1556,7 +1599,7 @@ class BooleanVO extends BaseVO_1.BaseVO {
         this.validate();
     }
     static create(value) {
-        return new this(value);
+        return new this(value !== null && value !== void 0 ? value : false);
     }
     value() {
         return this.valuePrimitive;
@@ -1574,37 +1617,7 @@ exports.BooleanVO = BooleanVO;
 
 
 /***/ }),
-/* 59 */
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.StringNullableVO = void 0;
-const common_1 = __webpack_require__(1);
-const BaseVO_1 = __webpack_require__(44);
-class StringNullableVO extends BaseVO_1.BaseVO {
-    constructor(value) {
-        super();
-        this.valuePrimitive = value;
-    }
-    static create(value) {
-        return new this(value);
-    }
-    value() {
-        return this.valuePrimitive;
-    }
-    validate() {
-        if (typeof this.valuePrimitive !== 'string' ||
-            this.valuePrimitive !== null) {
-            throw new common_1.BadRequestException('Just are allowed string and null types.');
-        }
-    }
-}
-exports.StringNullableVO = StringNullableVO;
-
-
-/***/ }),
-/* 60 */
+/* 62 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -1617,7 +1630,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.GlobalsService = void 0;
 const common_1 = __webpack_require__(1);
-const bcrypt = __webpack_require__(61);
+const bcrypt = __webpack_require__(63);
 let GlobalsService = class GlobalsService {
     static async encryptData(value) {
         return await bcrypt.hash(value, await bcrypt.genSalt());
@@ -1633,13 +1646,205 @@ exports.GlobalsService = GlobalsService;
 
 
 /***/ }),
-/* 61 */
+/* 63 */
 /***/ ((module) => {
 
 module.exports = require("bcrypt");
 
 /***/ }),
-/* 62 */
+/* 64 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AppCommandHandlerDecorator = void 0;
+const common_1 = __webpack_require__(1);
+const cqrs_1 = __webpack_require__(65);
+const AppCommandHandlerDecorator = (commandHandler) => {
+    return common_1.applyDecorators(cqrs_1.CommandHandler(commandHandler));
+};
+exports.AppCommandHandlerDecorator = AppCommandHandlerDecorator;
+
+
+/***/ }),
+/* 65 */
+/***/ ((module) => {
+
+module.exports = require("@nestjs/cqrs");
+
+/***/ }),
+/* 66 */
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(31), exports);
+
+
+/***/ }),
+/* 67 */
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.UserFindById = void 0;
+const common_1 = __webpack_require__(1);
+const Services_1 = __webpack_require__(28);
+let UserFindById = class UserFindById {
+    constructor(findService) {
+        this.findService = findService;
+    }
+    findOne(id) {
+        return this.findService.findOne(id);
+    }
+};
+__decorate([
+    common_1.Get(':id'),
+    __param(0, common_1.Param('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], UserFindById.prototype, "findOne", null);
+UserFindById = __decorate([
+    common_1.Controller('user'),
+    __metadata("design:paramtypes", [typeof (_a = typeof Services_1.UserFinder !== "undefined" && Services_1.UserFinder) === "function" ? _a : Object])
+], UserFindById);
+exports.UserFindById = UserFindById;
+
+
+/***/ }),
+/* 68 */
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.UserFindAll = void 0;
+const common_1 = __webpack_require__(1);
+const Services_1 = __webpack_require__(28);
+let UserFindAll = class UserFindAll {
+    constructor(findService) {
+        this.findService = findService;
+    }
+    findAll() {
+        return this.findService.findAll();
+    }
+};
+__decorate([
+    common_1.Get(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], UserFindAll.prototype, "findAll", null);
+UserFindAll = __decorate([
+    common_1.Controller('user'),
+    __metadata("design:paramtypes", [typeof (_a = typeof Services_1.UserFinder !== "undefined" && Services_1.UserFinder) === "function" ? _a : Object])
+], UserFindAll);
+exports.UserFindAll = UserFindAll;
+
+
+/***/ }),
+/* 69 */
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a, _b;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.UserUpdater = void 0;
+const common_1 = __webpack_require__(1);
+const update_user_dto_1 = __webpack_require__(70);
+const Services_1 = __webpack_require__(28);
+const User_1 = __webpack_require__(41);
+let UserUpdater = class UserUpdater {
+    constructor(userRestService) {
+        this.userRestService = userRestService;
+    }
+    update(id, updateUserRestDto) {
+        console.log('user id patch', id);
+        return this.userRestService.save(Object.assign({}, User_1.User.fromObject(updateUserRestDto)));
+    }
+};
+__decorate([
+    common_1.Patch(':id'),
+    __param(0, common_1.Param('id')),
+    __param(1, common_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, typeof (_a = typeof update_user_dto_1.UpdateUserDto !== "undefined" && update_user_dto_1.UpdateUserDto) === "function" ? _a : Object]),
+    __metadata("design:returntype", void 0)
+], UserUpdater.prototype, "update", null);
+UserUpdater = __decorate([
+    common_1.Controller('user'),
+    __metadata("design:paramtypes", [typeof (_b = typeof Services_1.UserSaver !== "undefined" && Services_1.UserSaver) === "function" ? _b : Object])
+], UserUpdater);
+exports.UserUpdater = UserUpdater;
+
+
+/***/ }),
+/* 70 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.UpdateUserDto = void 0;
+const mapped_types_1 = __webpack_require__(71);
+const create_user_dto_1 = __webpack_require__(26);
+class UpdateUserDto extends mapped_types_1.PartialType(create_user_dto_1.CreateUserDto) {
+}
+exports.UpdateUserDto = UpdateUserDto;
+
+
+/***/ }),
+/* 71 */
+/***/ ((module) => {
+
+module.exports = require("@nestjs/mapped-types");
+
+/***/ }),
+/* 72 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -1659,7 +1864,7 @@ var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.UserDeleter = void 0;
 const common_1 = __webpack_require__(1);
-const guards_1 = __webpack_require__(63);
+const guards_1 = __webpack_require__(73);
 const Services_1 = __webpack_require__(28);
 let UserDeleter = class UserDeleter {
     constructor(remover) {
@@ -1685,7 +1890,7 @@ exports.UserDeleter = UserDeleter;
 
 
 /***/ }),
-/* 63 */
+/* 73 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -1700,12 +1905,12 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-__exportStar(__webpack_require__(64), exports);
-__exportStar(__webpack_require__(66), exports);
+__exportStar(__webpack_require__(74), exports);
+__exportStar(__webpack_require__(76), exports);
 
 
 /***/ }),
-/* 64 */
+/* 74 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -1718,7 +1923,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.JwtAuthGuard = void 0;
 const common_1 = __webpack_require__(1);
-const passport_1 = __webpack_require__(65);
+const passport_1 = __webpack_require__(75);
 let JwtAuthGuard = class JwtAuthGuard extends passport_1.AuthGuard('jwt') {
 };
 JwtAuthGuard = __decorate([
@@ -1728,13 +1933,13 @@ exports.JwtAuthGuard = JwtAuthGuard;
 
 
 /***/ }),
-/* 65 */
+/* 75 */
 /***/ ((module) => {
 
 module.exports = require("@nestjs/passport");
 
 /***/ }),
-/* 66 */
+/* 76 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -1747,7 +1952,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.LocalAuthGuard = void 0;
 const common_1 = __webpack_require__(1);
-const passport_1 = __webpack_require__(65);
+const passport_1 = __webpack_require__(75);
 let LocalAuthGuard = class LocalAuthGuard extends passport_1.AuthGuard('local') {
 };
 LocalAuthGuard = __decorate([
@@ -1757,185 +1962,14 @@ exports.LocalAuthGuard = LocalAuthGuard;
 
 
 /***/ }),
-/* 67 */
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.CommandHandlers = exports.PortServices = exports.UserRepositoryPort = void 0;
-__exportStar(__webpack_require__(68), exports);
-var Port_1 = __webpack_require__(75);
-Object.defineProperty(exports, "UserRepositoryPort", ({ enumerable: true, get: function () { return Port_1.UserRepositoryPort; } }));
-exports.PortServices = __webpack_require__(28);
-const UseCases_1 = __webpack_require__(68);
-exports.CommandHandlers = [UseCases_1.CreateUserCommandHandler];
-
-
-/***/ }),
-/* 68 */
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-__exportStar(__webpack_require__(69), exports);
-
-
-/***/ }),
-/* 69 */
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-__exportStar(__webpack_require__(70), exports);
-__exportStar(__webpack_require__(71), exports);
-
-
-/***/ }),
-/* 70 */
-/***/ ((__unused_webpack_module, exports) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.CreateUserCommand = void 0;
-class CreateUserCommand {
-    constructor(data) {
-        this.data = data;
-    }
-}
-exports.CreateUserCommand = CreateUserCommand;
-
-
-/***/ }),
-/* 71 */
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var _a;
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.CreateUserCommandHandler = void 0;
-const AppCommandHandler_1 = __webpack_require__(72);
-const CreateUserCommand_1 = __webpack_require__(70);
-const Services_1 = __webpack_require__(28);
-const User_1 = __webpack_require__(40);
-const AppCommandHandlerDecorator_1 = __webpack_require__(73);
-let CreateUserCommandHandler = class CreateUserCommandHandler extends AppCommandHandler_1.AppCommandHandler {
-    constructor(saver) {
-        super();
-        this.saver = saver;
-    }
-    async execute(command) {
-        const { data } = command;
-        const user = await User_1.User.create(data);
-        await this.saver.save(user.toPersistence());
-    }
-};
-CreateUserCommandHandler = __decorate([
-    AppCommandHandlerDecorator_1.AppCommandHandlerDecorator(CreateUserCommand_1.CreateUserCommand),
-    __metadata("design:paramtypes", [typeof (_a = typeof Services_1.UserSaver !== "undefined" && Services_1.UserSaver) === "function" ? _a : Object])
-], CreateUserCommandHandler);
-exports.CreateUserCommandHandler = CreateUserCommandHandler;
-
-
-/***/ }),
-/* 72 */
-/***/ ((__unused_webpack_module, exports) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.AppCommandHandler = void 0;
-class AppCommandHandler {
-}
-exports.AppCommandHandler = AppCommandHandler;
-
-
-/***/ }),
-/* 73 */
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.AppCommandHandlerDecorator = void 0;
-const common_1 = __webpack_require__(1);
-const cqrs_1 = __webpack_require__(74);
-const AppCommandHandlerDecorator = (commandHandler) => {
-    return common_1.applyDecorators(cqrs_1.CommandHandler(commandHandler));
-};
-exports.AppCommandHandlerDecorator = AppCommandHandlerDecorator;
-
-
-/***/ }),
-/* 74 */
-/***/ ((module) => {
-
-module.exports = require("@nestjs/cqrs");
-
-/***/ }),
-/* 75 */
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-__exportStar(__webpack_require__(31), exports);
-
-
-/***/ }),
-/* 76 */
+/* 77 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.PrismaUserRepository = void 0;
-const AppRepositoryService_1 = __webpack_require__(77);
-const User_1 = __webpack_require__(40);
+const AppRepositoryService_1 = __webpack_require__(78);
+const User_1 = __webpack_require__(41);
 class PrismaUserRepository extends AppRepositoryService_1.AppRepositoryService {
     constructor(appRepositoryService) {
         super();
@@ -1943,11 +1977,14 @@ class PrismaUserRepository extends AppRepositoryService_1.AppRepositoryService {
     }
     async save(user) {
         var _a;
-        const userObject = this.appRepositoryService.user.upsert({
+        console.log('enter on save prisma');
+        console.log('enter on save prisma', await this.appRepositoryService);
+        const userObject = await this.appRepositoryService.user.upsert({
             create: Object.assign({}, user),
             update: Object.assign({}, user),
             where: { id: user.id },
         });
+        console.log('after save', userObject);
         return (_a = User_1.User.fromObject(userObject)) === null || _a === void 0 ? void 0 : _a.id;
     }
     async findAll() {
@@ -1982,7 +2019,7 @@ exports.PrismaUserRepository = PrismaUserRepository;
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -1995,7 +2032,7 @@ exports.AppRepositoryService = AppRepositoryService;
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -2008,11 +2045,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AuthModule = void 0;
 const common_1 = __webpack_require__(1);
-const services = __webpack_require__(79);
-const auth_controller_1 = __webpack_require__(84);
-const strategies = __webpack_require__(86);
-const guards = __webpack_require__(63);
-const jwt_1 = __webpack_require__(81);
+const services = __webpack_require__(80);
+const auth_controller_1 = __webpack_require__(85);
+const strategies = __webpack_require__(87);
+const guards = __webpack_require__(73);
+const jwt_1 = __webpack_require__(82);
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
@@ -2038,7 +2075,7 @@ exports.AuthModule = AuthModule;
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -2053,12 +2090,12 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-__exportStar(__webpack_require__(80), exports);
-__exportStar(__webpack_require__(82), exports);
+__exportStar(__webpack_require__(81), exports);
+__exportStar(__webpack_require__(83), exports);
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -2075,9 +2112,9 @@ var _a, _b, _c;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AuthService = void 0;
 const common_1 = __webpack_require__(1);
-const jwt_1 = __webpack_require__(81);
+const jwt_1 = __webpack_require__(82);
 const prisma_service_1 = __webpack_require__(13);
-const globals_service_1 = __webpack_require__(60);
+const globals_service_1 = __webpack_require__(62);
 const _ = __webpack_require__(21);
 let AuthService = class AuthService {
     constructor(jwtService, prismaService, globalsService) {
@@ -2148,13 +2185,13 @@ exports.AuthService = AuthService;
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ ((module) => {
 
 module.exports = require("@nestjs/jwt");
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -2174,7 +2211,7 @@ var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CacheService = void 0;
 const common_1 = __webpack_require__(1);
-const cache_manager_1 = __webpack_require__(83);
+const cache_manager_1 = __webpack_require__(84);
 let CacheService = class CacheService {
     constructor(cacheManager) {
         this.cacheManager = cacheManager;
@@ -2197,13 +2234,13 @@ exports.CacheService = CacheService;
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ ((module) => {
 
 module.exports = require("cache-manager");
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -2223,12 +2260,12 @@ var _a, _b;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AuthController = void 0;
 const common_1 = __webpack_require__(1);
-const services_1 = __webpack_require__(79);
-const passport_1 = __webpack_require__(65);
-const guards_1 = __webpack_require__(63);
+const services_1 = __webpack_require__(80);
+const passport_1 = __webpack_require__(75);
+const guards_1 = __webpack_require__(73);
 const decorators_1 = __webpack_require__(18);
 const util_1 = __webpack_require__(22);
-const userDto_1 = __webpack_require__(85);
+const userDto_1 = __webpack_require__(86);
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -2276,7 +2313,7 @@ exports.AuthController = AuthController;
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -2300,7 +2337,7 @@ exports.UserDto = UserDto;
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -2315,13 +2352,13 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-__exportStar(__webpack_require__(87), exports);
-__exportStar(__webpack_require__(90), exports);
-__exportStar(__webpack_require__(92), exports);
+__exportStar(__webpack_require__(88), exports);
+__exportStar(__webpack_require__(91), exports);
+__exportStar(__webpack_require__(93), exports);
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -2336,9 +2373,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.GoogleStrategy = void 0;
-const passport_1 = __webpack_require__(65);
-const passport_google_oauth20_1 = __webpack_require__(88);
-const dotenv_1 = __webpack_require__(89);
+const passport_1 = __webpack_require__(75);
+const passport_google_oauth20_1 = __webpack_require__(89);
+const dotenv_1 = __webpack_require__(90);
 const common_1 = __webpack_require__(1);
 dotenv_1.config();
 let GoogleStrategy = class GoogleStrategy extends passport_1.PassportStrategy(passport_google_oauth20_1.Strategy, 'google') {
@@ -2369,19 +2406,19 @@ exports.GoogleStrategy = GoogleStrategy;
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ ((module) => {
 
 module.exports = require("passport-google-oauth20");
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ ((module) => {
 
 module.exports = require("dotenv");
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -2397,8 +2434,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.JwtStrategy = void 0;
 const common_1 = __webpack_require__(1);
-const passport_1 = __webpack_require__(65);
-const passport_jwt_1 = __webpack_require__(91);
+const passport_1 = __webpack_require__(75);
+const passport_jwt_1 = __webpack_require__(92);
 let JwtStrategy = class JwtStrategy extends passport_1.PassportStrategy(passport_jwt_1.Strategy) {
     constructor() {
         super({
@@ -2419,13 +2456,13 @@ exports.JwtStrategy = JwtStrategy;
 
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ ((module) => {
 
 module.exports = require("passport-jwt");
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -2442,9 +2479,9 @@ var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.LocalStrategy = void 0;
 const common_1 = __webpack_require__(1);
-const passport_1 = __webpack_require__(65);
-const passport_local_1 = __webpack_require__(93);
-const services_1 = __webpack_require__(79);
+const passport_1 = __webpack_require__(75);
+const passport_local_1 = __webpack_require__(94);
+const services_1 = __webpack_require__(80);
 let LocalStrategy = class LocalStrategy extends passport_1.PassportStrategy(passport_local_1.Strategy) {
     constructor(authService) {
         super({ usernameField: 'email', passwordField: 'password' });
@@ -2469,13 +2506,13 @@ exports.LocalStrategy = LocalStrategy;
 
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ ((module) => {
 
 module.exports = require("passport-local");
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -2488,8 +2525,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.GlobalsModule = void 0;
 const common_1 = __webpack_require__(1);
-const globals_service_1 = __webpack_require__(60);
-const globals_controller_1 = __webpack_require__(95);
+const globals_service_1 = __webpack_require__(62);
+const globals_controller_1 = __webpack_require__(96);
 let GlobalsModule = class GlobalsModule {
 };
 GlobalsModule = __decorate([
@@ -2504,7 +2541,7 @@ exports.GlobalsModule = GlobalsModule;
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -2521,7 +2558,7 @@ var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.GlobalsController = void 0;
 const common_1 = __webpack_require__(1);
-const globals_service_1 = __webpack_require__(60);
+const globals_service_1 = __webpack_require__(62);
 let GlobalsController = class GlobalsController {
     constructor(globalsService) {
         this.globalsService = globalsService;

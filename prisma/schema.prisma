@@ -7,52 +7,48 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id                String   @id @default(uuid())
+  id                String              @id @unique
   name              String
   surname           String
-  email             String   @unique
+  email             String              @unique
   password          String
   avatar            String?
   age               Int?
-  isGoogleUser      Boolean?  @default(false)
+  isGoogleUser      Boolean?            @default(false)
   description       String?
-  roles              String[]
-  createdAt         DateTime? @default(now())
-  updatedAt         DateTime? @updatedAt
-  isActive          Boolean?  @default(false)
-  isBanish          Boolean?  @default(false)
+  roles             String[]
+  createdAt         DateTime?           @default(now())
+  updatedAt         DateTime?           @updatedAt
+  isActive          Boolean?            @default(false)
+  isBanish          Boolean?            @default(false)
   country           String?
-  lastConnection    DateTime?
   learningLanguages LearningLanguages[]
   nativeLanguages   NativeLanguages[]
   gender            String?
-  reports           Report[]
   ctx               Json?
 }
 
 model NativeLanguages {
-  id       String @id @default(uuid())
-  code   String?
-  name   String?
-  user  User[]
+  id   String  @id @default(uuid())
+  code String?
+  name String?
+  user User[]
 }
 
 model LearningLanguages {
-  id       String @id @default(uuid())
-  code   String?
-  name   String?
-  level   String?
+  id    String  @id @default(uuid())
+  code  String?
+  name  String?
+  level String?
   user  User[]
 }
 
 model Report {
-  id       String @id @default(uuid())
-  userId   String
-  reason   Reason
-  user     User   @relation(fields: [userId], references: [id])
-  message  String
+  id      String @id @default(uuid())
+  userId  String
+  reason  Reason
+  message String
 }
 
 enum Role {

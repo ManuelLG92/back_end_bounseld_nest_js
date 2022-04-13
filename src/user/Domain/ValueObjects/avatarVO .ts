@@ -1,7 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
-import { StringVO } from '../../shared/ValueObjects/stringVO';
+import { StringNullableVO } from '../../../shared/ValueObjects/stringNullableVO';
 
-export class AvatarVO extends StringVO {
+export class AvatarVO extends StringNullableVO {
   public static MAX_LENGTH = 100;
 
   public constructor(value: string) {
@@ -9,9 +9,9 @@ export class AvatarVO extends StringVO {
     this.validate();
   }
 
-  protected validate(): void {
+  public validate(): void {
     if (
-      !this.valuePrimitive ||
+      this.valuePrimitive &&
       this.valuePrimitive?.length > AvatarVO.MAX_LENGTH
     ) {
       throw new BadRequestException(

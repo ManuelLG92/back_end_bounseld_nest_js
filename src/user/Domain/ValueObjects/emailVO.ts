@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import { StringVO } from '../../shared/ValueObjects/stringVO';
+import { StringVO } from '../../../shared/ValueObjects/stringVO';
 
 export class EmailVo extends StringVO {
   protected constructor(value: string) {

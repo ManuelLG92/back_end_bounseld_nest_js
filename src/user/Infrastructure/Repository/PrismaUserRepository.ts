@@ -12,12 +12,15 @@ export class PrismaUserRepository
   }
 
   async save(user: IUser): Promise<string> {
-    const userObject = this.appRepositoryService.user.upsert({
+    console.log('enter on save prisma');
+    // this.appRepositoryService.user.create( { ...user})
+    console.log('enter on save prisma', await this.appRepositoryService);
+    const userObject = await this.appRepositoryService.user.upsert({
       create: { ...user },
       update: { ...user },
       where: { id: user.id },
     });
-
+    console.log('after save', userObject);
     return User.fromObject(userObject)?.id;
   }
 

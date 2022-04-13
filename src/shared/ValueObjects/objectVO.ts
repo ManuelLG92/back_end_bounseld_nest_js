@@ -1,4 +1,4 @@
-class ObjectVO {
+export class ObjectVO {
   protected valuePrimitive = {};
 
   constructor(value: Record<string, unknown>) {

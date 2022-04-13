@@ -8,4 +8,3 @@ export * from './nameVO';
 export * from './passwordVO';
 export * from './rolesVO';
 export * from './surnameVO';
-

@@ -17,11 +17,8 @@ export class StringNullableVO extends BaseVO {
     return this.valuePrimitive;
   }
 
-  validate(): void {
-    if (
-      typeof this.valuePrimitive !== 'string' ||
-      this.valuePrimitive !== null
-    ) {
+  public validate(): void {
+    if (typeof this.valuePrimitive !== 'string' || true) {
       throw new BadRequestException('Just are allowed string and null types.');
     }
   }
