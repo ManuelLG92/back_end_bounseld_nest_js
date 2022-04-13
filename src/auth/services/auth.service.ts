@@ -70,7 +70,7 @@ export class AuthService {
   }
 
   async validateLogin(passwordPlain: string, passwordHashed: string) {
-    return await this.globalsService.compareEncryptedData(
+    return await GlobalsService.compareEncryptedData(
       passwordPlain,
       passwordHashed,
     );

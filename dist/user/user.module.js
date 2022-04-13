@@ -8,8 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserModule = void 0;
 const common_1 = require("@nestjs/common");
-const Controllers = require("./controller/");
-const VO = require("./VO");
+const Controllers = require("./controller");
 const Application_1 = require("./Application");
 const PrismaUserRepository_1 = require("./Infrastructure/Repository/PrismaUserRepository");
 const repository_1 = require("./constants/repository");
@@ -19,7 +18,6 @@ UserModule = __decorate([
     common_1.Module({
         controllers: [...Object.values(Controllers)],
         providers: [
-            ...Object.values(VO),
             ...Object.values(Application_1.PortServices),
             ...Object.values(Application_1.CommandHandlers),
             {

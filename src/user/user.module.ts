@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
-import * as Controllers from './controller/';
-import * as VO from './VO';
+import * as Controllers from './controller';
 import { CommandHandlers, PortServices } from './Application';
 import { PrismaUserRepository } from './Infrastructure/Repository/PrismaUserRepository';
 import { UserProviderConstants } from './constants/repository';
@@ -8,7 +7,6 @@ import { UserProviderConstants } from './constants/repository';
 @Module({
   controllers: [...Object.values(Controllers)],
   providers: [
-    ...Object.values(VO),
     ...Object.values(PortServices),
     ...Object.values(CommandHandlers),
     {
