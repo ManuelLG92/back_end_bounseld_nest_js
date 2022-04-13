@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  app:
+    image: chat-back:local
+    container_name: chat-back
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3500"
+    depends_on:
+      - db_chat
+    links:
+        - db_chat:db_chat
+    volumes:
+      - .:/app
+  db_chat:
+    container_name: pg_container_chat
+    image: postgres:alpine
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: lang_ex
+    ports:
+      - "5432:5432"
+  pgadmin_chat:
+    container_name: pgadmin4_container_chat
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
