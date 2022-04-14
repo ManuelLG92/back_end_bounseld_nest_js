@@ -5,24 +5,19 @@ import {
   NativeLanguages,
 } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { PrismaService } from '../prisma/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { GlobalsService } from '../globals/globals.service';
 import { IRequestDetail } from '../util';
 
 @Injectable()
 export class UserService {
-  constructor(
-    private prismaService: PrismaService,
-    private globalService: GlobalsService,
-  ) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   async create(createUserRestDto: CreateUserDto, reqDetails: IRequestDetail) {
     return await this.prismaService.user.create({
       data: {
         ...createUserRestDto,
-        password: await GlobalsService.encryptData(
-          createUserRestDto.password,
-        ),
+        password: await GlobalsService.encryptData(createUserRestDto.password),
         isGoogleUser: false,
         ctx: reqDetails,
       },
@@ -51,7 +46,7 @@ export class UserService {
 
   async update(id: string, updateUserRestDto: UpdateUserDto) {
     if (updateUserRestDto.password) {
-      updateUserRestDto.password = await await GlobalsService.encryptData(
+      updateUserRestDto.password = await GlobalsService.encryptData(
         updateUserRestDto.password,
       );
     }

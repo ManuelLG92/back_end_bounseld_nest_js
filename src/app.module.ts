@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AppGatewayModule } from './gateway/app.gateway.module';
-import { PrismaModule } from './prisma/prisma/prisma.module';
+import { PrismaModule } from './prisma/prisma.module';
 /*import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KafkaModule } from './kafka/kafka.module';
 import { TestKafkaModule } from './test-kafka/test-kafka.module';*/

@@ -1,21 +1,20 @@
-import { AppRepositoryService } from '../../../shared/Infrastructure/Repository/AppRepositoryService';
 import { UserRepositoryPort } from '../../Application';
 import { IUser, User } from '../../Domain/User';
-import { PrismaService } from '../../../prisma/prisma/prisma.service';
+import { PrismaService } from '../../../prisma/prisma.service';
+import { Injectable } from '@nestjs/common';
 
-export class PrismaUserRepository
-  extends AppRepositoryService
-  implements UserRepositoryPort
-{
-  public constructor(private appRepositoryService: PrismaService) {
-    super();
-  }
+@Injectable()
+export class PrismaUserRepository implements UserRepositoryPort {
+  public constructor(private readonly prismaService: PrismaService) {}
 
   async save(user: IUser): Promise<string> {
-    console.log('enter on save prisma');
-    // this.appRepositoryService.user.create( { ...user})
-    console.log('enter on save prisma', await this.appRepositoryService);
-    const userObject = await this.appRepositoryService.user.upsert({
+    /*    console.log(
+      'enter on save prisma',
+      // this.appRepositoryService.user.create({ data: user }),
+      this.appRepositoryService.us,
+    );*/
+    console.log('after');
+    const userObject = await this.prismaService.user.upsert({
       create: { ...user },
       update: { ...user },
       where: { id: user.id },
@@ -25,13 +24,13 @@ export class PrismaUserRepository
   }
 
   async findAll(): Promise<IUser[]> {
-    const users = await this.appRepositoryService.user.findMany();
+    const users = await this.prismaService.user.findMany();
 
     return users?.map((user) => User.fromObject(user));
   }
 
   async findOne(id: string): Promise<IUser> {
-    const user = await this.appRepositoryService.user.findUnique({
+    const user = await this.prismaService.user.findUnique({
       where: {
         id,
       },
@@ -41,7 +40,7 @@ export class PrismaUserRepository
   }
 
   async findOneByEmail(email: string): Promise<IUser> {
-    const user = await this.appRepositoryService.user.findFirst({
+    const user = await this.prismaService.user.findFirst({
       where: {
         email,
       },
@@ -50,7 +49,7 @@ export class PrismaUserRepository
   }
 
   async remove(id: string): Promise<void> {
-    await this.appRepositoryService.user.delete({
+    await this.prismaService.user.delete({
       where: {
         id,
       },

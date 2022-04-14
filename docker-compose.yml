@@ -6,7 +6,7 @@ services:
     container_name: chat-back
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     ports:
       - "3000:3500"
     depends_on:

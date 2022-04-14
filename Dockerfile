@@ -8,6 +8,7 @@ WORKDIR /src/install
 # Vamos a copiar los archivos de npm para instalar las dependencias
 COPY package.json .
 COPY yarn.lock .
+COPY prisma ./prisma
 
 # Instalamos las dependencias...
 RUN yarn install

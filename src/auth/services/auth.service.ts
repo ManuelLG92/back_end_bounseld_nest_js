@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { IRequestDetail, TJwt } from '../../util';
-import { PrismaService } from '../../prisma/prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { GlobalsService } from '../../globals/globals.service';
 import * as _ from 'lodash';
 
@@ -20,7 +20,6 @@ export class AuthService {
   constructor(
     private jwtService: JwtService,
     private prismaService: PrismaService,
-    private globalsService: GlobalsService,
   ) {}
   googleLogin(req) {
     if (!req.user) {
