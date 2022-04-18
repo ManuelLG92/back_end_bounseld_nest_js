@@ -1,7 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
 import { StringVO } from '../../../shared/ValueObjects/stringVO';
 
-export class NameVO extends StringVO {
+export class LanguageNameVO extends StringVO {
   public static readonly MAX_LENGTH = 100;
 
   public constructor(value: string) {
@@ -10,13 +10,17 @@ export class NameVO extends StringVO {
     this.validate();
   }
 
+  static create(value: string): LanguageNameVO {
+    return new this(value);
+  }
+
   protected validate(): void {
     if (
       !this.valuePrimitive ||
-      this.valuePrimitive?.length > NameVO.MAX_LENGTH
+      this.valuePrimitive?.length > LanguageNameVO.MAX_LENGTH
     ) {
       throw new BadRequestException(
-        `Name field cannot be empty or longer than ${NameVO.MAX_LENGTH} `,
+        `Language Name field cannot be empty or longer than ${LanguageNameVO.MAX_LENGTH} `,
       );
     }
   }

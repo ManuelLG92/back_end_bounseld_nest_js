@@ -1,4 +1,4 @@
-import { AppCommand } from '../../../Infrastructure/AppCqrsBus/AppCommand';
+import { AppCommand } from '../../../../Infrastructure/AppCqrsBus';
 import { IUser } from '../../../Domain/User';
 
 export class CreateUserCommand implements AppCommand {

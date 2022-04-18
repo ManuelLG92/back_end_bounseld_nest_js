@@ -31,15 +31,23 @@ model User {
 
 model NativeLanguages {
   id   String  @id @default(uuid())
-  code String?
-  name String?
+  language Languages @relation(fields: [languageId], references: [id])
+  languageId String
   user User[]
 }
 
+model Languages {
+  id   String  @id @unique
+  code String?
+  name String?
+  nativeLanguages NativeLanguages[]
+  learningLanguages LearningLanguages[]
+}
+
 model LearningLanguages {
-  id    String  @id @default(uuid())
-  code  String?
-  name  String?
+  id    String  @id @unique
+  language Languages @relation(fields: [languageId], references: [id])
+  languageId String
   level String?
   user  User[]
 }

@@ -10,6 +10,9 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { GlobalsModule } from './globals/globals.module';
 //import { LoggerModule } from 'nestjs-pino';
+import { NativeLanguagesModule } from './native-languages/native-languages.module';
+import { LearningLenguagesModule } from './learning-lenguages/learning-lenguages.module';
+import { LanguageModule } from './lenguage/language.module';
 
 @Module({
   imports: [
@@ -28,6 +31,9 @@ import { GlobalsModule } from './globals/globals.module';
     // KafkaModule,
     UserModule,
     AuthModule,
+    NativeLanguagesModule,
+    LearningLenguagesModule,
+    LanguageModule,
     // TestKafkaModule,
   ],
   controllers: [AppController],

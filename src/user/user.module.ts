@@ -10,7 +10,6 @@ import { PrismaModule } from '../prisma/prisma.module';
 @Module({
   imports: [CqrsModule, PrismaModule],
   controllers: [...Object.values(Controllers)],
-  //controllers: [...Object.values(UserControllers)],
   providers: [
     ...Object.values(PortServices),
     ...Object.values(CommandHandlers),
