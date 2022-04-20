@@ -11,7 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { GlobalsModule } from './globals/globals.module';
 //import { LoggerModule } from 'nestjs-pino';
 import { NativeLanguagesModule } from './native-languages/native-languages.module';
-import { LearningLenguagesModule } from './learning-lenguages/learning-lenguages.module';
+import { LearningLanguagesModule } from './learning-lenguages/learning-languages.module';
 import { LanguageModule } from './lenguage/language.module';
 
 @Module({
@@ -32,7 +32,7 @@ import { LanguageModule } from './lenguage/language.module';
     UserModule,
     AuthModule,
     NativeLanguagesModule,
-    LearningLenguagesModule,
+    LearningLanguagesModule,
     LanguageModule,
     // TestKafkaModule,
   ],

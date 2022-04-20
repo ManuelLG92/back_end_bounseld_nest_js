@@ -1,1 +1,1 @@
-export class LearningLenguage {}
+export class LearningLanguage {}

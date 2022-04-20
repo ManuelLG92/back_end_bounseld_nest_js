@@ -1,18 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { LearningLenguagesController } from './learning-lenguages.controller';
-import { LearningLenguagesService } from './learning-lenguages.service';
+import { LearningLaguagesController } from './learning-laguages.controller';
+import { LearningLanguagesService } from './learning-languages.service';
 
 describe('LearningLenguagesController', () => {
-  let controller: LearningLenguagesController;
+  let controller: LearningLaguagesController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [LearningLenguagesController],
-      providers: [LearningLenguagesService],
+      controllers: [LearningLaguagesController],
+      providers: [LearningLanguagesService],
     }).compile();
 
-    controller = module.get<LearningLenguagesController>(
-      LearningLenguagesController,
+    controller = module.get<LearningLaguagesController>(
+      LearningLaguagesController,
     );
   });
 
