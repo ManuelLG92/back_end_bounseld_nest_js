@@ -1,16 +1,20 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { LanguageRepositoryPort } from '../LanguageRepositoryPort';
 import { LanguageProviderConstants } from '../../../constants/repository';
-import { ILanguageCreate } from '../../../Domain/language';
+import { ILanguage } from '../../../Domain/language';
 
 @Injectable()
-export class LanguageSaver {
+export class LanguageFinder {
   constructor(
     @Inject(LanguageProviderConstants.LANGUAGE_REPOSITORY)
     private languageRepositoryPort: LanguageRepositoryPort,
   ) {}
 
-  async save(languageCreate: ILanguageCreate): Promise<string> {
-    return await this.languageRepositoryPort.save({ ...languageCreate });
+  async find(code: string): Promise<ILanguage> {
+    return await this.languageRepositoryPort.findOne(code);
+  }
+
+  async findAll(): Promise<ILanguage[]> {
+    return await this.languageRepositoryPort.findAll();
   }
 }

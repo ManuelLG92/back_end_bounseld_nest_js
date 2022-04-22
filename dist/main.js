@@ -2,6 +2,194 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/Infrastructure/AppCqrsBus/Command/AppCommand.ts":
+/*!*************************************************************!*\
+  !*** ./src/Infrastructure/AppCqrsBus/Command/AppCommand.ts ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AppCommand = void 0;
+class AppCommand {
+}
+exports.AppCommand = AppCommand;
+
+
+/***/ }),
+
+/***/ "./src/Infrastructure/AppCqrsBus/Command/AppCommandHandler.ts":
+/*!********************************************************************!*\
+  !*** ./src/Infrastructure/AppCqrsBus/Command/AppCommandHandler.ts ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AppCommandHandler = void 0;
+class AppCommandHandler {
+}
+exports.AppCommandHandler = AppCommandHandler;
+
+
+/***/ }),
+
+/***/ "./src/Infrastructure/AppCqrsBus/Command/AppCommandHandlerDecorator.ts":
+/*!*****************************************************************************!*\
+  !*** ./src/Infrastructure/AppCqrsBus/Command/AppCommandHandlerDecorator.ts ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AppCommandHandlerDecorator = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const cqrs_1 = __webpack_require__(/*! @nestjs/cqrs */ "@nestjs/cqrs");
+const AppCommandHandlerDecorator = (commandHandler) => {
+    return (0, common_1.applyDecorators)((0, cqrs_1.CommandHandler)(commandHandler));
+};
+exports.AppCommandHandlerDecorator = AppCommandHandlerDecorator;
+
+
+/***/ }),
+
+/***/ "./src/Infrastructure/AppCqrsBus/Command/index.ts":
+/*!********************************************************!*\
+  !*** ./src/Infrastructure/AppCqrsBus/Command/index.ts ***!
+  \********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./AppCommand */ "./src/Infrastructure/AppCqrsBus/Command/AppCommand.ts"), exports);
+__exportStar(__webpack_require__(/*! ./AppCommandHandler */ "./src/Infrastructure/AppCqrsBus/Command/AppCommandHandler.ts"), exports);
+__exportStar(__webpack_require__(/*! ./AppCommandHandlerDecorator */ "./src/Infrastructure/AppCqrsBus/Command/AppCommandHandlerDecorator.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/Infrastructure/AppCqrsBus/Query/AppQuery.ts":
+/*!*********************************************************!*\
+  !*** ./src/Infrastructure/AppCqrsBus/Query/AppQuery.ts ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AppQuery = void 0;
+class AppQuery {
+}
+exports.AppQuery = AppQuery;
+
+
+/***/ }),
+
+/***/ "./src/Infrastructure/AppCqrsBus/Query/AppQueryHandler.ts":
+/*!****************************************************************!*\
+  !*** ./src/Infrastructure/AppCqrsBus/Query/AppQueryHandler.ts ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AppQueryHandler = void 0;
+class AppQueryHandler {
+}
+exports.AppQueryHandler = AppQueryHandler;
+
+
+/***/ }),
+
+/***/ "./src/Infrastructure/AppCqrsBus/Query/AppQueryHandlerDecorator.ts":
+/*!*************************************************************************!*\
+  !*** ./src/Infrastructure/AppCqrsBus/Query/AppQueryHandlerDecorator.ts ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AppQueryHandlerDecorator = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const cqrs_1 = __webpack_require__(/*! @nestjs/cqrs */ "@nestjs/cqrs");
+const AppQueryHandlerDecorator = (handler) => {
+    return (0, common_1.applyDecorators)((0, cqrs_1.QueryHandler)(handler));
+};
+exports.AppQueryHandlerDecorator = AppQueryHandlerDecorator;
+
+
+/***/ }),
+
+/***/ "./src/Infrastructure/AppCqrsBus/Query/index.ts":
+/*!******************************************************!*\
+  !*** ./src/Infrastructure/AppCqrsBus/Query/index.ts ***!
+  \******************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./AppQuery */ "./src/Infrastructure/AppCqrsBus/Query/AppQuery.ts"), exports);
+__exportStar(__webpack_require__(/*! ./AppQueryHandler */ "./src/Infrastructure/AppCqrsBus/Query/AppQueryHandler.ts"), exports);
+__exportStar(__webpack_require__(/*! ./AppQueryHandlerDecorator */ "./src/Infrastructure/AppCqrsBus/Query/AppQueryHandlerDecorator.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/Infrastructure/AppCqrsBus/index.ts":
+/*!************************************************!*\
+  !*** ./src/Infrastructure/AppCqrsBus/index.ts ***!
+  \************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./Command */ "./src/Infrastructure/AppCqrsBus/Command/index.ts"), exports);
+__exportStar(__webpack_require__(/*! ./Query */ "./src/Infrastructure/AppCqrsBus/Query/index.ts"), exports);
+
+
+/***/ }),
+
 /***/ "./src/app.controller.ts":
 /*!*******************************!*\
   !*** ./src/app.controller.ts ***!
@@ -70,6 +258,9 @@ const prisma_module_1 = __webpack_require__(/*! ./prisma/prisma.module */ "./src
 const user_module_1 = __webpack_require__(/*! ./user/user.module */ "./src/user/user.module.ts");
 const auth_module_1 = __webpack_require__(/*! ./auth/auth.module */ "./src/auth/auth.module.ts");
 const globals_module_1 = __webpack_require__(/*! ./globals/globals.module */ "./src/globals/globals.module.ts");
+const native_languages_module_1 = __webpack_require__(/*! ./native-languages/native-languages.module */ "./src/native-languages/native-languages.module.ts");
+const learning_languages_module_1 = __webpack_require__(/*! ./learning-lenguages/learning-languages.module */ "./src/learning-lenguages/learning-languages.module.ts");
+const language_module_1 = __webpack_require__(/*! ./lenguage/language.module */ "./src/lenguage/language.module.ts");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -80,6 +271,9 @@ AppModule = __decorate([
             prisma_module_1.PrismaModule,
             user_module_1.UserModule,
             auth_module_1.AuthModule,
+            native_languages_module_1.NativeLanguagesModule,
+            learning_languages_module_1.LearningLanguagesModule,
+            language_module_1.LanguageModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
@@ -1021,6 +1215,849 @@ exports.GlobalsService = GlobalsService;
 
 /***/ }),
 
+/***/ "./src/learning-lenguages/dto/create-learning-language.dto.ts":
+/*!********************************************************************!*\
+  !*** ./src/learning-lenguages/dto/create-learning-language.dto.ts ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.CreateLearningLanguageDto = void 0;
+class CreateLearningLanguageDto {
+}
+exports.CreateLearningLanguageDto = CreateLearningLanguageDto;
+
+
+/***/ }),
+
+/***/ "./src/learning-lenguages/dto/update-learning-language.dto.ts":
+/*!********************************************************************!*\
+  !*** ./src/learning-lenguages/dto/update-learning-language.dto.ts ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.UpdateLearningLanguageDto = void 0;
+const mapped_types_1 = __webpack_require__(/*! @nestjs/mapped-types */ "@nestjs/mapped-types");
+const create_learning_language_dto_1 = __webpack_require__(/*! ./create-learning-language.dto */ "./src/learning-lenguages/dto/create-learning-language.dto.ts");
+class UpdateLearningLanguageDto extends (0, mapped_types_1.PartialType)(create_learning_language_dto_1.CreateLearningLanguageDto) {
+}
+exports.UpdateLearningLanguageDto = UpdateLearningLanguageDto;
+
+
+/***/ }),
+
+/***/ "./src/learning-lenguages/learning-laguages.controller.ts":
+/*!****************************************************************!*\
+  !*** ./src/learning-lenguages/learning-laguages.controller.ts ***!
+  \****************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a, _b, _c;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.LearningLaguagesController = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const learning_languages_service_1 = __webpack_require__(/*! ./learning-languages.service */ "./src/learning-lenguages/learning-languages.service.ts");
+const create_learning_language_dto_1 = __webpack_require__(/*! ./dto/create-learning-language.dto */ "./src/learning-lenguages/dto/create-learning-language.dto.ts");
+const update_learning_language_dto_1 = __webpack_require__(/*! ./dto/update-learning-language.dto */ "./src/learning-lenguages/dto/update-learning-language.dto.ts");
+let LearningLaguagesController = class LearningLaguagesController {
+    constructor(learningLenguagesService) {
+        this.learningLenguagesService = learningLenguagesService;
+    }
+    create(createLearningLanguageDto) {
+        return this.learningLenguagesService.create(createLearningLanguageDto);
+    }
+    findAll() {
+        return this.learningLenguagesService.findAll();
+    }
+    findOne(id) {
+        return this.learningLenguagesService.findOne(+id);
+    }
+    update(id, updateLearningLanguageDto) {
+        return this.learningLenguagesService.update(+id, updateLearningLanguageDto);
+    }
+    remove(id) {
+        return this.learningLenguagesService.remove(+id);
+    }
+};
+__decorate([
+    (0, common_1.Post)(),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [typeof (_a = typeof create_learning_language_dto_1.CreateLearningLanguageDto !== "undefined" && create_learning_language_dto_1.CreateLearningLanguageDto) === "function" ? _a : Object]),
+    __metadata("design:returntype", void 0)
+], LearningLaguagesController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], LearningLaguagesController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], LearningLaguagesController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Patch)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, typeof (_b = typeof update_learning_language_dto_1.UpdateLearningLanguageDto !== "undefined" && update_learning_language_dto_1.UpdateLearningLanguageDto) === "function" ? _b : Object]),
+    __metadata("design:returntype", void 0)
+], LearningLaguagesController.prototype, "update", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], LearningLaguagesController.prototype, "remove", null);
+LearningLaguagesController = __decorate([
+    (0, common_1.Controller)('learning-lenguages'),
+    __metadata("design:paramtypes", [typeof (_c = typeof learning_languages_service_1.LearningLanguagesService !== "undefined" && learning_languages_service_1.LearningLanguagesService) === "function" ? _c : Object])
+], LearningLaguagesController);
+exports.LearningLaguagesController = LearningLaguagesController;
+
+
+/***/ }),
+
+/***/ "./src/learning-lenguages/learning-languages.module.ts":
+/*!*************************************************************!*\
+  !*** ./src/learning-lenguages/learning-languages.module.ts ***!
+  \*************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.LearningLanguagesModule = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const learning_languages_service_1 = __webpack_require__(/*! ./learning-languages.service */ "./src/learning-lenguages/learning-languages.service.ts");
+const learning_laguages_controller_1 = __webpack_require__(/*! ./learning-laguages.controller */ "./src/learning-lenguages/learning-laguages.controller.ts");
+let LearningLanguagesModule = class LearningLanguagesModule {
+};
+LearningLanguagesModule = __decorate([
+    (0, common_1.Module)({
+        controllers: [learning_laguages_controller_1.LearningLaguagesController],
+        providers: [learning_languages_service_1.LearningLanguagesService],
+    })
+], LearningLanguagesModule);
+exports.LearningLanguagesModule = LearningLanguagesModule;
+
+
+/***/ }),
+
+/***/ "./src/learning-lenguages/learning-languages.service.ts":
+/*!**************************************************************!*\
+  !*** ./src/learning-lenguages/learning-languages.service.ts ***!
+  \**************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.LearningLanguagesService = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+let LearningLanguagesService = class LearningLanguagesService {
+    create(createLearningLenguageDto) {
+        return 'This action adds a new learningLenguage';
+    }
+    findAll() {
+        return `This action returns all learningLenguages`;
+    }
+    findOne(id) {
+        return `This action returns a #${id} learningLenguage`;
+    }
+    update(id, updateLearningLenguageDto) {
+        return `This action updates a #${id} learningLenguage`;
+    }
+    remove(id) {
+        return `This action removes a #${id} learningLenguage`;
+    }
+};
+LearningLanguagesService = __decorate([
+    (0, common_1.Injectable)()
+], LearningLanguagesService);
+exports.LearningLanguagesService = LearningLanguagesService;
+
+
+/***/ }),
+
+/***/ "./src/lenguage/Application/Port/LanguageRepositoryPort.ts":
+/*!*****************************************************************!*\
+  !*** ./src/lenguage/Application/Port/LanguageRepositoryPort.ts ***!
+  \*****************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.LanguageRepositoryPort = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+let LanguageRepositoryPort = class LanguageRepositoryPort {
+};
+LanguageRepositoryPort = __decorate([
+    (0, common_1.Injectable)()
+], LanguageRepositoryPort);
+exports.LanguageRepositoryPort = LanguageRepositoryPort;
+
+
+/***/ }),
+
+/***/ "./src/lenguage/Application/Port/Services/LanguageFinder.ts":
+/*!******************************************************************!*\
+  !*** ./src/lenguage/Application/Port/Services/LanguageFinder.ts ***!
+  \******************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.LanguageFinder = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const LanguageRepositoryPort_1 = __webpack_require__(/*! ../LanguageRepositoryPort */ "./src/lenguage/Application/Port/LanguageRepositoryPort.ts");
+const repository_1 = __webpack_require__(/*! ../../../constants/repository */ "./src/lenguage/constants/repository/index.ts");
+let LanguageFinder = class LanguageFinder {
+    constructor(languageRepositoryPort) {
+        this.languageRepositoryPort = languageRepositoryPort;
+    }
+    async find(code) {
+        return await this.languageRepositoryPort.findOne(code);
+    }
+    async findAll() {
+        return await this.languageRepositoryPort.findAll();
+    }
+};
+LanguageFinder = __decorate([
+    (0, common_1.Injectable)(),
+    __param(0, (0, common_1.Inject)(repository_1.LanguageProviderConstants.LANGUAGE_REPOSITORY)),
+    __metadata("design:paramtypes", [typeof (_a = typeof LanguageRepositoryPort_1.LanguageRepositoryPort !== "undefined" && LanguageRepositoryPort_1.LanguageRepositoryPort) === "function" ? _a : Object])
+], LanguageFinder);
+exports.LanguageFinder = LanguageFinder;
+
+
+/***/ }),
+
+/***/ "./src/lenguage/Application/Port/Services/index.ts":
+/*!*********************************************************!*\
+  !*** ./src/lenguage/Application/Port/Services/index.ts ***!
+  \*********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./LanguageFinder */ "./src/lenguage/Application/Port/Services/LanguageFinder.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/lenguage/Application/Port/index.ts":
+/*!************************************************!*\
+  !*** ./src/lenguage/Application/Port/index.ts ***!
+  \************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.LanguagePortServices = void 0;
+exports.LanguagePortServices = __webpack_require__(/*! ./Services */ "./src/lenguage/Application/Port/Services/index.ts");
+__exportStar(__webpack_require__(/*! ./LanguageRepositoryPort */ "./src/lenguage/Application/Port/LanguageRepositoryPort.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/lenguage/Application/UseCases/GetOne/GetLanguageHandler.ts":
+/*!************************************************************************!*\
+  !*** ./src/lenguage/Application/UseCases/GetOne/GetLanguageHandler.ts ***!
+  \************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.GetLanguageHandler = void 0;
+const AppCqrsBus_1 = __webpack_require__(/*! ../../../../Infrastructure/AppCqrsBus */ "./src/Infrastructure/AppCqrsBus/index.ts");
+const GetLanguageQuery_1 = __webpack_require__(/*! ./GetLanguageQuery */ "./src/lenguage/Application/UseCases/GetOne/GetLanguageQuery.ts");
+let GetLanguageHandler = class GetLanguageHandler {
+    async execute(command) {
+        const { id } = command;
+        console.log(id);
+    }
+};
+GetLanguageHandler = __decorate([
+    (0, AppCqrsBus_1.AppQueryHandlerDecorator)(GetLanguageQuery_1.GetLanguageQuery)
+], GetLanguageHandler);
+exports.GetLanguageHandler = GetLanguageHandler;
+
+
+/***/ }),
+
+/***/ "./src/lenguage/Application/UseCases/GetOne/GetLanguageQuery.ts":
+/*!**********************************************************************!*\
+  !*** ./src/lenguage/Application/UseCases/GetOne/GetLanguageQuery.ts ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.GetLanguageQuery = void 0;
+class GetLanguageQuery {
+    constructor(id) {
+        this.id = id;
+    }
+}
+exports.GetLanguageQuery = GetLanguageQuery;
+
+
+/***/ }),
+
+/***/ "./src/lenguage/Application/UseCases/GetOne/index.ts":
+/*!***********************************************************!*\
+  !*** ./src/lenguage/Application/UseCases/GetOne/index.ts ***!
+  \***********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./GetLanguageHandler */ "./src/lenguage/Application/UseCases/GetOne/GetLanguageHandler.ts"), exports);
+__exportStar(__webpack_require__(/*! ./GetLanguageQuery */ "./src/lenguage/Application/UseCases/GetOne/GetLanguageQuery.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/lenguage/Application/UseCases/index.ts":
+/*!****************************************************!*\
+  !*** ./src/lenguage/Application/UseCases/index.ts ***!
+  \****************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./GetOne */ "./src/lenguage/Application/UseCases/GetOne/index.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/lenguage/Application/index.ts":
+/*!*******************************************!*\
+  !*** ./src/lenguage/Application/index.ts ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.QueryHandlers = exports.LanguagePortServices = exports.LanguageRepositoryPort = void 0;
+var Port_1 = __webpack_require__(/*! ./Port */ "./src/lenguage/Application/Port/index.ts");
+Object.defineProperty(exports, "LanguageRepositoryPort", ({ enumerable: true, get: function () { return Port_1.LanguageRepositoryPort; } }));
+exports.LanguagePortServices = __webpack_require__(/*! ./Port/Services */ "./src/lenguage/Application/Port/Services/index.ts");
+const UseCases_1 = __webpack_require__(/*! ./UseCases */ "./src/lenguage/Application/UseCases/index.ts");
+exports.QueryHandlers = [UseCases_1.GetLanguageHandler];
+
+
+/***/ }),
+
+/***/ "./src/lenguage/Domain/language.ts":
+/*!*****************************************!*\
+  !*** ./src/lenguage/Domain/language.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Language = void 0;
+class Language {
+    constructor(code, name) {
+        this.code = code;
+        this.name = name;
+    }
+    static fromObject(props) {
+        return {
+            code: props.code,
+            name: props.name,
+        };
+    }
+}
+exports.Language = Language;
+
+
+/***/ }),
+
+/***/ "./src/lenguage/Infrastructure/Repository/PrismaLanguageRepository.ts":
+/*!****************************************************************************!*\
+  !*** ./src/lenguage/Infrastructure/Repository/PrismaLanguageRepository.ts ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.PrismaLanguageRepository = void 0;
+const language_1 = __webpack_require__(/*! ../../Domain/language */ "./src/lenguage/Domain/language.ts");
+class PrismaLanguageRepository {
+    constructor(prismaService) {
+        this.prismaService = prismaService;
+    }
+    async findAll() {
+        const languages = await this.prismaService.languages.findMany();
+        return languages.map((item) => language_1.Language.fromObject(item));
+    }
+    async findOne(code) {
+        const language = await this.prismaService.languages.findFirst({
+            where: { code },
+        });
+        return language_1.Language.fromObject(language);
+    }
+}
+exports.PrismaLanguageRepository = PrismaLanguageRepository;
+
+
+/***/ }),
+
+/***/ "./src/lenguage/constants/repository/index.ts":
+/*!****************************************************!*\
+  !*** ./src/lenguage/constants/repository/index.ts ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.LanguageProviderConstants = void 0;
+var LanguageProviderConstants;
+(function (LanguageProviderConstants) {
+    LanguageProviderConstants["LANGUAGE_REPOSITORY"] = "USER_REPOSITORY";
+})(LanguageProviderConstants = exports.LanguageProviderConstants || (exports.LanguageProviderConstants = {}));
+
+
+/***/ }),
+
+/***/ "./src/lenguage/controllers/FindByCodeController.ts":
+/*!**********************************************************!*\
+  !*** ./src/lenguage/controllers/FindByCodeController.ts ***!
+  \**********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.FindByCodeController = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const Services_1 = __webpack_require__(/*! ../Application/Port/Services */ "./src/lenguage/Application/Port/Services/index.ts");
+let FindByCodeController = class FindByCodeController {
+    constructor(finder) {
+        this.finder = finder;
+    }
+    findOne(code) {
+        return this.finder.find(code);
+    }
+    findAll() {
+        return this.finder.findAll();
+    }
+};
+__decorate([
+    (0, common_1.Get)(':code'),
+    __param(0, (0, common_1.Param)('code')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], FindByCodeController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Get)('all'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], FindByCodeController.prototype, "findAll", null);
+FindByCodeController = __decorate([
+    (0, common_1.Controller)('languages'),
+    __metadata("design:paramtypes", [typeof (_a = typeof Services_1.LanguageFinder !== "undefined" && Services_1.LanguageFinder) === "function" ? _a : Object])
+], FindByCodeController);
+exports.FindByCodeController = FindByCodeController;
+
+
+/***/ }),
+
+/***/ "./src/lenguage/controllers/index.ts":
+/*!*******************************************!*\
+  !*** ./src/lenguage/controllers/index.ts ***!
+  \*******************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./FindByCodeController */ "./src/lenguage/controllers/FindByCodeController.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/lenguage/language.module.ts":
+/*!*****************************************!*\
+  !*** ./src/lenguage/language.module.ts ***!
+  \*****************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.LanguageModule = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const cqrs_1 = __webpack_require__(/*! @nestjs/cqrs */ "@nestjs/cqrs");
+const prisma_module_1 = __webpack_require__(/*! ../prisma/prisma.module */ "./src/prisma/prisma.module.ts");
+const Application_1 = __webpack_require__(/*! ./Application */ "./src/lenguage/Application/index.ts");
+const repository_1 = __webpack_require__(/*! ./constants/repository */ "./src/lenguage/constants/repository/index.ts");
+const PrismaLanguageRepository_1 = __webpack_require__(/*! ./Infrastructure/Repository/PrismaLanguageRepository */ "./src/lenguage/Infrastructure/Repository/PrismaLanguageRepository.ts");
+const Controllers = __webpack_require__(/*! ./controllers */ "./src/lenguage/controllers/index.ts");
+let LanguageModule = class LanguageModule {
+};
+LanguageModule = __decorate([
+    (0, common_1.Module)({
+        imports: [cqrs_1.CqrsModule, prisma_module_1.PrismaModule],
+        controllers: [...Object.values(Controllers)],
+        providers: [
+            ...Object.values(Application_1.QueryHandlers),
+            ...Object.values(Application_1.LanguagePortServices),
+            {
+                provide: repository_1.LanguageProviderConstants.LANGUAGE_REPOSITORY,
+                useClass: PrismaLanguageRepository_1.PrismaLanguageRepository,
+            },
+        ],
+    })
+], LanguageModule);
+exports.LanguageModule = LanguageModule;
+
+
+/***/ }),
+
+/***/ "./src/native-languages/dto/create-native-language.dto.ts":
+/*!****************************************************************!*\
+  !*** ./src/native-languages/dto/create-native-language.dto.ts ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.CreateNativeLanguageDto = void 0;
+class CreateNativeLanguageDto {
+}
+exports.CreateNativeLanguageDto = CreateNativeLanguageDto;
+
+
+/***/ }),
+
+/***/ "./src/native-languages/dto/update-native-language.dto.ts":
+/*!****************************************************************!*\
+  !*** ./src/native-languages/dto/update-native-language.dto.ts ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.UpdateNativeLanguageDto = void 0;
+const mapped_types_1 = __webpack_require__(/*! @nestjs/mapped-types */ "@nestjs/mapped-types");
+const create_native_language_dto_1 = __webpack_require__(/*! ./create-native-language.dto */ "./src/native-languages/dto/create-native-language.dto.ts");
+class UpdateNativeLanguageDto extends (0, mapped_types_1.PartialType)(create_native_language_dto_1.CreateNativeLanguageDto) {
+}
+exports.UpdateNativeLanguageDto = UpdateNativeLanguageDto;
+
+
+/***/ }),
+
+/***/ "./src/native-languages/native-languages.controller.ts":
+/*!*************************************************************!*\
+  !*** ./src/native-languages/native-languages.controller.ts ***!
+  \*************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a, _b, _c;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.NativeLanguagesController = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const native_languages_service_1 = __webpack_require__(/*! ./native-languages.service */ "./src/native-languages/native-languages.service.ts");
+const create_native_language_dto_1 = __webpack_require__(/*! ./dto/create-native-language.dto */ "./src/native-languages/dto/create-native-language.dto.ts");
+const update_native_language_dto_1 = __webpack_require__(/*! ./dto/update-native-language.dto */ "./src/native-languages/dto/update-native-language.dto.ts");
+let NativeLanguagesController = class NativeLanguagesController {
+    constructor(nativeLanguagesService) {
+        this.nativeLanguagesService = nativeLanguagesService;
+    }
+    create(createNativeLanguageDto) {
+        return this.nativeLanguagesService.create(createNativeLanguageDto);
+    }
+    findAll() {
+        return this.nativeLanguagesService.findAll();
+    }
+    findOne(id) {
+        return this.nativeLanguagesService.findOne(+id);
+    }
+    update(id, updateNativeLanguageDto) {
+        return this.nativeLanguagesService.update(+id, updateNativeLanguageDto);
+    }
+    remove(id) {
+        return this.nativeLanguagesService.remove(+id);
+    }
+};
+__decorate([
+    (0, common_1.Post)(),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [typeof (_a = typeof create_native_language_dto_1.CreateNativeLanguageDto !== "undefined" && create_native_language_dto_1.CreateNativeLanguageDto) === "function" ? _a : Object]),
+    __metadata("design:returntype", void 0)
+], NativeLanguagesController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], NativeLanguagesController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], NativeLanguagesController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Patch)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, typeof (_b = typeof update_native_language_dto_1.UpdateNativeLanguageDto !== "undefined" && update_native_language_dto_1.UpdateNativeLanguageDto) === "function" ? _b : Object]),
+    __metadata("design:returntype", void 0)
+], NativeLanguagesController.prototype, "update", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], NativeLanguagesController.prototype, "remove", null);
+NativeLanguagesController = __decorate([
+    (0, common_1.Controller)('native-languages'),
+    __metadata("design:paramtypes", [typeof (_c = typeof native_languages_service_1.NativeLanguagesService !== "undefined" && native_languages_service_1.NativeLanguagesService) === "function" ? _c : Object])
+], NativeLanguagesController);
+exports.NativeLanguagesController = NativeLanguagesController;
+
+
+/***/ }),
+
+/***/ "./src/native-languages/native-languages.module.ts":
+/*!*********************************************************!*\
+  !*** ./src/native-languages/native-languages.module.ts ***!
+  \*********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.NativeLanguagesModule = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const native_languages_service_1 = __webpack_require__(/*! ./native-languages.service */ "./src/native-languages/native-languages.service.ts");
+const native_languages_controller_1 = __webpack_require__(/*! ./native-languages.controller */ "./src/native-languages/native-languages.controller.ts");
+let NativeLanguagesModule = class NativeLanguagesModule {
+};
+NativeLanguagesModule = __decorate([
+    (0, common_1.Module)({
+        controllers: [native_languages_controller_1.NativeLanguagesController],
+        providers: [native_languages_service_1.NativeLanguagesService],
+    })
+], NativeLanguagesModule);
+exports.NativeLanguagesModule = NativeLanguagesModule;
+
+
+/***/ }),
+
+/***/ "./src/native-languages/native-languages.service.ts":
+/*!**********************************************************!*\
+  !*** ./src/native-languages/native-languages.service.ts ***!
+  \**********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.NativeLanguagesService = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+let NativeLanguagesService = class NativeLanguagesService {
+    create(createNativeLanguageDto) {
+        return 'This action adds a new nativeLanguage';
+    }
+    findAll() {
+        return `This action returns all nativeLanguages`;
+    }
+    findOne(id) {
+        return `This action returns a #${id} nativeLanguage`;
+    }
+    update(id, updateNativeLanguageDto) {
+        return `This action updates a #${id} nativeLanguage`;
+    }
+    remove(id) {
+        return `This action removes a #${id} nativeLanguage`;
+    }
+};
+NativeLanguagesService = __decorate([
+    (0, common_1.Injectable)()
+], NativeLanguagesService);
+exports.NativeLanguagesService = NativeLanguagesService;
+
+
+/***/ }),
+
 /***/ "./src/prisma/prisma.module.ts":
 /*!*************************************!*\
   !*** ./src/prisma/prisma.module.ts ***!
@@ -1625,12 +2662,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CreateUserCommandHandler = void 0;
-const AppCommandHandler_1 = __webpack_require__(/*! ../../../Infrastructure/AppCqrsBus/AppCommandHandler */ "./src/user/Infrastructure/AppCqrsBus/AppCommandHandler.ts");
+const AppCqrsBus_1 = __webpack_require__(/*! ../../../../Infrastructure/AppCqrsBus */ "./src/Infrastructure/AppCqrsBus/index.ts");
 const CreateUserCommand_1 = __webpack_require__(/*! ./CreateUserCommand */ "./src/user/Application/UseCases/Create/CreateUserCommand.ts");
 const Services_1 = __webpack_require__(/*! ../../Port/Services */ "./src/user/Application/Port/Services/index.ts");
 const User_1 = __webpack_require__(/*! src/user/Domain/User */ "./src/user/Domain/User.ts");
-const AppCommandHandlerDecorator_1 = __webpack_require__(/*! src/user/Infrastructure/AppCqrsBus/AppCommandHandlerDecorator */ "./src/user/Infrastructure/AppCqrsBus/AppCommandHandlerDecorator.ts");
-let CreateUserCommandHandler = class CreateUserCommandHandler extends AppCommandHandler_1.AppCommandHandler {
+const AppCommandHandlerDecorator_1 = __webpack_require__(/*! src/Infrastructure/AppCqrsBus/Command/AppCommandHandlerDecorator */ "./src/Infrastructure/AppCqrsBus/Command/AppCommandHandlerDecorator.ts");
+let CreateUserCommandHandler = class CreateUserCommandHandler extends AppCqrsBus_1.AppCommandHandler {
     constructor(saver) {
         super();
         this.saver = saver;
@@ -1754,7 +2791,7 @@ const stringNullableVO_1 = __webpack_require__(/*! src/shared/ValueObjects/strin
 const globals_service_1 = __webpack_require__(/*! src/globals/globals.service */ "./src/globals/globals.service.ts");
 class User {
     constructor(id, name, surname, email, password, avatar, age, isGoogleUser, description, role, blackList, isActive, country, gender, nativeLanguages, learningLanguages, ctx) {
-        this.id = idVO_1.ID.generate();
+        this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -2147,41 +3184,6 @@ SurnameVO.MAX_LENGTH = 100;
 
 /***/ }),
 
-/***/ "./src/user/Infrastructure/AppCqrsBus/AppCommandHandler.ts":
-/*!*****************************************************************!*\
-  !*** ./src/user/Infrastructure/AppCqrsBus/AppCommandHandler.ts ***!
-  \*****************************************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.AppCommandHandler = void 0;
-class AppCommandHandler {
-}
-exports.AppCommandHandler = AppCommandHandler;
-
-
-/***/ }),
-
-/***/ "./src/user/Infrastructure/AppCqrsBus/AppCommandHandlerDecorator.ts":
-/*!**************************************************************************!*\
-  !*** ./src/user/Infrastructure/AppCqrsBus/AppCommandHandlerDecorator.ts ***!
-  \**************************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.AppCommandHandlerDecorator = void 0;
-const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
-const cqrs_1 = __webpack_require__(/*! @nestjs/cqrs */ "@nestjs/cqrs");
-const AppCommandHandlerDecorator = (commandHandler) => {
-    return (0, common_1.applyDecorators)((0, cqrs_1.CommandHandler)(commandHandler));
-};
-exports.AppCommandHandlerDecorator = AppCommandHandlerDecorator;
-
-
-/***/ }),
-
 /***/ "./src/user/Infrastructure/Repository/PrismaUserRepository.ts":
 /*!********************************************************************!*\
   !*** ./src/user/Infrastructure/Repository/PrismaUserRepository.ts ***!
@@ -2295,7 +3297,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var _a, _b, _c, _d, _e, _f;
+var _a, _b, _c, _d, _e;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.UserCreator = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
@@ -2305,13 +3307,11 @@ const create_user_dto_1 = __webpack_require__(/*! ../dto/create-user.dto */ "./s
 const Services_1 = __webpack_require__(/*! ../Application/Port/Services */ "./src/user/Application/Port/Services/index.ts");
 const Application_1 = __webpack_require__(/*! ../Application */ "./src/user/Application/index.ts");
 const cqrs_1 = __webpack_require__(/*! @nestjs/cqrs */ "@nestjs/cqrs");
-const repository_1 = __webpack_require__(/*! ../constants/repository */ "./src/user/constants/repository/index.ts");
 let UserCreator = class UserCreator {
-    constructor(saver, finder, commandBus, userRepositoryPort) {
+    constructor(saver, finder, commandBus) {
         this.saver = saver;
         this.finder = finder;
         this.commandBus = commandBus;
-        this.userRepositoryPort = userRepositoryPort;
     }
     async create(createUserRestDto, ctx) {
         console.log(createUserRestDto);
@@ -2330,8 +3330,7 @@ __decorate([
 ], UserCreator.prototype, "create", null);
 UserCreator = __decorate([
     (0, common_1.Controller)('user'),
-    __param(3, (0, common_1.Inject)(repository_1.UserProviderConstants.USER_REPOSITORY)),
-    __metadata("design:paramtypes", [typeof (_c = typeof Services_1.UserSaver !== "undefined" && Services_1.UserSaver) === "function" ? _c : Object, typeof (_d = typeof Services_1.UserFinder !== "undefined" && Services_1.UserFinder) === "function" ? _d : Object, typeof (_e = typeof cqrs_1.CommandBus !== "undefined" && cqrs_1.CommandBus) === "function" ? _e : Object, typeof (_f = typeof Application_1.UserRepositoryPort !== "undefined" && Application_1.UserRepositoryPort) === "function" ? _f : Object])
+    __metadata("design:paramtypes", [typeof (_c = typeof Services_1.UserSaver !== "undefined" && Services_1.UserSaver) === "function" ? _c : Object, typeof (_d = typeof Services_1.UserFinder !== "undefined" && Services_1.UserFinder) === "function" ? _d : Object, typeof (_e = typeof cqrs_1.CommandBus !== "undefined" && cqrs_1.CommandBus) === "function" ? _e : Object])
 ], UserCreator);
 exports.UserCreator = UserCreator;
 
@@ -2717,7 +3716,6 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.UserModule = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const Controllers = __webpack_require__(/*! ./controller */ "./src/user/controller/index.ts");
-const UserService = __webpack_require__(/*! ./user.service */ "./src/user/user.service.ts");
 const Application_1 = __webpack_require__(/*! ./Application */ "./src/user/Application/index.ts");
 const PrismaUserRepository_1 = __webpack_require__(/*! ./Infrastructure/Repository/PrismaUserRepository */ "./src/user/Infrastructure/Repository/PrismaUserRepository.ts");
 const repository_1 = __webpack_require__(/*! ./constants/repository */ "./src/user/constants/repository/index.ts");
@@ -2732,7 +3730,6 @@ UserModule = __decorate([
         providers: [
             ...Object.values(Application_1.PortServices),
             ...Object.values(Application_1.CommandHandlers),
-            ...Object.values(UserService),
             {
                 provide: repository_1.UserProviderConstants.USER_REPOSITORY,
                 useClass: PrismaUserRepository_1.PrismaUserRepository,
@@ -2741,122 +3738,6 @@ UserModule = __decorate([
     })
 ], UserModule);
 exports.UserModule = UserModule;
-
-
-/***/ }),
-
-/***/ "./src/user/user.service.ts":
-/*!**********************************!*\
-  !*** ./src/user/user.service.ts ***!
-  \**********************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var UserService_1, _a;
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.UserService = void 0;
-const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
-const prisma_service_1 = __webpack_require__(/*! ../prisma/prisma.service */ "./src/prisma/prisma.service.ts");
-const globals_service_1 = __webpack_require__(/*! ../globals/globals.service */ "./src/globals/globals.service.ts");
-let UserService = UserService_1 = class UserService {
-    constructor(prismaService) {
-        this.prismaService = prismaService;
-    }
-    async create(createUserRestDto, reqDetails) {
-        return await this.prismaService.user.create({
-            data: Object.assign(Object.assign({}, createUserRestDto), { password: await globals_service_1.GlobalsService.encryptData(createUserRestDto.password), isGoogleUser: false, ctx: reqDetails }),
-        });
-    }
-    async findAll() {
-        return await this.prismaService.user.findMany();
-    }
-    async findOne(id) {
-        return await this.prismaService.user.findUnique({
-            where: {
-                id,
-            },
-        });
-    }
-    async findOneByEmail(email) {
-        return await this.prismaService.user.findFirst({
-            where: {
-                email,
-            },
-        });
-    }
-    async update(id, updateUserRestDto) {
-        if (updateUserRestDto.password) {
-            updateUserRestDto.password = await globals_service_1.GlobalsService.encryptData(updateUserRestDto.password);
-        }
-        const user = await this.prismaService.user.findFirst({
-            where: {
-                id,
-            },
-        });
-        if (!user) {
-            throw new common_1.UnauthorizedException('not found user');
-        }
-        await this.cleanUpUserLanguages(id);
-        return await this.prismaService.user.update({
-            where: {
-                id,
-            },
-            data: Object.assign(Object.assign({}, updateUserRestDto), { nativeLanguages: {
-                    upsert: UserService_1.getItemsWithoutEmptyCodes(updateUserRestDto.nativeLanguages).map((data) => ({
-                        create: data,
-                        update: data,
-                        where: { id },
-                    })),
-                }, learningLanguages: {
-                    upsert: UserService_1.getItemsWithoutEmptyCodes(updateUserRestDto.learningLanguages).map((data) => ({
-                        create: data,
-                        update: data,
-                        where: { id },
-                    })),
-                } }),
-        });
-    }
-    async cleanUpUserLanguages(id) {
-        await this.prismaService.nativeLanguages.deleteMany({
-            where: {
-                user: { some: { id } },
-            },
-        });
-        await this.prismaService.learningLanguages.deleteMany({
-            where: {
-                user: { some: { id } },
-            },
-        });
-    }
-    static getItemsWithoutEmptyCodes(collection) {
-        return collection.filter((item) => {
-            if (item.code.length === 2) {
-                return item;
-            }
-        });
-    }
-    async remove(id) {
-        return await this.prismaService.user.delete({
-            where: {
-                id,
-            },
-        });
-    }
-};
-UserService = UserService_1 = __decorate([
-    (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [typeof (_a = typeof prisma_service_1.PrismaService !== "undefined" && prisma_service_1.PrismaService) === "function" ? _a : Object])
-], UserService);
-exports.UserService = UserService;
 
 
 /***/ }),

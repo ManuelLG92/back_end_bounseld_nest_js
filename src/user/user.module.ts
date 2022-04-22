@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import * as Controllers from './controller';
-import * as UserService from './user.service';
+// import * as UserService from './user.service';
 import { CommandHandlers, PortServices } from './Application';
 import { PrismaUserRepository } from './Infrastructure/Repository/PrismaUserRepository';
 import { UserProviderConstants } from './constants/repository';
@@ -13,7 +13,7 @@ import { PrismaModule } from '../prisma/prisma.module';
   providers: [
     ...Object.values(PortServices),
     ...Object.values(CommandHandlers),
-    ...Object.values(UserService),
+    // ...Object.values(UserService),
     {
       provide: UserProviderConstants.USER_REPOSITORY,
       useClass: PrismaUserRepository,

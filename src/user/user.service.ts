@@ -1,18 +1,18 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import {
-  CreateUserDto,
-  LearningLanguages,
-  NativeLanguages,
-} from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { PrismaService } from '../prisma/prisma.service';
-import { GlobalsService } from '../globals/globals.service';
-import { IRequestDetail } from '../util';
+import { Injectable } from '@nestjs/common';
+// import {
+//   CreateUserDto,
+//   LearningLanguages,
+//   NativeLanguages,
+// } from './dto/create-user.dto';
+// import { UpdateUserDto } from './dto/update-user.dto';
+// import { PrismaService } from '../prisma/prisma.service';
+// import { GlobalsService } from '../globals/globals.service';
+// import { IRequestDetail } from '../util';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prismaService: PrismaService) {}
-
+  //constructor(private readonly prismaService: PrismaService) {}
+  /*
   async create(createUserRestDto: CreateUserDto, reqDetails: IRequestDetail) {
     return await this.prismaService.user.create({
       data: {
@@ -121,5 +121,5 @@ export class UserService {
         id,
       },
     });
-  }
+  }*/
 }

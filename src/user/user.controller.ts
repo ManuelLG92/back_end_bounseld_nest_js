@@ -1,26 +1,27 @@
 import {
-  BadRequestException,
-  Body,
+  // BadRequestException,
+  // Body,
   Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Req,
-  UseGuards,
+  // Delete,
+  // Get,
+  // Param,
+  // Patch,
+  // Post,
+  // Req,
+  // UseGuards,
 } from '@nestjs/common';
-import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { JwtAuthGuard, LocalAuthGuard } from '../auth/guards';
-import { AuthService } from '../auth/services';
-import { Auth, RequestDetails } from '../decorators';
-import { IRequestDetail } from '../util';
-import { UserDto } from './dto/userDto';
+// import { UserService } from './user.service';
+// import { CreateUserDto } from './dto/create-user.dto';
+// import { UpdateUserDto } from './dto/update-user.dto';
+// import { JwtAuthGuard, LocalAuthGuard } from '../auth/guards';
+// import { AuthService } from '../auth/services';
+// import { Auth, RequestDetails } from '../decorators';
+// import { IRequestDetail } from '../util';
+// import { UserDto } from './dto/userDto';
 
 @Controller('user')
 export class UserController {
+  /*
   constructor(
     private readonly userRestService: UserService,
     private readonly authService: AuthService,
@@ -85,5 +86,5 @@ export class UserController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userRestService.remove(id);
-  }
+  }*/
 }

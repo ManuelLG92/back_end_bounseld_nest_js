@@ -1,20 +1,19 @@
-import { Body, Controller, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { RequestDetails } from 'src/decorators';
 import { IRequestDetail } from 'src/util';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UserFinder, UserSaver } from '../Application/Port/Services';
-import { CreateUserCommand, UserRepositoryPort } from '../Application';
+import { CreateUserCommand } from '../Application';
 import { CommandBus } from '@nestjs/cqrs';
-import { UserProviderConstants } from '../constants/repository';
+// import { UserProviderConstants } from '../constants/repository';
 
 @Controller('user')
 export class UserCreator {
   constructor(
     private readonly saver: UserSaver,
     private readonly finder: UserFinder,
-    private readonly commandBus: CommandBus,
-    @Inject(UserProviderConstants.USER_REPOSITORY)
-    private userRepositoryPort: UserRepositoryPort,
+    private readonly commandBus: CommandBus /* @Inject(UserProviderConstants.USER_REPOSITORY)
+    private userRepositoryPort: UserRepositoryPort,*/,
   ) {}
   @Post()
   async create(
