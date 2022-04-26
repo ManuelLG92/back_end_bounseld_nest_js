@@ -1,5 +1,5 @@
 import { LearningLanguages, NativeLanguages } from '../dto/create-user.dto';
-import { IRequestDetail } from '../../util';
+import { IRequestDetail } from '../../shared/Util';
 import { ID } from 'src/shared/ValueObjects/idVO';
 import {
   AgeVO,

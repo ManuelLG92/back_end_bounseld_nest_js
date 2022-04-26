@@ -4,7 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { IRequestDetail, TJwt } from '../../util';
+import { IRequestDetail, TJwt } from '../../shared/Util';
 import { PrismaService } from '../../prisma/prisma.service';
 import { GlobalsService } from '../../globals/globals.service';
 import * as _ from 'lodash';

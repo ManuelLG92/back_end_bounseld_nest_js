@@ -3,7 +3,7 @@ import { AuthService } from './services';
 import { AuthGuard } from '@nestjs/passport';
 import { LocalAuthGuard } from './guards';
 import { RequestDetails } from '../decorators';
-import { IRequestDetail } from '../util';
+import { IRequestDetail } from '../shared/Util';
 import { UserDto } from '../user/dto/userDto';
 
 @Controller('auth')

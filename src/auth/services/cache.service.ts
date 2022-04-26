@@ -1,5 +1,5 @@
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
-import { TJwt } from '../../util';
+import { TJwt } from '../../shared/Util';
 import { Cache } from 'cache-manager';
 
 @Injectable()

@@ -2,194 +2,6 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/Infrastructure/AppCqrsBus/Command/AppCommand.ts":
-/*!*************************************************************!*\
-  !*** ./src/Infrastructure/AppCqrsBus/Command/AppCommand.ts ***!
-  \*************************************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.AppCommand = void 0;
-class AppCommand {
-}
-exports.AppCommand = AppCommand;
-
-
-/***/ }),
-
-/***/ "./src/Infrastructure/AppCqrsBus/Command/AppCommandHandler.ts":
-/*!********************************************************************!*\
-  !*** ./src/Infrastructure/AppCqrsBus/Command/AppCommandHandler.ts ***!
-  \********************************************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.AppCommandHandler = void 0;
-class AppCommandHandler {
-}
-exports.AppCommandHandler = AppCommandHandler;
-
-
-/***/ }),
-
-/***/ "./src/Infrastructure/AppCqrsBus/Command/AppCommandHandlerDecorator.ts":
-/*!*****************************************************************************!*\
-  !*** ./src/Infrastructure/AppCqrsBus/Command/AppCommandHandlerDecorator.ts ***!
-  \*****************************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.AppCommandHandlerDecorator = void 0;
-const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
-const cqrs_1 = __webpack_require__(/*! @nestjs/cqrs */ "@nestjs/cqrs");
-const AppCommandHandlerDecorator = (commandHandler) => {
-    return (0, common_1.applyDecorators)((0, cqrs_1.CommandHandler)(commandHandler));
-};
-exports.AppCommandHandlerDecorator = AppCommandHandlerDecorator;
-
-
-/***/ }),
-
-/***/ "./src/Infrastructure/AppCqrsBus/Command/index.ts":
-/*!********************************************************!*\
-  !*** ./src/Infrastructure/AppCqrsBus/Command/index.ts ***!
-  \********************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-__exportStar(__webpack_require__(/*! ./AppCommand */ "./src/Infrastructure/AppCqrsBus/Command/AppCommand.ts"), exports);
-__exportStar(__webpack_require__(/*! ./AppCommandHandler */ "./src/Infrastructure/AppCqrsBus/Command/AppCommandHandler.ts"), exports);
-__exportStar(__webpack_require__(/*! ./AppCommandHandlerDecorator */ "./src/Infrastructure/AppCqrsBus/Command/AppCommandHandlerDecorator.ts"), exports);
-
-
-/***/ }),
-
-/***/ "./src/Infrastructure/AppCqrsBus/Query/AppQuery.ts":
-/*!*********************************************************!*\
-  !*** ./src/Infrastructure/AppCqrsBus/Query/AppQuery.ts ***!
-  \*********************************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.AppQuery = void 0;
-class AppQuery {
-}
-exports.AppQuery = AppQuery;
-
-
-/***/ }),
-
-/***/ "./src/Infrastructure/AppCqrsBus/Query/AppQueryHandler.ts":
-/*!****************************************************************!*\
-  !*** ./src/Infrastructure/AppCqrsBus/Query/AppQueryHandler.ts ***!
-  \****************************************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.AppQueryHandler = void 0;
-class AppQueryHandler {
-}
-exports.AppQueryHandler = AppQueryHandler;
-
-
-/***/ }),
-
-/***/ "./src/Infrastructure/AppCqrsBus/Query/AppQueryHandlerDecorator.ts":
-/*!*************************************************************************!*\
-  !*** ./src/Infrastructure/AppCqrsBus/Query/AppQueryHandlerDecorator.ts ***!
-  \*************************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.AppQueryHandlerDecorator = void 0;
-const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
-const cqrs_1 = __webpack_require__(/*! @nestjs/cqrs */ "@nestjs/cqrs");
-const AppQueryHandlerDecorator = (handler) => {
-    return (0, common_1.applyDecorators)((0, cqrs_1.QueryHandler)(handler));
-};
-exports.AppQueryHandlerDecorator = AppQueryHandlerDecorator;
-
-
-/***/ }),
-
-/***/ "./src/Infrastructure/AppCqrsBus/Query/index.ts":
-/*!******************************************************!*\
-  !*** ./src/Infrastructure/AppCqrsBus/Query/index.ts ***!
-  \******************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-__exportStar(__webpack_require__(/*! ./AppQuery */ "./src/Infrastructure/AppCqrsBus/Query/AppQuery.ts"), exports);
-__exportStar(__webpack_require__(/*! ./AppQueryHandler */ "./src/Infrastructure/AppCqrsBus/Query/AppQueryHandler.ts"), exports);
-__exportStar(__webpack_require__(/*! ./AppQueryHandlerDecorator */ "./src/Infrastructure/AppCqrsBus/Query/AppQueryHandlerDecorator.ts"), exports);
-
-
-/***/ }),
-
-/***/ "./src/Infrastructure/AppCqrsBus/index.ts":
-/*!************************************************!*\
-  !*** ./src/Infrastructure/AppCqrsBus/index.ts ***!
-  \************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-__exportStar(__webpack_require__(/*! ./Command */ "./src/Infrastructure/AppCqrsBus/Command/index.ts"), exports);
-__exportStar(__webpack_require__(/*! ./Query */ "./src/Infrastructure/AppCqrsBus/Query/index.ts"), exports);
-
-
-/***/ }),
-
 /***/ "./src/app.controller.ts":
 /*!*******************************!*\
   !*** ./src/app.controller.ts ***!
@@ -340,7 +152,7 @@ const services_1 = __webpack_require__(/*! ./services */ "./src/auth/services/in
 const passport_1 = __webpack_require__(/*! @nestjs/passport */ "@nestjs/passport");
 const guards_1 = __webpack_require__(/*! ./guards */ "./src/auth/guards/index.ts");
 const decorators_1 = __webpack_require__(/*! ../decorators */ "./src/decorators/index.ts");
-const util_1 = __webpack_require__(/*! ../util */ "./src/util/index.ts");
+const Util_1 = __webpack_require__(/*! ../shared/Util */ "./src/shared/Util/index.ts");
 const userDto_1 = __webpack_require__(/*! ../user/dto/userDto */ "./src/user/dto/userDto.ts");
 let AuthController = class AuthController {
     constructor(authService) {
@@ -378,7 +190,7 @@ __decorate([
     __param(0, (0, common_1.Req)()),
     __param(1, (0, decorators_1.RequestDetails)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, typeof (_a = typeof util_1.IRequestDetail !== "undefined" && util_1.IRequestDetail) === "function" ? _a : Object]),
+    __metadata("design:paramtypes", [Object, typeof (_a = typeof Util_1.IRequestDetail !== "undefined" && Util_1.IRequestDetail) === "function" ? _a : Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 AuthController = __decorate([
@@ -1357,10 +1169,29 @@ exports.LearningLanguagesModule = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const learning_languages_service_1 = __webpack_require__(/*! ./learning-languages.service */ "./src/learning-lenguages/learning-languages.service.ts");
 const learning_laguages_controller_1 = __webpack_require__(/*! ./learning-laguages.controller */ "./src/learning-lenguages/learning-laguages.controller.ts");
+const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
+const Infrastructure_1 = __webpack_require__(/*! ../shared/Infrastructure */ "./src/shared/Infrastructure/index.ts");
+const cqrs_1 = __webpack_require__(/*! @nestjs/cqrs */ "@nestjs/cqrs");
 let LearningLanguagesModule = class LearningLanguagesModule {
 };
 LearningLanguagesModule = __decorate([
     (0, common_1.Module)({
+        imports: [
+            microservices_1.ClientsModule.register([
+                {
+                    name: Infrastructure_1.QueueConstants.LEARNING_LANGUAGE_CLIENT,
+                    transport: microservices_1.Transport.RMQ,
+                    options: {
+                        urls: [Infrastructure_1.QueueConstants.URL],
+                        queue: Infrastructure_1.QueueConstants.MAIN_QUEUE,
+                        queueOptions: {
+                            durable: false,
+                        },
+                    },
+                },
+            ]),
+            cqrs_1.CqrsModule,
+        ],
         controllers: [learning_laguages_controller_1.LearningLaguagesController],
         providers: [learning_languages_service_1.LearningLanguagesService],
     })
@@ -1461,7 +1292,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.LanguageFinder = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const LanguageRepositoryPort_1 = __webpack_require__(/*! ../LanguageRepositoryPort */ "./src/lenguage/Application/Port/LanguageRepositoryPort.ts");
-const repository_1 = __webpack_require__(/*! ../../../constants/repository */ "./src/lenguage/constants/repository/index.ts");
+const Infrastructure_1 = __webpack_require__(/*! ../../../../shared/Infrastructure */ "./src/shared/Infrastructure/index.ts");
 let LanguageFinder = class LanguageFinder {
     constructor(languageRepositoryPort) {
         this.languageRepositoryPort = languageRepositoryPort;
@@ -1475,7 +1306,7 @@ let LanguageFinder = class LanguageFinder {
 };
 LanguageFinder = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)(repository_1.LanguageProviderConstants.LANGUAGE_REPOSITORY)),
+    __param(0, (0, common_1.Inject)(Infrastructure_1.RepositoryProviders.LANGUAGE_REPOSITORY)),
     __metadata("design:paramtypes", [typeof (_a = typeof LanguageRepositoryPort_1.LanguageRepositoryPort !== "undefined" && LanguageRepositoryPort_1.LanguageRepositoryPort) === "function" ? _a : Object])
 ], LanguageFinder);
 exports.LanguageFinder = LanguageFinder;
@@ -1532,8 +1363,6 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.LanguagePortServices = void 0;
-exports.LanguagePortServices = __webpack_require__(/*! ./Services */ "./src/lenguage/Application/Port/Services/index.ts");
 __exportStar(__webpack_require__(/*! ./LanguageRepositoryPort */ "./src/lenguage/Application/Port/LanguageRepositoryPort.ts"), exports);
 
 
@@ -1552,18 +1381,29 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.GetLanguageHandler = void 0;
-const AppCqrsBus_1 = __webpack_require__(/*! ../../../../Infrastructure/AppCqrsBus */ "./src/Infrastructure/AppCqrsBus/index.ts");
+const AppCqrsBus_1 = __webpack_require__(/*! ../../../../shared/Application/Adapters/AppCqrsBus */ "./src/shared/Application/Adapters/AppCqrsBus/index.ts");
 const GetLanguageQuery_1 = __webpack_require__(/*! ./GetLanguageQuery */ "./src/lenguage/Application/UseCases/GetOne/GetLanguageQuery.ts");
-let GetLanguageHandler = class GetLanguageHandler {
+const Services_1 = __webpack_require__(/*! ../../Port/Services */ "./src/lenguage/Application/Port/Services/index.ts");
+let GetLanguageHandler = class GetLanguageHandler extends AppCqrsBus_1.AppQueryHandler {
+    constructor(finder) {
+        super();
+        this.finder = finder;
+    }
     async execute(command) {
         const { id } = command;
-        console.log(id);
+        const language = await this.finder.find(id);
+        console.log(language, id);
     }
 };
 GetLanguageHandler = __decorate([
-    (0, AppCqrsBus_1.AppQueryHandlerDecorator)(GetLanguageQuery_1.GetLanguageQuery)
+    (0, AppCqrsBus_1.AppQueryHandlerDecorator)(GetLanguageQuery_1.GetLanguageQuery),
+    __metadata("design:paramtypes", [typeof (_a = typeof Services_1.LanguageFinder !== "undefined" && Services_1.LanguageFinder) === "function" ? _a : Object])
 ], GetLanguageHandler);
 exports.GetLanguageHandler = GetLanguageHandler;
 
@@ -1648,11 +1488,26 @@ __exportStar(__webpack_require__(/*! ./GetOne */ "./src/lenguage/Application/Use
 /*!*******************************************!*\
   !*** ./src/lenguage/Application/index.ts ***!
   \*******************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.QueryHandlers = exports.LanguagePortServices = exports.LanguageRepositoryPort = void 0;
+__exportStar(__webpack_require__(/*! ./UseCases */ "./src/lenguage/Application/UseCases/index.ts"), exports);
 var Port_1 = __webpack_require__(/*! ./Port */ "./src/lenguage/Application/Port/index.ts");
 Object.defineProperty(exports, "LanguageRepositoryPort", ({ enumerable: true, get: function () { return Port_1.LanguageRepositoryPort; } }));
 exports.LanguagePortServices = __webpack_require__(/*! ./Port/Services */ "./src/lenguage/Application/Port/Services/index.ts");
@@ -1692,13 +1547,25 @@ exports.Language = Language;
 /*!****************************************************************************!*\
   !*** ./src/lenguage/Infrastructure/Repository/PrismaLanguageRepository.ts ***!
   \****************************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.PrismaLanguageRepository = void 0;
 const language_1 = __webpack_require__(/*! ../../Domain/language */ "./src/lenguage/Domain/language.ts");
-class PrismaLanguageRepository {
+const prisma_service_1 = __webpack_require__(/*! ../../../prisma/prisma.service */ "./src/prisma/prisma.service.ts");
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+let PrismaLanguageRepository = class PrismaLanguageRepository {
     constructor(prismaService) {
         this.prismaService = prismaService;
     }
@@ -1712,25 +1579,12 @@ class PrismaLanguageRepository {
         });
         return language_1.Language.fromObject(language);
     }
-}
+};
+PrismaLanguageRepository = __decorate([
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [typeof (_a = typeof prisma_service_1.PrismaService !== "undefined" && prisma_service_1.PrismaService) === "function" ? _a : Object])
+], PrismaLanguageRepository);
 exports.PrismaLanguageRepository = PrismaLanguageRepository;
-
-
-/***/ }),
-
-/***/ "./src/lenguage/constants/repository/index.ts":
-/*!****************************************************!*\
-  !*** ./src/lenguage/constants/repository/index.ts ***!
-  \****************************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.LanguageProviderConstants = void 0;
-var LanguageProviderConstants;
-(function (LanguageProviderConstants) {
-    LanguageProviderConstants["LANGUAGE_REPOSITORY"] = "USER_REPOSITORY";
-})(LanguageProviderConstants = exports.LanguageProviderConstants || (exports.LanguageProviderConstants = {}));
 
 
 /***/ }),
@@ -1838,20 +1692,37 @@ const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const cqrs_1 = __webpack_require__(/*! @nestjs/cqrs */ "@nestjs/cqrs");
 const prisma_module_1 = __webpack_require__(/*! ../prisma/prisma.module */ "./src/prisma/prisma.module.ts");
 const Application_1 = __webpack_require__(/*! ./Application */ "./src/lenguage/Application/index.ts");
-const repository_1 = __webpack_require__(/*! ./constants/repository */ "./src/lenguage/constants/repository/index.ts");
 const PrismaLanguageRepository_1 = __webpack_require__(/*! ./Infrastructure/Repository/PrismaLanguageRepository */ "./src/lenguage/Infrastructure/Repository/PrismaLanguageRepository.ts");
 const Controllers = __webpack_require__(/*! ./controllers */ "./src/lenguage/controllers/index.ts");
+const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
+const Infrastructure_1 = __webpack_require__(/*! ../shared/Infrastructure */ "./src/shared/Infrastructure/index.ts");
 let LanguageModule = class LanguageModule {
 };
 LanguageModule = __decorate([
     (0, common_1.Module)({
-        imports: [cqrs_1.CqrsModule, prisma_module_1.PrismaModule],
+        imports: [
+            microservices_1.ClientsModule.register([
+                {
+                    name: Infrastructure_1.QueueConstants.LANGUAGE_CLIENT,
+                    transport: microservices_1.Transport.RMQ,
+                    options: {
+                        urls: [Infrastructure_1.QueueConstants.URL],
+                        queue: Infrastructure_1.QueueConstants.MAIN_QUEUE,
+                        queueOptions: {
+                            durable: false,
+                        },
+                    },
+                },
+            ]),
+            cqrs_1.CqrsModule,
+            prisma_module_1.PrismaModule,
+        ],
         controllers: [...Object.values(Controllers)],
         providers: [
             ...Object.values(Application_1.QueryHandlers),
             ...Object.values(Application_1.LanguagePortServices),
             {
-                provide: repository_1.LanguageProviderConstants.LANGUAGE_REPOSITORY,
+                provide: Infrastructure_1.RepositoryProviders.LANGUAGE_REPOSITORY,
                 useClass: PrismaLanguageRepository_1.PrismaLanguageRepository,
             },
         ],
@@ -2004,10 +1875,29 @@ exports.NativeLanguagesModule = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const native_languages_service_1 = __webpack_require__(/*! ./native-languages.service */ "./src/native-languages/native-languages.service.ts");
 const native_languages_controller_1 = __webpack_require__(/*! ./native-languages.controller */ "./src/native-languages/native-languages.controller.ts");
+const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
+const Infrastructure_1 = __webpack_require__(/*! ../shared/Infrastructure */ "./src/shared/Infrastructure/index.ts");
+const cqrs_1 = __webpack_require__(/*! @nestjs/cqrs */ "@nestjs/cqrs");
 let NativeLanguagesModule = class NativeLanguagesModule {
 };
 NativeLanguagesModule = __decorate([
     (0, common_1.Module)({
+        imports: [
+            microservices_1.ClientsModule.register([
+                {
+                    name: Infrastructure_1.QueueConstants.NATIVE_LANGUAGE_CLIENT,
+                    transport: microservices_1.Transport.RMQ,
+                    options: {
+                        urls: [Infrastructure_1.QueueConstants.URL],
+                        queue: Infrastructure_1.QueueConstants.MAIN_QUEUE,
+                        queueOptions: {
+                            durable: false,
+                        },
+                    },
+                },
+            ]),
+            cqrs_1.CqrsModule,
+        ],
         controllers: [native_languages_controller_1.NativeLanguagesController],
         providers: [native_languages_service_1.NativeLanguagesService],
     })
@@ -2120,6 +2010,469 @@ PrismaService = __decorate([
     (0, common_1.Injectable)()
 ], PrismaService);
 exports.PrismaService = PrismaService;
+
+
+/***/ }),
+
+/***/ "./src/shared/Application/Adapters/AppCqrsBus/Command/AppCommand.ts":
+/*!**************************************************************************!*\
+  !*** ./src/shared/Application/Adapters/AppCqrsBus/Command/AppCommand.ts ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AppCommand = void 0;
+class AppCommand {
+}
+exports.AppCommand = AppCommand;
+
+
+/***/ }),
+
+/***/ "./src/shared/Application/Adapters/AppCqrsBus/Command/AppCommandHandler.ts":
+/*!*********************************************************************************!*\
+  !*** ./src/shared/Application/Adapters/AppCqrsBus/Command/AppCommandHandler.ts ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AppCommandHandler = void 0;
+class AppCommandHandler {
+}
+exports.AppCommandHandler = AppCommandHandler;
+
+
+/***/ }),
+
+/***/ "./src/shared/Application/Adapters/AppCqrsBus/Command/AppCommandHandlerDecorator.ts":
+/*!******************************************************************************************!*\
+  !*** ./src/shared/Application/Adapters/AppCqrsBus/Command/AppCommandHandlerDecorator.ts ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AppCommandHandlerDecorator = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const cqrs_1 = __webpack_require__(/*! @nestjs/cqrs */ "@nestjs/cqrs");
+const AppCommandHandlerDecorator = (commandHandler) => {
+    return (0, common_1.applyDecorators)((0, cqrs_1.CommandHandler)(commandHandler));
+};
+exports.AppCommandHandlerDecorator = AppCommandHandlerDecorator;
+
+
+/***/ }),
+
+/***/ "./src/shared/Application/Adapters/AppCqrsBus/Command/index.ts":
+/*!*********************************************************************!*\
+  !*** ./src/shared/Application/Adapters/AppCqrsBus/Command/index.ts ***!
+  \*********************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./AppCommand */ "./src/shared/Application/Adapters/AppCqrsBus/Command/AppCommand.ts"), exports);
+__exportStar(__webpack_require__(/*! ./AppCommandHandler */ "./src/shared/Application/Adapters/AppCqrsBus/Command/AppCommandHandler.ts"), exports);
+__exportStar(__webpack_require__(/*! ./AppCommandHandlerDecorator */ "./src/shared/Application/Adapters/AppCqrsBus/Command/AppCommandHandlerDecorator.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/shared/Application/Adapters/AppCqrsBus/Query/AppQuery.ts":
+/*!**********************************************************************!*\
+  !*** ./src/shared/Application/Adapters/AppCqrsBus/Query/AppQuery.ts ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AppQuery = void 0;
+class AppQuery {
+}
+exports.AppQuery = AppQuery;
+
+
+/***/ }),
+
+/***/ "./src/shared/Application/Adapters/AppCqrsBus/Query/AppQueryHandler.ts":
+/*!*****************************************************************************!*\
+  !*** ./src/shared/Application/Adapters/AppCqrsBus/Query/AppQueryHandler.ts ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AppQueryHandler = void 0;
+class AppQueryHandler {
+}
+exports.AppQueryHandler = AppQueryHandler;
+
+
+/***/ }),
+
+/***/ "./src/shared/Application/Adapters/AppCqrsBus/Query/AppQueryHandlerDecorator.ts":
+/*!**************************************************************************************!*\
+  !*** ./src/shared/Application/Adapters/AppCqrsBus/Query/AppQueryHandlerDecorator.ts ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AppQueryHandlerDecorator = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const cqrs_1 = __webpack_require__(/*! @nestjs/cqrs */ "@nestjs/cqrs");
+const AppQueryHandlerDecorator = (handler) => {
+    return (0, common_1.applyDecorators)((0, cqrs_1.QueryHandler)(handler));
+};
+exports.AppQueryHandlerDecorator = AppQueryHandlerDecorator;
+
+
+/***/ }),
+
+/***/ "./src/shared/Application/Adapters/AppCqrsBus/Query/index.ts":
+/*!*******************************************************************!*\
+  !*** ./src/shared/Application/Adapters/AppCqrsBus/Query/index.ts ***!
+  \*******************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./AppQuery */ "./src/shared/Application/Adapters/AppCqrsBus/Query/AppQuery.ts"), exports);
+__exportStar(__webpack_require__(/*! ./AppQueryHandler */ "./src/shared/Application/Adapters/AppCqrsBus/Query/AppQueryHandler.ts"), exports);
+__exportStar(__webpack_require__(/*! ./AppQueryHandlerDecorator */ "./src/shared/Application/Adapters/AppCqrsBus/Query/AppQueryHandlerDecorator.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/shared/Application/Adapters/AppCqrsBus/index.ts":
+/*!*************************************************************!*\
+  !*** ./src/shared/Application/Adapters/AppCqrsBus/index.ts ***!
+  \*************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./Command */ "./src/shared/Application/Adapters/AppCqrsBus/Command/index.ts"), exports);
+__exportStar(__webpack_require__(/*! ./Query */ "./src/shared/Application/Adapters/AppCqrsBus/Query/index.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/shared/Infrastructure/Repository/AppRepositoryService.ts":
+/*!**********************************************************************!*\
+  !*** ./src/shared/Infrastructure/Repository/AppRepositoryService.ts ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AppRepositoryService = void 0;
+const prisma_service_1 = __webpack_require__(/*! ../../../prisma/prisma.service */ "./src/prisma/prisma.service.ts");
+class AppRepositoryService extends prisma_service_1.PrismaService {
+}
+exports.AppRepositoryService = AppRepositoryService;
+
+
+/***/ }),
+
+/***/ "./src/shared/Infrastructure/Repository/Constants/RepositoryProviders.ts":
+/*!*******************************************************************************!*\
+  !*** ./src/shared/Infrastructure/Repository/Constants/RepositoryProviders.ts ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.RepositoryProviders = void 0;
+var RepositoryProviders;
+(function (RepositoryProviders) {
+    RepositoryProviders["USER_REPOSITORY"] = "USER_REPOSITORY";
+    RepositoryProviders["LANGUAGE_REPOSITORY"] = "LANGUAGE_REPOSITORY";
+    RepositoryProviders["NATIVE_LANGUAGE_REPOSITORY"] = "NATIVE_LANGUAGE_REPOSITORY";
+    RepositoryProviders["LEARNING_LANGUAGE_REPOSITORY"] = "LEARNING_LANGUAGE_REPOSITORY";
+})(RepositoryProviders = exports.RepositoryProviders || (exports.RepositoryProviders = {}));
+
+
+/***/ }),
+
+/***/ "./src/shared/Infrastructure/Repository/Constants/index.ts":
+/*!*****************************************************************!*\
+  !*** ./src/shared/Infrastructure/Repository/Constants/index.ts ***!
+  \*****************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./RepositoryProviders */ "./src/shared/Infrastructure/Repository/Constants/RepositoryProviders.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/shared/Infrastructure/Repository/index.ts":
+/*!*******************************************************!*\
+  !*** ./src/shared/Infrastructure/Repository/index.ts ***!
+  \*******************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./Constants */ "./src/shared/Infrastructure/Repository/Constants/index.ts"), exports);
+__exportStar(__webpack_require__(/*! ./AppRepositoryService */ "./src/shared/Infrastructure/Repository/AppRepositoryService.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/shared/Infrastructure/Secrets/Queues/Constants.ts":
+/*!***************************************************************!*\
+  !*** ./src/shared/Infrastructure/Secrets/Queues/Constants.ts ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.QueueConstants = void 0;
+var QueueConstants;
+(function (QueueConstants) {
+    QueueConstants["URL"] = "amqp://rabbitmq:5672";
+    QueueConstants["MAIN_QUEUE"] = "module_communication";
+    QueueConstants["LANGUAGE_CLIENT"] = "language_client_queue";
+    QueueConstants["NATIVE_LANGUAGE_CLIENT"] = "native_language_client_queue";
+    QueueConstants["USER_CLIENT"] = "user_client_queue";
+    QueueConstants["LEARNING_LANGUAGE_CLIENT"] = "learning_language_client_queue";
+})(QueueConstants = exports.QueueConstants || (exports.QueueConstants = {}));
+
+
+/***/ }),
+
+/***/ "./src/shared/Infrastructure/Secrets/Queues/index.ts":
+/*!***********************************************************!*\
+  !*** ./src/shared/Infrastructure/Secrets/Queues/index.ts ***!
+  \***********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./Constants */ "./src/shared/Infrastructure/Secrets/Queues/Constants.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/shared/Infrastructure/Secrets/index.ts":
+/*!****************************************************!*\
+  !*** ./src/shared/Infrastructure/Secrets/index.ts ***!
+  \****************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./Queues */ "./src/shared/Infrastructure/Secrets/Queues/index.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/shared/Infrastructure/index.ts":
+/*!********************************************!*\
+  !*** ./src/shared/Infrastructure/index.ts ***!
+  \********************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./Secrets */ "./src/shared/Infrastructure/Secrets/index.ts"), exports);
+__exportStar(__webpack_require__(/*! ./Repository */ "./src/shared/Infrastructure/Repository/index.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/shared/Util/index.ts":
+/*!**********************************!*\
+  !*** ./src/shared/Util/index.ts ***!
+  \**********************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./interfaces */ "./src/shared/Util/interfaces/index.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/shared/Util/interfaces/IRequestDetail.ts":
+/*!******************************************************!*\
+  !*** ./src/shared/Util/interfaces/IRequestDetail.ts ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+
+
+/***/ }),
+
+/***/ "./src/shared/Util/interfaces/TJwt.ts":
+/*!********************************************!*\
+  !*** ./src/shared/Util/interfaces/TJwt.ts ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+
+
+/***/ }),
+
+/***/ "./src/shared/Util/interfaces/index.ts":
+/*!*********************************************!*\
+  !*** ./src/shared/Util/interfaces/index.ts ***!
+  \*********************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./TJwt */ "./src/shared/Util/interfaces/TJwt.ts"), exports);
+__exportStar(__webpack_require__(/*! ./IRequestDetail */ "./src/shared/Util/interfaces/IRequestDetail.ts"), exports);
 
 
 /***/ }),
@@ -2404,7 +2757,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.UserFinder = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const UserRepositoryPort_1 = __webpack_require__(/*! ../../UserRepositoryPort */ "./src/user/Application/Port/UserRepositoryPort.ts");
-const repository_1 = __webpack_require__(/*! ../../../../constants/repository */ "./src/user/constants/repository/index.ts");
+const Infrastructure_1 = __webpack_require__(/*! ../../../../../shared/Infrastructure */ "./src/shared/Infrastructure/index.ts");
 let UserFinder = class UserFinder {
     constructor(repository) {
         this.repository = repository;
@@ -2421,7 +2774,7 @@ let UserFinder = class UserFinder {
 };
 UserFinder = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)(repository_1.UserProviderConstants.USER_REPOSITORY)),
+    __param(0, (0, common_1.Inject)(Infrastructure_1.RepositoryProviders.USER_REPOSITORY)),
     __metadata("design:paramtypes", [typeof (_a = typeof UserRepositoryPort_1.UserRepositoryPort !== "undefined" && UserRepositoryPort_1.UserRepositoryPort) === "function" ? _a : Object])
 ], UserFinder);
 exports.UserFinder = UserFinder;
@@ -2453,7 +2806,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.UserRemover = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const UserRepositoryPort_1 = __webpack_require__(/*! ../../UserRepositoryPort */ "./src/user/Application/Port/UserRepositoryPort.ts");
-const repository_1 = __webpack_require__(/*! ../../../../constants/repository */ "./src/user/constants/repository/index.ts");
+const Infrastructure_1 = __webpack_require__(/*! ../../../../../shared/Infrastructure */ "./src/shared/Infrastructure/index.ts");
 let UserRemover = class UserRemover {
     constructor(userRepositoryPort) {
         this.userRepositoryPort = userRepositoryPort;
@@ -2464,7 +2817,7 @@ let UserRemover = class UserRemover {
 };
 UserRemover = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)(repository_1.UserProviderConstants.USER_REPOSITORY)),
+    __param(0, (0, common_1.Inject)(Infrastructure_1.RepositoryProviders.USER_REPOSITORY)),
     __metadata("design:paramtypes", [typeof (_a = typeof UserRepositoryPort_1.UserRepositoryPort !== "undefined" && UserRepositoryPort_1.UserRepositoryPort) === "function" ? _a : Object])
 ], UserRemover);
 exports.UserRemover = UserRemover;
@@ -2496,7 +2849,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.UserSaver = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const UserRepositoryPort_1 = __webpack_require__(/*! ../../UserRepositoryPort */ "./src/user/Application/Port/UserRepositoryPort.ts");
-const repository_1 = __webpack_require__(/*! ../../../../constants/repository */ "./src/user/constants/repository/index.ts");
+const Infrastructure_1 = __webpack_require__(/*! ../../../../../shared/Infrastructure */ "./src/shared/Infrastructure/index.ts");
 let UserSaver = class UserSaver {
     constructor(userRepositoryPort) {
         this.userRepositoryPort = userRepositoryPort;
@@ -2507,7 +2860,7 @@ let UserSaver = class UserSaver {
 };
 UserSaver = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)(repository_1.UserProviderConstants.USER_REPOSITORY)),
+    __param(0, (0, common_1.Inject)(Infrastructure_1.RepositoryProviders.USER_REPOSITORY)),
     __metadata("design:paramtypes", [typeof (_a = typeof UserRepositoryPort_1.UserRepositoryPort !== "undefined" && UserRepositoryPort_1.UserRepositoryPort) === "function" ? _a : Object])
 ], UserSaver);
 exports.UserSaver = UserSaver;
@@ -2662,11 +3015,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CreateUserCommandHandler = void 0;
-const AppCqrsBus_1 = __webpack_require__(/*! ../../../../Infrastructure/AppCqrsBus */ "./src/Infrastructure/AppCqrsBus/index.ts");
+const AppCqrsBus_1 = __webpack_require__(/*! ../../../../shared/Application/Adapters/AppCqrsBus */ "./src/shared/Application/Adapters/AppCqrsBus/index.ts");
 const CreateUserCommand_1 = __webpack_require__(/*! ./CreateUserCommand */ "./src/user/Application/UseCases/Create/CreateUserCommand.ts");
 const Services_1 = __webpack_require__(/*! ../../Port/Services */ "./src/user/Application/Port/Services/index.ts");
 const User_1 = __webpack_require__(/*! src/user/Domain/User */ "./src/user/Domain/User.ts");
-const AppCommandHandlerDecorator_1 = __webpack_require__(/*! src/Infrastructure/AppCqrsBus/Command/AppCommandHandlerDecorator */ "./src/Infrastructure/AppCqrsBus/Command/AppCommandHandlerDecorator.ts");
+const AppCommandHandlerDecorator_1 = __webpack_require__(/*! src/shared/Application/Adapters/AppCqrsBus/Command/AppCommandHandlerDecorator */ "./src/shared/Application/Adapters/AppCqrsBus/Command/AppCommandHandlerDecorator.ts");
 let CreateUserCommandHandler = class CreateUserCommandHandler extends AppCqrsBus_1.AppCommandHandler {
     constructor(saver) {
         super();
@@ -3258,26 +3611,6 @@ exports.PrismaUserRepository = PrismaUserRepository;
 
 /***/ }),
 
-/***/ "./src/user/constants/repository/index.ts":
-/*!************************************************!*\
-  !*** ./src/user/constants/repository/index.ts ***!
-  \************************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.UserProviderConstants = void 0;
-var UserProviderConstants;
-(function (UserProviderConstants) {
-    UserProviderConstants["USER_REPOSITORY"] = "USER_REPOSITORY";
-    UserProviderConstants["USER_REPOSITORY_SAVER"] = "USER_REPOSITORY";
-    UserProviderConstants["USER_REPOSITORY_FINDER"] = "USER_REPOSITORY";
-    UserProviderConstants["USER_REPOSITORY_REMOVER"] = "USER_REPOSITORY_REMOVER";
-})(UserProviderConstants = exports.UserProviderConstants || (exports.UserProviderConstants = {}));
-
-
-/***/ }),
-
 /***/ "./src/user/controller/UserCreator.ts":
 /*!********************************************!*\
   !*** ./src/user/controller/UserCreator.ts ***!
@@ -3302,7 +3635,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.UserCreator = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const decorators_1 = __webpack_require__(/*! src/decorators */ "./src/decorators/index.ts");
-const util_1 = __webpack_require__(/*! src/util */ "./src/util/index.ts");
+const Util_1 = __webpack_require__(/*! src/shared/Util */ "./src/shared/Util/index.ts");
 const create_user_dto_1 = __webpack_require__(/*! ../dto/create-user.dto */ "./src/user/dto/create-user.dto.ts");
 const Services_1 = __webpack_require__(/*! ../Application/Port/Services */ "./src/user/Application/Port/Services/index.ts");
 const Application_1 = __webpack_require__(/*! ../Application */ "./src/user/Application/index.ts");
@@ -3325,7 +3658,7 @@ __decorate([
     __param(0, (0, common_1.Body)()),
     __param(1, (0, decorators_1.RequestDetails)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_a = typeof create_user_dto_1.CreateUserDto !== "undefined" && create_user_dto_1.CreateUserDto) === "function" ? _a : Object, typeof (_b = typeof util_1.IRequestDetail !== "undefined" && util_1.IRequestDetail) === "function" ? _b : Object]),
+    __metadata("design:paramtypes", [typeof (_a = typeof create_user_dto_1.CreateUserDto !== "undefined" && create_user_dto_1.CreateUserDto) === "function" ? _a : Object, typeof (_b = typeof Util_1.IRequestDetail !== "undefined" && Util_1.IRequestDetail) === "function" ? _b : Object]),
     __metadata("design:returntype", Promise)
 ], UserCreator.prototype, "create", null);
 UserCreator = __decorate([
@@ -3718,105 +4051,43 @@ const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const Controllers = __webpack_require__(/*! ./controller */ "./src/user/controller/index.ts");
 const Application_1 = __webpack_require__(/*! ./Application */ "./src/user/Application/index.ts");
 const PrismaUserRepository_1 = __webpack_require__(/*! ./Infrastructure/Repository/PrismaUserRepository */ "./src/user/Infrastructure/Repository/PrismaUserRepository.ts");
-const repository_1 = __webpack_require__(/*! ./constants/repository */ "./src/user/constants/repository/index.ts");
 const cqrs_1 = __webpack_require__(/*! @nestjs/cqrs */ "@nestjs/cqrs");
 const prisma_module_1 = __webpack_require__(/*! ../prisma/prisma.module */ "./src/prisma/prisma.module.ts");
+const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
+const Infrastructure_1 = __webpack_require__(/*! ../shared/Infrastructure */ "./src/shared/Infrastructure/index.ts");
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
     (0, common_1.Module)({
-        imports: [cqrs_1.CqrsModule, prisma_module_1.PrismaModule],
+        imports: [
+            microservices_1.ClientsModule.register([
+                {
+                    name: Infrastructure_1.QueueConstants.USER_CLIENT,
+                    transport: microservices_1.Transport.RMQ,
+                    options: {
+                        urls: [Infrastructure_1.QueueConstants.URL],
+                        queue: Infrastructure_1.QueueConstants.MAIN_QUEUE,
+                        queueOptions: {
+                            durable: false,
+                        },
+                    },
+                },
+            ]),
+            cqrs_1.CqrsModule,
+            prisma_module_1.PrismaModule,
+        ],
         controllers: [...Object.values(Controllers)],
         providers: [
             ...Object.values(Application_1.PortServices),
             ...Object.values(Application_1.CommandHandlers),
             {
-                provide: repository_1.UserProviderConstants.USER_REPOSITORY,
+                provide: Infrastructure_1.RepositoryProviders.USER_REPOSITORY,
                 useClass: PrismaUserRepository_1.PrismaUserRepository,
             },
         ],
     })
 ], UserModule);
 exports.UserModule = UserModule;
-
-
-/***/ }),
-
-/***/ "./src/util/index.ts":
-/*!***************************!*\
-  !*** ./src/util/index.ts ***!
-  \***************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-__exportStar(__webpack_require__(/*! ./interfaces */ "./src/util/interfaces/index.ts"), exports);
-
-
-/***/ }),
-
-/***/ "./src/util/interfaces/IRequestDetail.ts":
-/*!***********************************************!*\
-  !*** ./src/util/interfaces/IRequestDetail.ts ***!
-  \***********************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-
-
-/***/ }),
-
-/***/ "./src/util/interfaces/TJwt.ts":
-/*!*************************************!*\
-  !*** ./src/util/interfaces/TJwt.ts ***!
-  \*************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-
-
-/***/ }),
-
-/***/ "./src/util/interfaces/index.ts":
-/*!**************************************!*\
-  !*** ./src/util/interfaces/index.ts ***!
-  \**************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-__exportStar(__webpack_require__(/*! ./TJwt */ "./src/util/interfaces/TJwt.ts"), exports);
-__exportStar(__webpack_require__(/*! ./IRequestDetail */ "./src/util/interfaces/IRequestDetail.ts"), exports);
 
 
 /***/ }),
@@ -3868,6 +4139,16 @@ module.exports = require("@nestjs/jwt");
 /***/ ((module) => {
 
 module.exports = require("@nestjs/mapped-types");
+
+/***/ }),
+
+/***/ "@nestjs/microservices":
+/*!****************************************!*\
+  !*** external "@nestjs/microservices" ***!
+  \****************************************/
+/***/ ((module) => {
+
+module.exports = require("@nestjs/microservices");
 
 /***/ }),
 
@@ -4051,9 +4332,21 @@ const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const core_1 = __webpack_require__(/*! @nestjs/core */ "@nestjs/core");
 const path_1 = __webpack_require__(/*! path */ "path");
 const app_module_1 = __webpack_require__(/*! ./app.module */ "./src/app.module.ts");
+const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
+const Infrastructure_1 = __webpack_require__(/*! ./shared/Infrastructure */ "./src/shared/Infrastructure/index.ts");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule, {
         cors: true,
+    });
+    app.connectMicroservice({
+        transport: microservices_1.Transport.RMQ,
+        options: {
+            urls: [Infrastructure_1.QueueConstants.URL],
+            queue: Infrastructure_1.QueueConstants.MAIN_QUEUE,
+            queueOptions: {
+                durable: false,
+            },
+        },
     });
     app.useStaticAssets((0, path_1.join)(__dirname, '..', 'public'));
     app.setBaseViewsDir((0, path_1.join)(__dirname, '..', 'views'));

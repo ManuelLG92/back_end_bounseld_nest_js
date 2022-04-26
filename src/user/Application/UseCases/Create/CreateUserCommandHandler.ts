@@ -1,8 +1,8 @@
-import { AppCommandHandler } from '../../../../Infrastructure/AppCqrsBus';
+import { AppCommandHandler } from '../../../../shared/Application/Adapters/AppCqrsBus';
 import { CreateUserCommand } from './CreateUserCommand';
 import { UserSaver } from '../../Port/Services';
 import { User } from 'src/user/Domain/User';
-import { AppCommandHandlerDecorator } from 'src/Infrastructure/AppCqrsBus/Command/AppCommandHandlerDecorator';
+import { AppCommandHandlerDecorator } from 'src/shared/Application/Adapters/AppCqrsBus/Command/AppCommandHandlerDecorator';
 
 @AppCommandHandlerDecorator(CreateUserCommand)
 export class CreateUserCommandHandler extends AppCommandHandler {

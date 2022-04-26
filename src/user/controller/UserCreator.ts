@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { RequestDetails } from 'src/decorators';
-import { IRequestDetail } from 'src/util';
+import { IRequestDetail } from 'src/shared/Util';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UserFinder, UserSaver } from '../Application/Port/Services';
 import { CreateUserCommand } from '../Application';

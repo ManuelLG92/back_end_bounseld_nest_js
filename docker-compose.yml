@@ -6,15 +6,18 @@ services:
     container_name: chat-back
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     ports:
       - "3000:3500"
     depends_on:
       - db_chat
+      - rabbitmq
     links:
-        - db_chat:db_chat
+        - rabbitmq
+        - db_chat
     volumes:
       - .:/app
+
   db_chat:
     container_name: pg_container_chat
     image: postgres:alpine
@@ -25,6 +28,9 @@ services:
       POSTGRES_DB: lang_ex
     ports:
       - "5432:5432"
+    volumes:
+      - ./db_data:/var/lib/postgresql/data/
+
   pgadmin_chat:
     container_name: pgadmin4_container_chat
     image: dpage/pgadmin4
@@ -34,3 +40,14 @@ services:
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
       - "5050:80"
+
+  rabbitmq:
+    image: rabbitmq:3.9-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    volumes:
+      - /var/lib/rabbitmq
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    ports:
+      - "5672:5672"
+      - "15672:15672"

@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { LanguageRepositoryPort } from '../LanguageRepositoryPort';
-import { LanguageProviderConstants } from '../../../constants/repository';
 import { ILanguage } from '../../../Domain/language';
+import { RepositoryProviders } from '../../../../shared/Infrastructure';
 
 @Injectable()
 export class LanguageFinder {
   constructor(
-    @Inject(LanguageProviderConstants.LANGUAGE_REPOSITORY)
-    private languageRepositoryPort: LanguageRepositoryPort,
+    @Inject(RepositoryProviders.LANGUAGE_REPOSITORY)
+    private readonly languageRepositoryPort: LanguageRepositoryPort,
   ) {}
 
   async find(code: string): Promise<ILanguage> {

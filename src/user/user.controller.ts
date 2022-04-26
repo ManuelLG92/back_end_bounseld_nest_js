@@ -16,7 +16,7 @@ import {
 // import { JwtAuthGuard, LocalAuthGuard } from '../auth/guards';
 // import { AuthService } from '../auth/services';
 // import { Auth, RequestDetails } from '../decorators';
-// import { IRequestDetail } from '../util';
+// import { IRequestDetail } from '../Util';
 // import { UserDto } from './dto/userDto';
 
 @Controller('user')

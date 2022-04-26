@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { UserRepositoryPort } from '../../UserRepositoryPort';
-import { UserProviderConstants } from '../../../../constants/repository';
+import { RepositoryProviders } from '../../../../../shared/Infrastructure';
 
 @Injectable()
 export class UserFinder {
   constructor(
-    @Inject(UserProviderConstants.USER_REPOSITORY)
+    @Inject(RepositoryProviders.USER_REPOSITORY)
     private readonly repository: UserRepositoryPort,
   ) {}
 
