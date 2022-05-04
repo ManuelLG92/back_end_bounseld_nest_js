@@ -1080,16 +1080,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var _a, _b, _c;
+var _a, _b, _c, _d;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.LearningLaguagesController = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const learning_languages_service_1 = __webpack_require__(/*! ./learning-languages.service */ "./src/learning-lenguages/learning-languages.service.ts");
 const create_learning_language_dto_1 = __webpack_require__(/*! ./dto/create-learning-language.dto */ "./src/learning-lenguages/dto/create-learning-language.dto.ts");
 const update_learning_language_dto_1 = __webpack_require__(/*! ./dto/update-learning-language.dto */ "./src/learning-lenguages/dto/update-learning-language.dto.ts");
+const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
+const Infrastructure_1 = __webpack_require__(/*! ../shared/Infrastructure */ "./src/shared/Infrastructure/index.ts");
+const EventConstants_1 = __webpack_require__(/*! ../shared/Domain/Constants/Events/EventConstants */ "./src/shared/Domain/Constants/Events/EventConstants.ts");
+const rxjs_1 = __webpack_require__(/*! rxjs */ "rxjs");
 let LearningLaguagesController = class LearningLaguagesController {
-    constructor(learningLenguagesService) {
+    constructor(learningLenguagesService, client) {
         this.learningLenguagesService = learningLenguagesService;
+        this.client = client;
+    }
+    async onModuleInit() {
+        await this.client.connect();
     }
     create(createLearningLanguageDto) {
         return this.learningLenguagesService.create(createLearningLanguageDto);
@@ -1097,8 +1105,8 @@ let LearningLaguagesController = class LearningLaguagesController {
     findAll() {
         return this.learningLenguagesService.findAll();
     }
-    findOne(id) {
-        return this.learningLenguagesService.findOne(+id);
+    async findOne(id) {
+        return await (0, rxjs_1.lastValueFrom)(this.client.send(EventConstants_1.default.messagePatterns.language.findByCode, 'es'));
     }
     update(id, updateLearningLanguageDto) {
         return this.learningLenguagesService.update(+id, updateLearningLanguageDto);
@@ -1125,7 +1133,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], LearningLaguagesController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':id'),
@@ -1144,7 +1152,8 @@ __decorate([
 ], LearningLaguagesController.prototype, "remove", null);
 LearningLaguagesController = __decorate([
     (0, common_1.Controller)('learning-lenguages'),
-    __metadata("design:paramtypes", [typeof (_c = typeof learning_languages_service_1.LearningLanguagesService !== "undefined" && learning_languages_service_1.LearningLanguagesService) === "function" ? _c : Object])
+    __param(1, (0, common_1.Inject)(Infrastructure_1.QueueConstants.LEARNING_LANGUAGE_CLIENT)),
+    __metadata("design:paramtypes", [typeof (_c = typeof learning_languages_service_1.LearningLanguagesService !== "undefined" && learning_languages_service_1.LearningLanguagesService) === "function" ? _c : Object, typeof (_d = typeof microservices_1.ClientProxy !== "undefined" && microservices_1.ClientProxy) === "function" ? _d : Object])
 ], LearningLaguagesController);
 exports.LearningLaguagesController = LearningLaguagesController;
 
@@ -1390,6 +1399,7 @@ exports.GetLanguageHandler = void 0;
 const AppCqrsBus_1 = __webpack_require__(/*! ../../../../shared/Application/Adapters/AppCqrsBus */ "./src/shared/Application/Adapters/AppCqrsBus/index.ts");
 const GetLanguageQuery_1 = __webpack_require__(/*! ./GetLanguageQuery */ "./src/lenguage/Application/UseCases/GetOne/GetLanguageQuery.ts");
 const Services_1 = __webpack_require__(/*! ../../Port/Services */ "./src/lenguage/Application/Port/Services/index.ts");
+const language_1 = __webpack_require__(/*! ../../../Domain/language */ "./src/lenguage/Domain/language.ts");
 let GetLanguageHandler = class GetLanguageHandler extends AppCqrsBus_1.AppQueryHandler {
     constructor(finder) {
         super();
@@ -1398,7 +1408,7 @@ let GetLanguageHandler = class GetLanguageHandler extends AppCqrsBus_1.AppQueryH
     async execute(command) {
         const { id } = command;
         const language = await this.finder.find(id);
-        console.log(language, id);
+        return language_1.Language.fromObject(language);
     }
 };
 GetLanguageHandler = __decorate([
@@ -1589,10 +1599,93 @@ exports.PrismaLanguageRepository = PrismaLanguageRepository;
 
 /***/ }),
 
-/***/ "./src/lenguage/controllers/FindByCodeController.ts":
-/*!**********************************************************!*\
-  !*** ./src/lenguage/controllers/FindByCodeController.ts ***!
-  \**********************************************************/
+/***/ "./src/lenguage/controllers/Event/FindByCodeEventController.ts":
+/*!*********************************************************************!*\
+  !*** ./src/lenguage/controllers/Event/FindByCodeEventController.ts ***!
+  \*********************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a, _b, _c;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.FindByCodeController = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
+const EventConstants_1 = __webpack_require__(/*! ../../../shared/Domain/Constants/Events/EventConstants */ "./src/shared/Domain/Constants/Events/EventConstants.ts");
+const cqrs_1 = __webpack_require__(/*! @nestjs/cqrs */ "@nestjs/cqrs");
+const Application_1 = __webpack_require__(/*! ../../Application */ "./src/lenguage/Application/index.ts");
+let FindByCodeController = class FindByCodeController {
+    constructor(commandBus, queryBus) {
+        this.commandBus = commandBus;
+        this.queryBus = queryBus;
+    }
+    async getLanguageByCode(code, context) {
+        console.log(`Code: ${code}. Pattern: ${context.getPattern()})}`);
+        const language = await this.queryBus.execute(new Application_1.GetLanguageQuery(code));
+        console.log(language);
+        return language;
+    }
+};
+__decorate([
+    (0, microservices_1.MessagePattern)(EventConstants_1.default.messagePatterns.language.findByCode),
+    __param(0, (0, microservices_1.Payload)()),
+    __param(1, (0, microservices_1.Ctx)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, typeof (_a = typeof microservices_1.RmqContext !== "undefined" && microservices_1.RmqContext) === "function" ? _a : Object]),
+    __metadata("design:returntype", Promise)
+], FindByCodeController.prototype, "getLanguageByCode", null);
+FindByCodeController = __decorate([
+    (0, common_1.Controller)(),
+    __metadata("design:paramtypes", [typeof (_b = typeof cqrs_1.CommandBus !== "undefined" && cqrs_1.CommandBus) === "function" ? _b : Object, typeof (_c = typeof cqrs_1.QueryBus !== "undefined" && cqrs_1.QueryBus) === "function" ? _c : Object])
+], FindByCodeController);
+exports.FindByCodeController = FindByCodeController;
+
+
+/***/ }),
+
+/***/ "./src/lenguage/controllers/Event/index.ts":
+/*!*************************************************!*\
+  !*** ./src/lenguage/controllers/Event/index.ts ***!
+  \*************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./FindByCodeEventController */ "./src/lenguage/controllers/Event/FindByCodeEventController.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/lenguage/controllers/Rest/FindByCodeController.ts":
+/*!***************************************************************!*\
+  !*** ./src/lenguage/controllers/Rest/FindByCodeController.ts ***!
+  \***************************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -1612,7 +1705,7 @@ var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.FindByCodeController = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
-const Services_1 = __webpack_require__(/*! ../Application/Port/Services */ "./src/lenguage/Application/Port/Services/index.ts");
+const Services_1 = __webpack_require__(/*! ../../Application/Port/Services */ "./src/lenguage/Application/Port/Services/index.ts");
 let FindByCodeController = class FindByCodeController {
     constructor(finder) {
         this.finder = finder;
@@ -1646,10 +1739,10 @@ exports.FindByCodeController = FindByCodeController;
 
 /***/ }),
 
-/***/ "./src/lenguage/controllers/index.ts":
-/*!*******************************************!*\
-  !*** ./src/lenguage/controllers/index.ts ***!
-  \*******************************************/
+/***/ "./src/lenguage/controllers/Rest/index.ts":
+/*!************************************************!*\
+  !*** ./src/lenguage/controllers/Rest/index.ts ***!
+  \************************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -1668,7 +1761,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-__exportStar(__webpack_require__(/*! ./FindByCodeController */ "./src/lenguage/controllers/FindByCodeController.ts"), exports);
+__exportStar(__webpack_require__(/*! ./FindByCodeController */ "./src/lenguage/controllers/Rest/FindByCodeController.ts"), exports);
 
 
 /***/ }),
@@ -1693,7 +1786,8 @@ const cqrs_1 = __webpack_require__(/*! @nestjs/cqrs */ "@nestjs/cqrs");
 const prisma_module_1 = __webpack_require__(/*! ../prisma/prisma.module */ "./src/prisma/prisma.module.ts");
 const Application_1 = __webpack_require__(/*! ./Application */ "./src/lenguage/Application/index.ts");
 const PrismaLanguageRepository_1 = __webpack_require__(/*! ./Infrastructure/Repository/PrismaLanguageRepository */ "./src/lenguage/Infrastructure/Repository/PrismaLanguageRepository.ts");
-const Controllers = __webpack_require__(/*! ./controllers */ "./src/lenguage/controllers/index.ts");
+const RestControllers = __webpack_require__(/*! ./controllers/Rest */ "./src/lenguage/controllers/Rest/index.ts");
+const EventControllers = __webpack_require__(/*! ./controllers/Event */ "./src/lenguage/controllers/Event/index.ts");
 const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
 const Infrastructure_1 = __webpack_require__(/*! ../shared/Infrastructure */ "./src/shared/Infrastructure/index.ts");
 let LanguageModule = class LanguageModule {
@@ -1717,7 +1811,10 @@ LanguageModule = __decorate([
             cqrs_1.CqrsModule,
             prisma_module_1.PrismaModule,
         ],
-        controllers: [...Object.values(Controllers)],
+        controllers: [
+            ...Object.values(RestControllers),
+            ...Object.values(EventControllers),
+        ],
         providers: [
             ...Object.values(Application_1.QueryHandlers),
             ...Object.values(Application_1.LanguagePortServices),
@@ -2198,6 +2295,26 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 __exportStar(__webpack_require__(/*! ./Command */ "./src/shared/Application/Adapters/AppCqrsBus/Command/index.ts"), exports);
 __exportStar(__webpack_require__(/*! ./Query */ "./src/shared/Application/Adapters/AppCqrsBus/Query/index.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/shared/Domain/Constants/Events/EventConstants.ts":
+/*!**************************************************************!*\
+  !*** ./src/shared/Domain/Constants/Events/EventConstants.ts ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const EventConstants = () => ({
+    messagePatterns: {
+        language: {
+            findByCode: 'event.language.findByCode',
+        },
+    },
+});
+exports["default"] = EventConstants();
 
 
 /***/ }),
@@ -4259,6 +4376,16 @@ module.exports = require("passport-jwt");
 /***/ ((module) => {
 
 module.exports = require("passport-local");
+
+/***/ }),
+
+/***/ "rxjs":
+/*!***********************!*\
+  !*** external "rxjs" ***!
+  \***********************/
+/***/ ((module) => {
+
+module.exports = require("rxjs");
 
 /***/ }),
 

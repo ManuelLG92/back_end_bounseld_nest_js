@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
+  OnModuleInit,
   Param,
   Patch,
   Post,
@@ -10,13 +12,22 @@ import {
 import { LearningLanguagesService } from './learning-languages.service';
 import { CreateLearningLanguageDto } from './dto/create-learning-language.dto';
 import { UpdateLearningLanguageDto } from './dto/update-learning-language.dto';
+import { ClientProxy } from '@nestjs/microservices';
+import { QueueConstants } from '../shared/Infrastructure';
+import EventConstants from '../shared/Domain/Constants/Events/EventConstants';
+import { lastValueFrom } from 'rxjs';
 
 @Controller('learning-lenguages')
-export class LearningLaguagesController {
+export class LearningLaguagesController implements OnModuleInit {
   constructor(
     private readonly learningLenguagesService: LearningLanguagesService,
+    @Inject(QueueConstants.LEARNING_LANGUAGE_CLIENT)
+    private client: ClientProxy,
   ) {}
 
+  async onModuleInit() {
+    await this.client.connect();
+  }
   @Post()
   create(@Body() createLearningLanguageDto: CreateLearningLanguageDto) {
     return this.learningLenguagesService.create(createLearningLanguageDto);
@@ -28,8 +39,14 @@ export class LearningLaguagesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.learningLenguagesService.findOne(+id);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async findOne(@Param('id') id: string) {
+    return await lastValueFrom(
+      this.client.send(
+        EventConstants.messagePatterns.language.findByCode,
+        'es',
+      ),
+    );
   }
 
   @Patch(':id')

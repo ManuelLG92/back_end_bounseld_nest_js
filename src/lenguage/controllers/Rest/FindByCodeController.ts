@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { LanguageFinder } from '../Application/Port/Services';
+import { LanguageFinder } from '../../Application/Port/Services';
 
 @Controller('languages')
 export class FindByCodeController {

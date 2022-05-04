@@ -3,7 +3,8 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { PrismaModule } from '../prisma/prisma.module';
 import { QueryHandlers, LanguagePortServices } from './Application';
 import { PrismaLanguageRepository } from './Infrastructure/Repository/PrismaLanguageRepository';
-import * as Controllers from './controllers';
+import * as RestControllers from './controllers/Rest';
+import * as EventControllers from './controllers/Event';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { QueueConstants, RepositoryProviders } from '../shared/Infrastructure';
 @Module({
@@ -24,7 +25,10 @@ import { QueueConstants, RepositoryProviders } from '../shared/Infrastructure';
     CqrsModule,
     PrismaModule,
   ],
-  controllers: [...Object.values(Controllers)],
+  controllers: [
+    ...Object.values(RestControllers),
+    ...Object.values(EventControllers),
+  ],
   providers: [
     ...Object.values(QueryHandlers),
     ...Object.values(LanguagePortServices),
