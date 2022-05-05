@@ -5,15 +5,15 @@ import {
   Payload,
   RmqContext,
 } from '@nestjs/microservices';
-import EventConstants from '../../../shared/Domain/Constants/Events/EventConstants';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import EventConstants from 'src/shared/Domain/Constants/Events/EventConstants';
 import { GetLanguageQuery } from '../../Application';
+import { AppCommandBus, AppQueryBus } from 'src/shared/Application/Adapters';
 
 @Controller()
 export class FindByCodeController {
   constructor(
-    private readonly commandBus: CommandBus,
-    private readonly queryBus: QueryBus,
+    private readonly commandBus: AppCommandBus,
+    private readonly queryBus: AppQueryBus,
   ) {}
 
   @MessagePattern(EventConstants.messagePatterns.language.findByCode)
