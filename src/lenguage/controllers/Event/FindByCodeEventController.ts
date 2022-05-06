@@ -7,13 +7,13 @@ import {
 } from '@nestjs/microservices';
 import EventConstants from 'src/shared/Domain/Constants/Events/EventConstants';
 import { GetLanguageQuery } from '../../Application';
-import { AppCommandBus, AppQueryBus } from 'src/shared/Application/Adapters';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 @Controller()
 export class FindByCodeController {
   constructor(
-    private readonly commandBus: AppCommandBus,
-    private readonly queryBus: AppQueryBus,
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
   ) {}
 
   @MessagePattern(EventConstants.messagePatterns.language.findByCode)

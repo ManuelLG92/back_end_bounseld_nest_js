@@ -20,7 +20,7 @@ import { lastValueFrom } from 'rxjs';
 @Controller('learning-lenguages')
 export class LearningLaguagesController implements OnModuleInit {
   constructor(
-    private readonly learningLenguagesService: LearningLanguagesService,
+    private readonly learningLanguagesService: LearningLanguagesService,
     @Inject(QueueConstants.LEARNING_LANGUAGE_CLIENT)
     private client: ClientProxy,
   ) {}
@@ -30,21 +30,22 @@ export class LearningLaguagesController implements OnModuleInit {
   }
   @Post()
   create(@Body() createLearningLanguageDto: CreateLearningLanguageDto) {
-    return this.learningLenguagesService.create(createLearningLanguageDto);
+    return this.learningLanguagesService.create(createLearningLanguageDto);
   }
 
   @Get()
   findAll() {
-    return this.learningLenguagesService.findAll();
+    return this.learningLanguagesService.findAll();
   }
 
-  @Get(':id')
+  @Get(':code')
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('code') code: string) {
+    console.log('code', code);
     return await lastValueFrom(
       this.client.send(
         EventConstants.messagePatterns.language.findByCode,
-        'es',
+        code,
       ),
     );
   }
@@ -54,11 +55,11 @@ export class LearningLaguagesController implements OnModuleInit {
     @Param('id') id: string,
     @Body() updateLearningLanguageDto: UpdateLearningLanguageDto,
   ) {
-    return this.learningLenguagesService.update(+id, updateLearningLanguageDto);
+    return this.learningLanguagesService.update(+id, updateLearningLanguageDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.learningLenguagesService.remove(+id);
+    return this.learningLanguagesService.remove(+id);
   }
 }

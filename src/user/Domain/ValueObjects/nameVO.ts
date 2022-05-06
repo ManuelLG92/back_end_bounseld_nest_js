@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import { StringVO } from '../../../shared/ValueObjects/stringVO';
+import { StringVO } from '../../../shared/Domain/ValueObjects/stringVO';
 
 export class NameVO extends StringVO {
   public static readonly MAX_LENGTH = 100;

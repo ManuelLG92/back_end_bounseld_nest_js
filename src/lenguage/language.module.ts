@@ -7,6 +7,7 @@ import * as RestControllers from './controllers/Rest';
 import * as EventControllers from './controllers/Event';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { QueueConstants, RepositoryProviders } from '../shared/Infrastructure';
+
 @Module({
   imports: [
     ClientsModule.register([

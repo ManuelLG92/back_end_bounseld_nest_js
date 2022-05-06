@@ -1,4 +1,4 @@
-import { StringVO } from '../../../shared/ValueObjects/stringVO';
+import { StringVO } from '../../../shared/Domain/ValueObjects/stringVO';
 import { BadRequestException } from '@nestjs/common';
 
 export class IsoCode extends StringVO {

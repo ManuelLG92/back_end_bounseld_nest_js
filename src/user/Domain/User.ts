@@ -1,6 +1,6 @@
 import { LearningLanguages, NativeLanguages } from '../dto/create-user.dto';
 import { IRequestDetail } from '../../shared/Util';
-import { ID } from 'src/shared/ValueObjects/idVO';
+import { ID } from 'src/shared/Domain/ValueObjects/idVO';
 import {
   AgeVO,
   AvatarVO,
@@ -12,9 +12,9 @@ import {
   RolesVO,
   SurnameVO,
 } from './ValueObjects';
-import { BooleanVO } from 'src/shared/ValueObjects/booleanVO';
-import { StringNullableVO } from 'src/shared/ValueObjects/stringNullableVO';
-import { CollectionVO } from 'src/shared/ValueObjects/collectionVO';
+import { BooleanVO } from 'src/shared/Domain/ValueObjects/booleanVO';
+import { StringNullableVO } from 'src/shared/Domain/ValueObjects/stringNullableVO';
+import { CollectionVO } from 'src/shared/Domain/ValueObjects/collectionVO';
 import { GlobalsService } from 'src/globals/globals.service';
 
 export interface IUser {

@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import { StringNullableVO } from '../../../shared/ValueObjects/stringNullableVO';
+import { StringNullableVO } from '../../../shared/Domain/ValueObjects/stringNullableVO';
 
 export class AvatarVO extends StringNullableVO {
   public static MAX_LENGTH = 100;

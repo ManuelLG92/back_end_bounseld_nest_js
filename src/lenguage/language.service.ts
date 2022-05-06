@@ -1,26 +1,22 @@
-import { Injectable } from '@nestjs/common';
-import { CreateLanguageDto } from './dto/create-language.dto';
-import { UpdateLanguageDto } from './dto/update-language.dto';
+import { Inject, Injectable } from '@nestjs/common';
+import { RepositoryProviders } from '../shared/Infrastructure';
+import { LanguageRepositoryPort } from './Application';
+import { Language } from './Domain/language';
 
 @Injectable()
 export class LanguageService {
-  create(createLenguageDto: CreateLanguageDto) {
-    return 'This action adds a new lenguage';
+  constructor(
+    @Inject(RepositoryProviders.LANGUAGE_REPOSITORY)
+    private readonly repository: LanguageRepositoryPort,
+  ) {}
+
+  async findAll() {
+    const languages = await this.repository.findAll();
+    return languages.map((language) => Language.fromObject(language));
   }
 
-  findAll() {
-    return `This action returns all lenguage`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} lenguage`;
-  }
-
-  update(id: number, updateLenguageDto: UpdateLanguageDto) {
-    return `This action updates a #${id} lenguage`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} lenguage`;
+  async findOne(code: string) {
+    const language = await this.repository.findOne(code);
+    return Language.fromObject(language);
   }
 }

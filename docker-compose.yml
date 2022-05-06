@@ -4,6 +4,7 @@ services:
   app:
     image: chat-back:local
     container_name: chat-back
+    restart: always
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -42,8 +43,9 @@ services:
       - "5050:80"
 
   rabbitmq:
-    image: rabbitmq:3.9-management
     container_name: rabbitmq
+    image: rabbitmq:3.9-management
+    restart: always
     hostname: rabbitmq
     volumes:
       - /var/lib/rabbitmq

@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import { NumberNullableVO } from '../../../shared/ValueObjects/numberNullableVO';
+import { NumberNullableVO } from '../../../shared/Domain/ValueObjects/numberNullableVO';
 
 export class AgeVO extends NumberNullableVO {
   public static MIN = 18;

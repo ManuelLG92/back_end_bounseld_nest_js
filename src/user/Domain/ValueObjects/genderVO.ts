@@ -1,6 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
-import { StringNullableVO } from '../../../shared/ValueObjects/stringNullableVO';
-import { ObjectVO } from '../../../shared/ValueObjects/objectVO';
+import { StringNullableVO } from '../../../shared/Domain/ValueObjects/stringNullableVO';
+import { ObjectVO } from '../../../shared/Domain/ValueObjects/objectVO';
 
 export enum gender {
   MALE = 'male',

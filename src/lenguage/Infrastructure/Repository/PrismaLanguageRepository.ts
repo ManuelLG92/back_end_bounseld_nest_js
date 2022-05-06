@@ -2,6 +2,7 @@ import { LanguageRepositoryPort } from '../../Application';
 import { ILanguage, Language } from '../../Domain/language';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class PrismaLanguageRepository implements LanguageRepositoryPort {
@@ -16,6 +17,10 @@ export class PrismaLanguageRepository implements LanguageRepositoryPort {
     const language = await this.prismaService.languages.findFirst({
       where: { code },
     });
+
+    if (!language) {
+      throw new RpcException(`Language not found by code ${code}`);
+    }
 
     return Language.fromObject(language);
   }
