@@ -9,18 +9,14 @@ export class PrismaLanguageRepository implements LanguageRepositoryPort {
   public constructor(private readonly prismaService: PrismaService) {}
 
   async findAll(): Promise<ILanguage[]> {
-    const languages = await this.prismaService.languages.findMany();
+    const languages = await this.prismaService.nativeLanguages.findMany();
     return languages.map((item) => Language.fromObject(item));
   }
 
   async findOne(code: string): Promise<ILanguage> {
-    const language = await this.prismaService.languages.findFirst({
+    const language = await this.prismaService.nativeLanguages.findFirst({
       where: { code },
     });
-
-    if (!language) {
-      throw new RpcException(`Language not found by code ${code}`);
-    }
 
     return Language.fromObject(language);
   }

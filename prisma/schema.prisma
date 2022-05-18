@@ -24,22 +24,19 @@ model User {
   isBanish          Boolean?            @default(false)
   country           String?
   learningLanguages LearningLanguages[]
-  nativeLanguages   NativeLanguages[]
+  nativeLanguages   Languages[]
   gender            String?
   ctx               Json?
 }
 
 model NativeLanguages {
   id   String  @id @default(uuid())
-  language Languages @relation(fields: [languageId], references: [code])
-  languageId String
-  user User[]
 }
 
 model Languages {
   code String @id @unique
   name String
-  nativeLanguages NativeLanguages[]
+  user User[]
   learningLanguages LearningLanguages[]
 }
 

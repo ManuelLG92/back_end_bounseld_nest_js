@@ -13,10 +13,31 @@ export class PrismaUserRepository implements UserRepositoryPort {
       // this.appRepositoryService.user.create({ data: user }),
       this.appRepositoryService.us,
     );*/
+    user.nativeLanguages.map((it) => {
+      connect: {
+        code: it.code;
+      }
+    });
     console.log('after');
     const userObject = await this.prismaService.user.upsert({
-      create: { ...user },
-      update: { ...user },
+      create: {
+        ...user,
+        //nativeLanguages: user.nativeLanguages.map(it => { connect: {code: it.code} }),
+        //nativeLanguages: { connect: {code: 'is'} }
+        nativeLanguages: {
+          connect: user.nativeLanguages.map((item) => {
+            return { code: item.code };
+          }),
+        },
+      },
+      update: {
+        ...user,
+        nativeLanguages: {
+          connect: user.nativeLanguages.map((item) => {
+            return { code: item.code };
+          }),
+        },
+      },
       where: { id: user.id },
     });
     console.log('after save', userObject);

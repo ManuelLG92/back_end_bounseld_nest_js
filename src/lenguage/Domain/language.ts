@@ -14,7 +14,10 @@ export class Language {
     this.name = name;
   }
 
-  static fromObject(props: ILanguage): ILanguage {
+  static fromObject(props: ILanguage | null): ILanguage | null {
+    if (!props) {
+      return null;
+    }
     return {
       code: props.code,
       name: props.name,

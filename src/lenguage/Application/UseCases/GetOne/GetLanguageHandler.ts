@@ -11,7 +11,7 @@ export class GetLanguageHandler extends AppQueryHandler {
   constructor(private readonly finder: LanguageFinder) {
     super();
   }
-  async execute(command: GetLanguageQuery): Promise<ILanguage> {
+  async execute(command: GetLanguageQuery): Promise<ILanguage | null> {
     const { code } = command;
 
     const language = await this.finder.find(code);
