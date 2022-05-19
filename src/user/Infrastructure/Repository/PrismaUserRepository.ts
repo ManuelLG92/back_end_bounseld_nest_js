@@ -7,28 +7,30 @@ import { Injectable } from '@nestjs/common';
 export class PrismaUserRepository implements UserRepositoryPort {
   public constructor(private readonly prismaService: PrismaService) {}
 
-  async save(user: IUser): Promise<string> {
+  async save(user: IUser): Promise<string|null> {
     /*    console.log(
       'enter on save prisma',
       // this.appRepositoryService.user.create({ data: user }),
       this.appRepositoryService.us,
     );*/
-    user.nativeLanguages.map((it) => {
-      connect: {
-        code: it.code;
-      }
-    });
     console.log('after');
     const userObject = await this.prismaService.user.upsert({
       create: {
         ...user,
-        //nativeLanguages: user.nativeLanguages.map(it => { connect: {code: it.code} }),
-        //nativeLanguages: { connect: {code: 'is'} }
         nativeLanguages: {
           connect: user.nativeLanguages.map((item) => {
             return { code: item.code };
           }),
         },
+        learningLanguages: {
+          create:  user.learningLanguages.map((item) => ({
+              id: 'es',
+              level: item.level,
+              language: {
+                connect: {code: item.code}
+              }
+          }))
+        }
       },
       update: {
         ...user,
@@ -37,6 +39,15 @@ export class PrismaUserRepository implements UserRepositoryPort {
             return { code: item.code };
           }),
         },
+        learningLanguages: {
+          create:  user.learningLanguages.map((item) => ({
+              id: 'es',
+              level: item.level,
+              language: {
+                connect: {code: item.code}
+              }
+          }))
+        }
       },
       where: { id: user.id },
     });

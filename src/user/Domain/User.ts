@@ -119,7 +119,11 @@ export class User {
     );
   }
 
-  static fromObject(props: any): IUser {
+  static fromObject(props: any|null): IUser|null {
+
+    if(!props){
+      return null;
+    }
     return {
       id: props.id,
       name: props.name,
