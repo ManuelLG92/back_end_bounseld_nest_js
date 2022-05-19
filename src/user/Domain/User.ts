@@ -1,4 +1,4 @@
-import { LearningLanguages, NativeLanguages } from '../dto/create-user.dto';
+import { LearningLanguages, Languages } from '../dto/create-user.dto';
 import { IRequestDetail } from '../../shared/Util';
 import { ID } from 'src/shared/Domain/ValueObjects/idVO';
 import {
@@ -16,6 +16,7 @@ import { BooleanVO } from 'src/shared/Domain/ValueObjects/booleanVO';
 import { StringNullableVO } from 'src/shared/Domain/ValueObjects/stringNullableVO';
 import { CollectionVO } from 'src/shared/Domain/ValueObjects/collectionVO';
 import { GlobalsService } from 'src/globals/globals.service';
+import { AggregateRoot } from '../../shared/Domain/Entity/AggregateRoot';
 
 export interface IUser {
   id: string;
@@ -33,12 +34,12 @@ export interface IUser {
   country?: string;
   blackList?: [];
   gender?: string;
-  nativeLanguages: NativeLanguages[];
+  languages: Languages[];
   learningLanguages: LearningLanguages[];
   ctx: IRequestDetail;
 }
 
-export class User {
+export class User extends AggregateRoot {
   public readonly id: ID;
   name: NameVO;
   surname: SurnameVO;
@@ -54,7 +55,7 @@ export class User {
   country?: StringNullableVO;
   blackList?: BlackListVO;
   gender?: GenderVO;
-  nativeLanguages: NativeLanguages[];
+  languages: Languages[];
   learningLanguages: LearningLanguages[];
   ctx: IRequestDetail;
 
@@ -73,10 +74,11 @@ export class User {
     isActive?: BooleanVO,
     country?: StringNullableVO,
     gender?: GenderVO,
-    nativeLanguages?: NativeLanguages[],
+    languages?: Languages[],
     learningLanguages?: LearningLanguages[],
     ctx?: IRequestDetail,
   ) {
+    super(id);
     this.id = id;
     this.name = name;
     this.surname = surname;
@@ -90,7 +92,7 @@ export class User {
     this.isActive = isActive;
     this.gender = gender;
     this.country = country;
-    this.nativeLanguages = nativeLanguages;
+    this.languages = languages;
     this.learningLanguages = learningLanguages;
     this.ctx = ctx;
     this.isBanish = BooleanVO.create(false);
@@ -113,15 +115,14 @@ export class User {
       BooleanVO.create(false),
       StringNullableVO.create(props.country ?? null),
       new GenderVO(props.gender ?? null),
-      props.nativeLanguages,
+      props.languages,
       props.learningLanguages,
       props.ctx,
     );
   }
 
-  static fromObject(props: any|null): IUser|null {
-
-    if(!props){
+  static fromObject(props: any | null): IUser | null {
+    if (!props) {
       return null;
     }
     return {
@@ -136,7 +137,7 @@ export class User {
       description: props.description,
       gender: props.gender,
       country: props.country,
-      nativeLanguages: props.nativeLanguages,
+      languages: props.languages,
       learningLanguages: props.learningLanguages,
       ctx: props.ctx,
     } as IUser;
@@ -155,7 +156,7 @@ export class User {
       description: this.description.value(),
       gender: this.gender.value(),
       country: this.country.value(),
-      nativeLanguages: this.nativeLanguages,
+      languages: this.languages,
       learningLanguages: this.learningLanguages,
       ctx: this.ctx,
     } as IUser;

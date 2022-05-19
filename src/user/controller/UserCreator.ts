@@ -12,9 +12,9 @@ export class UserCreator {
   constructor(
     private readonly saver: UserSaver,
     private readonly finder: UserFinder,
-    private readonly commandBus: CommandBus /* @Inject(UserProviderConstants.USER_REPOSITORY)
-    private userRepositoryPort: UserRepositoryPort,*/,
-  ) {}
+    private readonly commandBus: CommandBus,
+  ) /* @Inject(UserProviderConstants.USER_REPOSITORY)
+    private userRepositoryPort: UserRepositoryPort,*/ {}
   @Post()
   async create(
     @Body() createUserRestDto: CreateUserDto,

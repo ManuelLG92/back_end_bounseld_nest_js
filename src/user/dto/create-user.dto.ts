@@ -11,14 +11,12 @@ import {
   MinLength,
 } from 'class-validator';
 
-export interface NativeLanguages {
+export interface Languages {
   code: string;
-  name: string;
 }
 
 export interface LearningLanguages {
   code: string;
-  name: string;
   level: string;
 }
 export class CreateUserDto {
@@ -69,7 +67,7 @@ export class CreateUserDto {
 
   @IsOptional()
   @IsArray()
-  nativeLanguages: NativeLanguages[];
+  languages: Languages[];
 
   @IsOptional()
   @IsArray()

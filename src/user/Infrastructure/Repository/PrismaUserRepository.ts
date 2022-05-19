@@ -1,59 +1,11 @@
 import { UserRepositoryPort } from '../../Application';
 import { IUser, User } from '../../Domain/User';
 import { PrismaService } from '../../../prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepositoryPort {
   public constructor(private readonly prismaService: PrismaService) {}
-
-  async save(user: IUser): Promise<string|null> {
-    /*    console.log(
-      'enter on save prisma',
-      // this.appRepositoryService.user.create({ data: user }),
-      this.appRepositoryService.us,
-    );*/
-    console.log('after');
-    const userObject = await this.prismaService.user.upsert({
-      create: {
-        ...user,
-        nativeLanguages: {
-          connect: user.nativeLanguages.map((item) => {
-            return { code: item.code };
-          }),
-        },
-        learningLanguages: {
-          create:  user.learningLanguages.map((item) => ({
-              id: 'es',
-              level: item.level,
-              language: {
-                connect: {code: item.code}
-              }
-          }))
-        }
-      },
-      update: {
-        ...user,
-        nativeLanguages: {
-          connect: user.nativeLanguages.map((item) => {
-            return { code: item.code };
-          }),
-        },
-        learningLanguages: {
-          create:  user.learningLanguages.map((item) => ({
-              id: 'es',
-              level: item.level,
-              language: {
-                connect: {code: item.code}
-              }
-          }))
-        }
-      },
-      where: { id: user.id },
-    });
-    console.log('after save', userObject);
-    return User.fromObject(userObject)?.id;
-  }
 
   async findAll(): Promise<IUser[]> {
     const users = await this.prismaService.user.findMany();
@@ -77,6 +29,10 @@ export class PrismaUserRepository implements UserRepositoryPort {
         email,
       },
     });
+
+    if (!user) {
+      throw new BadRequestException('an user already exists with this email');
+    }
     return User.fromObject(user);
   }
 
@@ -86,5 +42,59 @@ export class PrismaUserRepository implements UserRepositoryPort {
         id,
       },
     });
+  }
+
+  async save(user: IUser): Promise<string | null> {
+    /*    console.log(
+      'enter on save prisma',
+      // this.appRepositoryService.user.create({ data: user }),
+      this.appRepositoryService.us,
+    );*/
+    console.log('after');
+    const userObject = await this.prismaService.user.upsert({
+      create: {
+        ...user,
+        languages: {
+          connect: user.languages.map((item) => {
+            return { code: item.code };
+          }),
+        },
+        learningLanguages: {
+          create: user.learningLanguages.map((item) => ({
+            level: item.level,
+            user: {
+              connect: { id: user.id },
+            },
+            language: {
+              connect: { code: item.code },
+            },
+          })),
+        },
+      },
+      update: {
+        ...user,
+        languages: {
+          // deleteMany: {},
+          connect: user.languages.map((item) => {
+            return { code: item.code };
+          }),
+        },
+        learningLanguages: {
+          deleteMany: {},
+          create: user.learningLanguages.map((item) => ({
+            level: item.level,
+            language: {
+              connect: { code: item.code },
+            },
+            user: {
+              connect: { id: user.id },
+            },
+          })),
+        },
+      },
+      where: { id: user.id },
+    });
+    console.log('after save', userObject);
+    return User.fromObject(userObject)?.id;
   }
 }

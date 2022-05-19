@@ -1313,6 +1313,9 @@ let LanguageFinder = class LanguageFinder {
     async findAll() {
         return await this.languageRepositoryPort.findAll();
     }
+    async findManyByCodes(codes) {
+        return await this.languageRepositoryPort.findManyByCodes(codes);
+    }
 };
 LanguageFinder = __decorate([
     (0, common_1.Injectable)(),
@@ -1543,6 +1546,9 @@ class Language {
         this.name = name;
     }
     static fromObject(props) {
+        if (!props) {
+            return null;
+        }
         return {
             code: props.code,
             name: props.name,
@@ -1576,7 +1582,6 @@ exports.PrismaLanguageRepository = void 0;
 const language_1 = __webpack_require__(/*! ../../Domain/language */ "./src/lenguage/Domain/language.ts");
 const prisma_service_1 = __webpack_require__(/*! ../../../prisma/prisma.service */ "./src/prisma/prisma.service.ts");
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
-const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
 let PrismaLanguageRepository = class PrismaLanguageRepository {
     constructor(prismaService) {
         this.prismaService = prismaService;
@@ -1589,10 +1594,16 @@ let PrismaLanguageRepository = class PrismaLanguageRepository {
         const language = await this.prismaService.languages.findFirst({
             where: { code },
         });
-        if (!language) {
-            throw new microservices_1.RpcException(`Language not found by code ${code}`);
-        }
         return language_1.Language.fromObject(language);
+    }
+    async findManyByCodes(codes) {
+        return await this.prismaService.languages.findMany({
+            where: {
+                code: {
+                    in: codes,
+                },
+            },
+        });
     }
 };
 PrismaLanguageRepository = __decorate([
@@ -2370,10 +2381,30 @@ const EventConstants = () => ({
     messagePatterns: {
         language: {
             findByCode: 'event.language.findByCode',
+            findCollectionByCodes: 'event.language.findCollectionByCodes',
         },
     },
 });
 exports["default"] = EventConstants();
+
+
+/***/ }),
+
+/***/ "./src/shared/Domain/Entity/AggregateRoot.ts":
+/*!***************************************************!*\
+  !*** ./src/shared/Domain/Entity/AggregateRoot.ts ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AggregateRoot = void 0;
+class AggregateRoot {
+    constructor(id) {
+        this.id = id;
+    }
+}
+exports.AggregateRoot = AggregateRoot;
 
 
 /***/ }),
@@ -3188,27 +3219,47 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var _a;
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a, _b, _c;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CreateUserCommandHandler = void 0;
 const CreateUserCommand_1 = __webpack_require__(/*! ./CreateUserCommand */ "./src/user/Application/UseCases/Create/CreateUserCommand.ts");
 const Services_1 = __webpack_require__(/*! ../../Port/Services */ "./src/user/Application/Port/Services/index.ts");
 const User_1 = __webpack_require__(/*! src/user/Domain/User */ "./src/user/Domain/User.ts");
 const Application_1 = __webpack_require__(/*! ../../../../shared/Application */ "./src/shared/Application/index.ts");
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const Infrastructure_1 = __webpack_require__(/*! ../../../../shared/Infrastructure */ "./src/shared/Infrastructure/index.ts");
+const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
+const EventConstants_1 = __webpack_require__(/*! ../../../../shared/Domain/Constants/Events/EventConstants */ "./src/shared/Domain/Constants/Events/EventConstants.ts");
+const rxjs_1 = __webpack_require__(/*! rxjs */ "rxjs");
 let CreateUserCommandHandler = class CreateUserCommandHandler extends Application_1.AppCommandHandler {
-    constructor(saver) {
+    constructor(saver, finder, client) {
         super();
         this.saver = saver;
+        this.finder = finder;
+        this.client = client;
+    }
+    async onModuleInit() {
+        await this.client.connect();
+    }
+    async onModuleDestroy() {
+        await this.client.close();
     }
     async execute(command) {
         const { data } = command;
-        const user = await User_1.User.create(data);
+        const languages = (await (0, rxjs_1.lastValueFrom)(this.client.send(EventConstants_1.default.messagePatterns.language.findCollectionByCodes, data.languages)));
+        await this.finder.findOneByEmail(data.email);
+        const userDto = Object.assign(Object.assign({}, data), { languages });
+        const user = await User_1.User.create(userDto);
         await this.saver.save(user.toPersistence());
     }
 };
 CreateUserCommandHandler = __decorate([
     (0, Application_1.AppCommandHandlerDecorator)(CreateUserCommand_1.CreateUserCommand),
-    __metadata("design:paramtypes", [typeof (_a = typeof Services_1.UserSaver !== "undefined" && Services_1.UserSaver) === "function" ? _a : Object])
+    __param(2, (0, common_1.Inject)(Infrastructure_1.QueueConstants.USER_CLIENT)),
+    __metadata("design:paramtypes", [typeof (_a = typeof Services_1.UserSaver !== "undefined" && Services_1.UserSaver) === "function" ? _a : Object, typeof (_b = typeof Services_1.UserFinder !== "undefined" && Services_1.UserFinder) === "function" ? _b : Object, typeof (_c = typeof microservices_1.ClientProxy !== "undefined" && microservices_1.ClientProxy) === "function" ? _c : Object])
 ], CreateUserCommandHandler);
 exports.CreateUserCommandHandler = CreateUserCommandHandler;
 
@@ -3317,8 +3368,10 @@ const ValueObjects_1 = __webpack_require__(/*! ./ValueObjects */ "./src/user/Dom
 const booleanVO_1 = __webpack_require__(/*! src/shared/Domain/ValueObjects/booleanVO */ "./src/shared/Domain/ValueObjects/booleanVO.ts");
 const stringNullableVO_1 = __webpack_require__(/*! src/shared/Domain/ValueObjects/stringNullableVO */ "./src/shared/Domain/ValueObjects/stringNullableVO.ts");
 const globals_service_1 = __webpack_require__(/*! src/globals/globals.service */ "./src/globals/globals.service.ts");
-class User {
-    constructor(id, name, surname, email, password, avatar, age, isGoogleUser, description, role, blackList, isActive, country, gender, nativeLanguages, learningLanguages, ctx) {
+const AggregateRoot_1 = __webpack_require__(/*! ../../shared/Domain/Entity/AggregateRoot */ "./src/shared/Domain/Entity/AggregateRoot.ts");
+class User extends AggregateRoot_1.AggregateRoot {
+    constructor(id, name, surname, email, password, avatar, age, isGoogleUser, description, role, blackList, isActive, country, gender, languages, learningLanguages, ctx) {
+        super(id);
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -3332,7 +3385,7 @@ class User {
         this.isActive = isActive;
         this.gender = gender;
         this.country = country;
-        this.nativeLanguages = nativeLanguages;
+        this.languages = languages;
         this.learningLanguages = learningLanguages;
         this.ctx = ctx;
         this.isBanish = booleanVO_1.BooleanVO.create(false);
@@ -3340,9 +3393,12 @@ class User {
     }
     static async create(props) {
         var _a, _b, _c, _d, _e, _f, _g, _h;
-        return new this(idVO_1.ID.generate(), new ValueObjects_1.NameVO(props.name), new ValueObjects_1.SurnameVO(props.surname), ValueObjects_1.EmailVo.create(props.email), new ValueObjects_1.PasswordVO(await globals_service_1.GlobalsService.encryptData(props.password)), new ValueObjects_1.AvatarVO((_a = props.avatar) !== null && _a !== void 0 ? _a : null), new ValueObjects_1.AgeVO((_b = props.age) !== null && _b !== void 0 ? _b : null), booleanVO_1.BooleanVO.create((_c = props.isGoogleUser) !== null && _c !== void 0 ? _c : false), stringNullableVO_1.StringNullableVO.create((_d = props.description) !== null && _d !== void 0 ? _d : null), ValueObjects_1.RolesVO.create((_e = props.roles) !== null && _e !== void 0 ? _e : ['user']), ValueObjects_1.BlackListVO.create((_f = props.blackList) !== null && _f !== void 0 ? _f : []), booleanVO_1.BooleanVO.create(false), stringNullableVO_1.StringNullableVO.create((_g = props.country) !== null && _g !== void 0 ? _g : null), new ValueObjects_1.GenderVO((_h = props.gender) !== null && _h !== void 0 ? _h : null), props.nativeLanguages, props.learningLanguages, props.ctx);
+        return new this(idVO_1.ID.generate(), new ValueObjects_1.NameVO(props.name), new ValueObjects_1.SurnameVO(props.surname), ValueObjects_1.EmailVo.create(props.email), new ValueObjects_1.PasswordVO(await globals_service_1.GlobalsService.encryptData(props.password)), new ValueObjects_1.AvatarVO((_a = props.avatar) !== null && _a !== void 0 ? _a : null), new ValueObjects_1.AgeVO((_b = props.age) !== null && _b !== void 0 ? _b : null), booleanVO_1.BooleanVO.create((_c = props.isGoogleUser) !== null && _c !== void 0 ? _c : false), stringNullableVO_1.StringNullableVO.create((_d = props.description) !== null && _d !== void 0 ? _d : null), ValueObjects_1.RolesVO.create((_e = props.roles) !== null && _e !== void 0 ? _e : ['user']), ValueObjects_1.BlackListVO.create((_f = props.blackList) !== null && _f !== void 0 ? _f : []), booleanVO_1.BooleanVO.create(false), stringNullableVO_1.StringNullableVO.create((_g = props.country) !== null && _g !== void 0 ? _g : null), new ValueObjects_1.GenderVO((_h = props.gender) !== null && _h !== void 0 ? _h : null), props.languages, props.learningLanguages, props.ctx);
     }
     static fromObject(props) {
+        if (!props) {
+            return null;
+        }
         return {
             id: props.id,
             name: props.name,
@@ -3355,7 +3411,7 @@ class User {
             description: props.description,
             gender: props.gender,
             country: props.country,
-            nativeLanguages: props.nativeLanguages,
+            languages: props.languages,
             learningLanguages: props.learningLanguages,
             ctx: props.ctx,
         };
@@ -3373,7 +3429,7 @@ class User {
             description: this.description.value(),
             gender: this.gender.value(),
             country: this.country.value(),
-            nativeLanguages: this.nativeLanguages,
+            languages: this.languages,
             learningLanguages: this.learningLanguages,
             ctx: this.ctx,
         };
@@ -3738,17 +3794,6 @@ let PrismaUserRepository = class PrismaUserRepository {
     constructor(prismaService) {
         this.prismaService = prismaService;
     }
-    async save(user) {
-        var _a;
-        console.log('after');
-        const userObject = await this.prismaService.user.upsert({
-            create: Object.assign({}, user),
-            update: Object.assign({}, user),
-            where: { id: user.id },
-        });
-        console.log('after save', userObject);
-        return (_a = User_1.User.fromObject(userObject)) === null || _a === void 0 ? void 0 : _a.id;
-    }
     async findAll() {
         const users = await this.prismaService.user.findMany();
         return users === null || users === void 0 ? void 0 : users.map((user) => User_1.User.fromObject(user));
@@ -3767,6 +3812,9 @@ let PrismaUserRepository = class PrismaUserRepository {
                 email,
             },
         });
+        if (!user) {
+            throw new common_1.BadRequestException('an user already exists with this email');
+        }
         return User_1.User.fromObject(user);
     }
     async remove(id) {
@@ -3775,6 +3823,46 @@ let PrismaUserRepository = class PrismaUserRepository {
                 id,
             },
         });
+    }
+    async save(user) {
+        var _a;
+        console.log('after');
+        const userObject = await this.prismaService.user.upsert({
+            create: Object.assign(Object.assign({}, user), { languages: {
+                    connect: user.languages.map((item) => {
+                        return { code: item.code };
+                    }),
+                }, learningLanguages: {
+                    create: user.learningLanguages.map((item) => ({
+                        level: item.level,
+                        user: {
+                            connect: { id: user.id },
+                        },
+                        language: {
+                            connect: { code: item.code },
+                        },
+                    })),
+                } }),
+            update: Object.assign(Object.assign({}, user), { languages: {
+                    connect: user.languages.map((item) => {
+                        return { code: item.code };
+                    }),
+                }, learningLanguages: {
+                    deleteMany: {},
+                    create: user.learningLanguages.map((item) => ({
+                        level: item.level,
+                        language: {
+                            connect: { code: item.code },
+                        },
+                        user: {
+                            connect: { id: user.id },
+                        },
+                    })),
+                } }),
+            where: { id: user.id },
+        });
+        console.log('after save', userObject);
+        return (_a = User_1.User.fromObject(userObject)) === null || _a === void 0 ? void 0 : _a.id;
     }
 };
 PrismaUserRepository = __decorate([
@@ -3841,56 +3929,6 @@ UserCreator = __decorate([
     __metadata("design:paramtypes", [typeof (_c = typeof Services_1.UserSaver !== "undefined" && Services_1.UserSaver) === "function" ? _c : Object, typeof (_d = typeof Services_1.UserFinder !== "undefined" && Services_1.UserFinder) === "function" ? _d : Object, typeof (_e = typeof cqrs_1.CommandBus !== "undefined" && cqrs_1.CommandBus) === "function" ? _e : Object])
 ], UserCreator);
 exports.UserCreator = UserCreator;
-
-
-/***/ }),
-
-/***/ "./src/user/controller/UserDeleter.ts":
-/*!********************************************!*\
-  !*** ./src/user/controller/UserDeleter.ts ***!
-  \********************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-var _a;
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.UserDeleter = void 0;
-const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
-const guards_1 = __webpack_require__(/*! src/auth/guards */ "./src/auth/guards/index.ts");
-const Services_1 = __webpack_require__(/*! ../Application/Port/Services */ "./src/user/Application/Port/Services/index.ts");
-let UserDeleter = class UserDeleter {
-    constructor(remover) {
-        this.remover = remover;
-    }
-    remove(id) {
-        return this.remover.remove(id);
-    }
-};
-__decorate([
-    (0, common_1.UseGuards)(guards_1.JwtAuthGuard),
-    (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], UserDeleter.prototype, "remove", null);
-UserDeleter = __decorate([
-    (0, common_1.Controller)('user'),
-    __metadata("design:paramtypes", [typeof (_a = typeof Services_1.UserRemover !== "undefined" && Services_1.UserRemover) === "function" ? _a : Object])
-], UserDeleter);
-exports.UserDeleter = UserDeleter;
 
 
 /***/ }),
@@ -3987,6 +4025,56 @@ exports.UserFindById = UserFindById;
 
 /***/ }),
 
+/***/ "./src/user/controller/UserRemoverController.ts":
+/*!******************************************************!*\
+  !*** ./src/user/controller/UserRemoverController.ts ***!
+  \******************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.UserRemoverController = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const guards_1 = __webpack_require__(/*! src/auth/guards */ "./src/auth/guards/index.ts");
+const Services_1 = __webpack_require__(/*! ../Application/Port/Services */ "./src/user/Application/Port/Services/index.ts");
+let UserRemoverController = class UserRemoverController {
+    constructor(remover) {
+        this.remover = remover;
+    }
+    remove(id) {
+        return this.remover.remove(id);
+    }
+};
+__decorate([
+    (0, common_1.UseGuards)(guards_1.JwtAuthGuard),
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], UserRemoverController.prototype, "remove", null);
+UserRemoverController = __decorate([
+    (0, common_1.Controller)('user'),
+    __metadata("design:paramtypes", [typeof (_a = typeof Services_1.UserRemover !== "undefined" && Services_1.UserRemover) === "function" ? _a : Object])
+], UserRemoverController);
+exports.UserRemoverController = UserRemoverController;
+
+
+/***/ }),
+
 /***/ "./src/user/controller/UserUpdater.ts":
 /*!********************************************!*\
   !*** ./src/user/controller/UserUpdater.ts ***!
@@ -4065,7 +4153,7 @@ __exportStar(__webpack_require__(/*! ./UserCreator */ "./src/user/controller/Use
 __exportStar(__webpack_require__(/*! ./UserFindById */ "./src/user/controller/UserFindById.ts"), exports);
 __exportStar(__webpack_require__(/*! ./UserFindAll */ "./src/user/controller/UserFindAll.ts"), exports);
 __exportStar(__webpack_require__(/*! ./UserUpdater */ "./src/user/controller/UserUpdater.ts"), exports);
-__exportStar(__webpack_require__(/*! ./UserDeleter */ "./src/user/controller/UserDeleter.ts"), exports);
+__exportStar(__webpack_require__(/*! ./UserRemoverController */ "./src/user/controller/UserRemoverController.ts"), exports);
 
 
 /***/ }),
@@ -4150,7 +4238,7 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsArray)(),
     __metadata("design:type", Array)
-], CreateUserDto.prototype, "nativeLanguages", void 0);
+], CreateUserDto.prototype, "languages", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsArray)(),

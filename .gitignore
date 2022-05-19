@@ -2,4 +2,7 @@ node_modules/
 dist/
 # Keep environment variables out of version control
 .env
-
+db_data/
+rabbitmq.conf/
+yarn-error.log
+.idea/

@@ -21,7 +21,7 @@ export class ObjectVO {
     return this.valuePrimitive[key];
   }
 
-  deleteItem<T>(key: string): void {
+  deleteItem(key: string): void {
     this.getItem(key) && delete this.valuePrimitive[key];
   }
 }
