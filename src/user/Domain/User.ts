@@ -19,21 +19,35 @@ import { GlobalsService } from 'src/globals/globals.service';
 import { AggregateRoot } from '../../shared/Domain/Entity/AggregateRoot';
 
 export interface IUser {
-  id: string;
-  name: string;
-  surname: string;
-  email: string;
-  password: string;
-  avatar: string;
-  age?: number;
-  isGoogleUser?: boolean;
-  description?: string;
+  id: ID;
+  name: NameVO;
+  surname: SurnameVO;
+  email: EmailVo;
+  password: PasswordVO;
+  avatar: AvatarVO;
+  age?: AgeVO;
+  isGoogleUser?: BooleanVO;
+  description?: StringNullableVO;
   roles?: [];
-  isActive?: boolean;
-  isBanish?: boolean;
-  country?: string;
-  blackList?: [];
-  gender?: string;
+  isActive?: BooleanVO;
+  isBanish?: BooleanVO;
+  country?: StringNullableVO;
+  blackList?: BlackListVO;
+  gender?: GenderVO;
+  languages: Languages[];
+  learningLanguages: LearningLanguages[];
+  ctx: IRequestDetail;
+}
+
+export interface IUpdateUser {
+  id: ID;
+  name: NameVO;
+  surname: SurnameVO;
+  avatar: AvatarVO;
+  age?: AgeVO;
+  description?: StringNullableVO;
+  country?: StringNullableVO;
+  gender?: GenderVO;
   languages: Languages[];
   learningLanguages: LearningLanguages[];
   ctx: IRequestDetail;
@@ -59,66 +73,49 @@ export class User extends AggregateRoot {
   learningLanguages: LearningLanguages[];
   ctx: IRequestDetail;
 
-  constructor(
-    id: ID,
-    name: NameVO,
-    surname: SurnameVO,
-    email: EmailVo,
-    password: PasswordVO,
-    avatar: AvatarVO,
-    age?: AgeVO,
-    isGoogleUser?: BooleanVO,
-    description?: StringNullableVO,
-    role?: RolesVO,
-    blackList?: BlackListVO,
-    isActive?: BooleanVO,
-    country?: StringNullableVO,
-    gender?: GenderVO,
-    languages?: Languages[],
-    learningLanguages?: LearningLanguages[],
-    ctx?: IRequestDetail,
-  ) {
-    super(id);
-    this.id = id;
-    this.name = name;
-    this.surname = surname;
-    this.email = email;
-    this.password = password;
-    this.avatar = avatar;
-    this.age = age;
-    this.isGoogleUser = isGoogleUser;
-    this.description = description;
-    this.role = role;
-    this.isActive = isActive;
-    this.gender = gender;
-    this.country = country;
-    this.languages = languages;
-    this.learningLanguages = learningLanguages;
-    this.ctx = ctx;
+  constructor(properties: IUser) {
+    super(properties.id);
+    this.id = properties.id;
+    this.name = properties.name;
+    this.surname = properties.surname;
+    this.email = properties.email;
+    this.password = properties.password;
+    this.avatar = properties.avatar;
+    this.age = properties.age;
+    this.isGoogleUser = properties.isGoogleUser;
+    this.description = properties.description;
+    this.role = new RolesVO(properties.roles);
+    this.isActive = properties.isActive;
+    this.gender = properties.gender;
+    this.country = properties.country;
+    this.languages = properties.languages;
+    this.learningLanguages = properties.learningLanguages;
+    this.ctx = properties.ctx;
     this.isBanish = BooleanVO.create(false);
     this.blackList = BlackListVO.create();
   }
 
-  static async create(props: IUser) {
-    return new this(
-      ID.generate(),
-      new NameVO(props.name),
-      new SurnameVO(props.surname),
-      EmailVo.create(props.email),
-      new PasswordVO(await GlobalsService.encryptData(props.password)),
-      new AvatarVO(props.avatar ?? null),
-      new AgeVO(props.age ?? null),
-      BooleanVO.create(props.isGoogleUser ?? false),
-      StringNullableVO.create(props.description ?? null),
-      RolesVO.create(props.roles ?? ['user']),
-      BlackListVO.create(props.blackList ?? []),
-      BooleanVO.create(false),
-      StringNullableVO.create(props.country ?? null),
-      new GenderVO(props.gender ?? null),
-      props.languages,
-      props.learningLanguages,
-      props.ctx,
-    );
+  static async create(props: IUser, id?: ID): Promise<User> {
+    return new User({
+      ...props,
+      id: id ? id : ID.generate(),
+      password: new PasswordVO(
+        await GlobalsService.encryptData(props.password.value()),
+      ),
+    });
+  }
+
+  update(props: IUpdateUser) {
+    this.name = props.name;
+    this.surname = props.surname;
+    this.avatar = props.avatar;
+    this.age = props.age;
+    this.description = props.description;
+    this.country = props.country;
+    this.gender = props.gender;
+    this.languages = props.languages;
+    this.learningLanguages = props.learningLanguages;
+    this.ctx = props.ctx;
   }
 
   static fromObject(props: any | null): IUser | null {
@@ -126,21 +123,23 @@ export class User extends AggregateRoot {
       return null;
     }
     return {
-      id: props.id,
-      name: props.name,
-      surname: props.surname,
-      email: props.email,
-      roles: props.roles,
-      password: props.password,
-      age: props.age,
-      avatar: props.avatar,
-      description: props.description,
-      gender: props.gender,
-      country: props.country,
+      id: new ID(props.id ?? ''),
+      name: new NameVO(props.name ?? ''),
+      surname: new SurnameVO(props.surname ?? ''),
+      email: EmailVo.create(props.email ?? ''),
+      roles: new RolesVO(props.roles ?? ['user']),
+      password: props.password ? new PasswordVO(props.password) : null,
+      age: props.age ? new AgeVO(props.age) : null,
+      avatar: props.avatar ? new AvatarVO(props.avatar) : null,
+      description: props.description
+        ? StringNullableVO.create(props.description)
+        : null,
+      gender: props.gender ? new GenderVO(props.gender) : null,
+      country: props.country ? StringNullableVO.create(props.country) : null,
       languages: props.languages,
       learningLanguages: props.learningLanguages,
       ctx: props.ctx,
-    } as IUser;
+    } as unknown as IUser;
   }
 
   toPersistence(): IUser {
@@ -159,6 +158,6 @@ export class User extends AggregateRoot {
       languages: this.languages,
       learningLanguages: this.learningLanguages,
       ctx: this.ctx,
-    } as IUser;
+    } as unknown as IUser;
   }
 }

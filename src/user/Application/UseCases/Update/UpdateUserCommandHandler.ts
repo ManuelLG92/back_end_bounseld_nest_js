@@ -1,4 +1,3 @@
-import { CreateUserCommand } from './CreateUserCommand';
 import { UserFinder, UserSaver } from '../../Port/Services';
 import { User } from 'src/user/Domain/User';
 import {
@@ -8,12 +7,13 @@ import {
 import { Inject } from '@nestjs/common';
 import { QueueConstants } from '../../../../shared/Infrastructure';
 import { ClientProxy } from '@nestjs/microservices';
+import { UpdateUserCommand } from './UpdateUserCommand';
+import { lastValueFrom } from 'rxjs';
 import EventConstants from '../../../../shared/Domain/Constants/Events/EventConstants';
 import { ILanguage } from '../../../../lenguage/Domain/language';
-import { lastValueFrom } from 'rxjs';
 
-@AppCommandHandlerDecorator(CreateUserCommand)
-export class CreateUserCommandHandler extends AppCommandHandler {
+@AppCommandHandlerDecorator(UpdateUserCommand)
+export class UpdateUserCommandHandler extends AppCommandHandler {
   constructor(
     private readonly saver: UserSaver,
     private readonly finder: UserFinder,
@@ -31,8 +31,11 @@ export class CreateUserCommandHandler extends AppCommandHandler {
     await this.client.close();
   }
 
-  async execute(command: CreateUserCommand): Promise<void> {
+  async execute(command: UpdateUserCommand): Promise<void> {
     const { data } = command;
+
+    const userExistingData = await this.finder.findOne(data.id.value());
+
     const languages = (await lastValueFrom(
       this.client.send(
         EventConstants.messagePatterns.language.findCollectionByCodes,
@@ -40,9 +43,12 @@ export class CreateUserCommandHandler extends AppCommandHandler {
       ),
     )) as unknown as ILanguage[];
 
-    await this.finder.findOneByEmail(data.email);
-    const userDto = { ...data, languages };
-    const user = await User.create(User.fromObject(userDto));
-    await this.saver.save(user.toPersistence());
+    const userEntity = await User.create(
+      User.fromObject({ ...userExistingData, languages }),
+    );
+
+    userEntity.update(data);
+
+    await this.saver.save(userEntity.toPersistence());
   }
 }

@@ -1,6 +1,6 @@
-import { IUser } from '../../../Domain/User';
 import { AppCommand } from '../../../../shared/Application';
+import { ICreateUser } from '../../Interfaces';
 
 export class CreateUserCommand implements AppCommand {
-  constructor(public readonly data: IUser) {}
+  constructor(public readonly data: ICreateUser) {}
 }

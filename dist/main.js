@@ -3252,7 +3252,7 @@ let CreateUserCommandHandler = class CreateUserCommandHandler extends Applicatio
         const languages = (await (0, rxjs_1.lastValueFrom)(this.client.send(EventConstants_1.default.messagePatterns.language.findCollectionByCodes, data.languages)));
         await this.finder.findOneByEmail(data.email);
         const userDto = Object.assign(Object.assign({}, data), { languages });
-        const user = await User_1.User.create(userDto);
+        const user = await User_1.User.create(User_1.User.fromObject(userDto));
         await this.saver.save(user.toPersistence());
     }
 };
@@ -3370,47 +3370,61 @@ const stringNullableVO_1 = __webpack_require__(/*! src/shared/Domain/ValueObject
 const globals_service_1 = __webpack_require__(/*! src/globals/globals.service */ "./src/globals/globals.service.ts");
 const AggregateRoot_1 = __webpack_require__(/*! ../../shared/Domain/Entity/AggregateRoot */ "./src/shared/Domain/Entity/AggregateRoot.ts");
 class User extends AggregateRoot_1.AggregateRoot {
-    constructor(id, name, surname, email, password, avatar, age, isGoogleUser, description, role, blackList, isActive, country, gender, languages, learningLanguages, ctx) {
-        super(id);
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.password = password;
-        this.avatar = avatar;
-        this.age = age;
-        this.isGoogleUser = isGoogleUser;
-        this.description = description;
-        this.role = role;
-        this.isActive = isActive;
-        this.gender = gender;
-        this.country = country;
-        this.languages = languages;
-        this.learningLanguages = learningLanguages;
-        this.ctx = ctx;
+    constructor(properties) {
+        super(properties.id);
+        this.id = properties.id;
+        this.name = properties.name;
+        this.surname = properties.surname;
+        this.email = properties.email;
+        this.password = properties.password;
+        this.avatar = properties.avatar;
+        this.age = properties.age;
+        this.isGoogleUser = properties.isGoogleUser;
+        this.description = properties.description;
+        this.role = new ValueObjects_1.RolesVO(properties.roles);
+        this.isActive = properties.isActive;
+        this.gender = properties.gender;
+        this.country = properties.country;
+        this.languages = properties.languages;
+        this.learningLanguages = properties.learningLanguages;
+        this.ctx = properties.ctx;
         this.isBanish = booleanVO_1.BooleanVO.create(false);
         this.blackList = ValueObjects_1.BlackListVO.create();
     }
-    static async create(props) {
-        var _a, _b, _c, _d, _e, _f, _g, _h;
-        return new this(idVO_1.ID.generate(), new ValueObjects_1.NameVO(props.name), new ValueObjects_1.SurnameVO(props.surname), ValueObjects_1.EmailVo.create(props.email), new ValueObjects_1.PasswordVO(await globals_service_1.GlobalsService.encryptData(props.password)), new ValueObjects_1.AvatarVO((_a = props.avatar) !== null && _a !== void 0 ? _a : null), new ValueObjects_1.AgeVO((_b = props.age) !== null && _b !== void 0 ? _b : null), booleanVO_1.BooleanVO.create((_c = props.isGoogleUser) !== null && _c !== void 0 ? _c : false), stringNullableVO_1.StringNullableVO.create((_d = props.description) !== null && _d !== void 0 ? _d : null), ValueObjects_1.RolesVO.create((_e = props.roles) !== null && _e !== void 0 ? _e : ['user']), ValueObjects_1.BlackListVO.create((_f = props.blackList) !== null && _f !== void 0 ? _f : []), booleanVO_1.BooleanVO.create(false), stringNullableVO_1.StringNullableVO.create((_g = props.country) !== null && _g !== void 0 ? _g : null), new ValueObjects_1.GenderVO((_h = props.gender) !== null && _h !== void 0 ? _h : null), props.languages, props.learningLanguages, props.ctx);
+    static async create(props, id) {
+        return new User(Object.assign(Object.assign({}, props), { id: id ? id : idVO_1.ID.generate(), password: new ValueObjects_1.PasswordVO(await globals_service_1.GlobalsService.encryptData(props.password.value())) }));
+    }
+    update(props) {
+        this.name = props.name;
+        this.surname = props.surname;
+        this.avatar = props.avatar;
+        this.age = props.age;
+        this.description = props.description;
+        this.country = props.country;
+        this.gender = props.gender;
+        this.languages = props.languages;
+        this.learningLanguages = props.learningLanguages;
+        this.ctx = props.ctx;
     }
     static fromObject(props) {
+        var _a, _b, _c, _d, _e;
         if (!props) {
             return null;
         }
         return {
-            id: props.id,
-            name: props.name,
-            surname: props.surname,
-            email: props.email,
-            roles: props.roles,
-            password: props.password,
-            age: props.age,
-            avatar: props.avatar,
-            description: props.description,
-            gender: props.gender,
-            country: props.country,
+            id: new idVO_1.ID((_a = props.id) !== null && _a !== void 0 ? _a : ''),
+            name: new ValueObjects_1.NameVO((_b = props.name) !== null && _b !== void 0 ? _b : ''),
+            surname: new ValueObjects_1.SurnameVO((_c = props.surname) !== null && _c !== void 0 ? _c : ''),
+            email: ValueObjects_1.EmailVo.create((_d = props.email) !== null && _d !== void 0 ? _d : ''),
+            roles: new ValueObjects_1.RolesVO((_e = props.roles) !== null && _e !== void 0 ? _e : ['user']),
+            password: props.password ? new ValueObjects_1.PasswordVO(props.password) : null,
+            age: props.age ? new ValueObjects_1.AgeVO(props.age) : null,
+            avatar: props.avatar ? new ValueObjects_1.AvatarVO(props.avatar) : null,
+            description: props.description
+                ? stringNullableVO_1.StringNullableVO.create(props.description)
+                : null,
+            gender: props.gender ? new ValueObjects_1.GenderVO(props.gender) : null,
+            country: props.country ? stringNullableVO_1.StringNullableVO.create(props.country) : null,
             languages: props.languages,
             learningLanguages: props.learningLanguages,
             ctx: props.ctx,
