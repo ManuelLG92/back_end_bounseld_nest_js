@@ -1,6 +1,6 @@
 import {
   // BadRequestException,
-  // Body,
+  // Incoming,
   Controller,
   // Delete,
   // Get,
@@ -29,7 +29,7 @@ export class UserController {
 
   @Post()
   async create(
-    @Body() createUserRestDto: CreateUserDto,
+    @Incoming() createUserRestDto: CreateUserDto,
     @RequestDetails() ctx?: IRequestDetail,
   ) {
     if (await this.userRestService.findOneByEmail(createUserRestDto.email)) {
@@ -78,7 +78,7 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserRestDto: UpdateUserDto) {
+  update(@Param('id') id: string, @Incoming() updateUserRestDto: UpdateUserDto) {
     return this.userRestService.update(id, updateUserRestDto);
   }
 

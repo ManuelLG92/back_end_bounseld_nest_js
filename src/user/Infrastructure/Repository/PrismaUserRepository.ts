@@ -2,6 +2,7 @@ import { UserRepositoryPort } from '../../Application';
 import { IUser, User } from '../../Domain/User';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { ICreateUser } from '../../Domain/Interfaces/Incoming';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepositoryPort {
@@ -44,7 +45,7 @@ export class PrismaUserRepository implements UserRepositoryPort {
     });
   }
 
-  async save(user: IUser): Promise<string | null> {
+  async save(user: ICreateUser): Promise<string | null> {
     /*    console.log(
       'enter on save prisma',
       // this.appRepositoryService.user.create({ data: user }),
@@ -95,6 +96,6 @@ export class PrismaUserRepository implements UserRepositoryPort {
       where: { id: user.id },
     });
     console.log('after save', userObject);
-    return User.fromObject(userObject)?.id;
+    return User.fromObject(userObject)?.id.value();
   }
 }

@@ -11,6 +11,7 @@ import { UpdateUserCommand } from './UpdateUserCommand';
 import { lastValueFrom } from 'rxjs';
 import EventConstants from '../../../../shared/Domain/Constants/Events/EventConstants';
 import { ILanguage } from '../../../../lenguage/Domain/language';
+import { UpdateUserFactoryVO } from '../Services';
 
 @AppCommandHandlerDecorator(UpdateUserCommand)
 export class UpdateUserCommandHandler extends AppCommandHandler {
@@ -34,12 +35,14 @@ export class UpdateUserCommandHandler extends AppCommandHandler {
   async execute(command: UpdateUserCommand): Promise<void> {
     const { data } = command;
 
-    const userExistingData = await this.finder.findOne(data.id.value());
+    const userExistingData = await this.finder.findOne(data.id);
+
+    const factoryVO = await UpdateUserFactoryVO(data);
 
     const languages = (await lastValueFrom(
       this.client.send(
         EventConstants.messagePatterns.language.findCollectionByCodes,
-        data.languages,
+        factoryVO.languages,
       ),
     )) as unknown as ILanguage[];
 
@@ -47,7 +50,7 @@ export class UpdateUserCommandHandler extends AppCommandHandler {
       User.fromObject({ ...userExistingData, languages }),
     );
 
-    userEntity.update(data);
+    userEntity.update(factoryVO);
 
     await this.saver.save(userEntity.toPersistence());
   }

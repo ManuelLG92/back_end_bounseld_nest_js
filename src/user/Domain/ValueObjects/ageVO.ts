@@ -4,7 +4,7 @@ import { NumberNullableVO } from '../../../shared/Domain/ValueObjects/numberNull
 export class AgeVO extends NumberNullableVO {
   public static MIN = 18;
 
-  public constructor(value: number) {
+  public constructor(value: number | null) {
     super(value);
     this.validate();
   }
@@ -12,7 +12,7 @@ export class AgeVO extends NumberNullableVO {
   public validate(): void {
     if (this.valuePrimitive && this.valuePrimitive < AgeVO.MIN) {
       throw new BadRequestException(
-        `Age field cannot be empty or less than ${AgeVO.MIN} `,
+        `Age field if its present, it cannot be less than ${AgeVO.MIN} `,
       );
     }
   }

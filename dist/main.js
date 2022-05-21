@@ -1381,6 +1381,96 @@ __exportStar(__webpack_require__(/*! ./LanguageRepositoryPort */ "./src/lenguage
 
 /***/ }),
 
+/***/ "./src/lenguage/Application/UseCases/GetMany/GetManyLanguagesHandler.ts":
+/*!******************************************************************************!*\
+  !*** ./src/lenguage/Application/UseCases/GetMany/GetManyLanguagesHandler.ts ***!
+  \******************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.GetManyLanguagesHandler = void 0;
+const Application_1 = __webpack_require__(/*! ../../../../shared/Application */ "./src/shared/Application/index.ts");
+const GetManyLanguagesQuery_1 = __webpack_require__(/*! ./GetManyLanguagesQuery */ "./src/lenguage/Application/UseCases/GetMany/GetManyLanguagesQuery.ts");
+const Services_1 = __webpack_require__(/*! ../../Port/Services */ "./src/lenguage/Application/Port/Services/index.ts");
+const language_1 = __webpack_require__(/*! ../../../Domain/language */ "./src/lenguage/Domain/language.ts");
+let GetManyLanguagesHandler = class GetManyLanguagesHandler extends Application_1.AppQueryHandler {
+    constructor(finder) {
+        super();
+        this.finder = finder;
+    }
+    async execute(command) {
+        const { codes } = command;
+        const languages = await this.finder.findManyByCodes(codes);
+        return languages.map((language) => language_1.Language.fromObject(language));
+    }
+};
+GetManyLanguagesHandler = __decorate([
+    (0, Application_1.AppQueryHandlerDecorator)(GetManyLanguagesQuery_1.GetManyLanguagesQuery),
+    __metadata("design:paramtypes", [typeof (_a = typeof Services_1.LanguageFinder !== "undefined" && Services_1.LanguageFinder) === "function" ? _a : Object])
+], GetManyLanguagesHandler);
+exports.GetManyLanguagesHandler = GetManyLanguagesHandler;
+
+
+/***/ }),
+
+/***/ "./src/lenguage/Application/UseCases/GetMany/GetManyLanguagesQuery.ts":
+/*!****************************************************************************!*\
+  !*** ./src/lenguage/Application/UseCases/GetMany/GetManyLanguagesQuery.ts ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.GetManyLanguagesQuery = void 0;
+class GetManyLanguagesQuery {
+    constructor(codes) {
+        this.codes = codes;
+    }
+}
+exports.GetManyLanguagesQuery = GetManyLanguagesQuery;
+
+
+/***/ }),
+
+/***/ "./src/lenguage/Application/UseCases/GetMany/index.ts":
+/*!************************************************************!*\
+  !*** ./src/lenguage/Application/UseCases/GetMany/index.ts ***!
+  \************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./GetManyLanguagesHandler */ "./src/lenguage/Application/UseCases/GetMany/GetManyLanguagesHandler.ts"), exports);
+__exportStar(__webpack_require__(/*! ./GetManyLanguagesQuery */ "./src/lenguage/Application/UseCases/GetMany/GetManyLanguagesQuery.ts"), exports);
+
+
+/***/ }),
+
 /***/ "./src/lenguage/Application/UseCases/GetOne/GetLanguageHandler.ts":
 /*!************************************************************************!*\
   !*** ./src/lenguage/Application/UseCases/GetOne/GetLanguageHandler.ts ***!
@@ -1494,6 +1584,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 __exportStar(__webpack_require__(/*! ./GetOne */ "./src/lenguage/Application/UseCases/GetOne/index.ts"), exports);
+__exportStar(__webpack_require__(/*! ./GetMany */ "./src/lenguage/Application/UseCases/GetMany/index.ts"), exports);
 
 
 /***/ }),
@@ -1526,7 +1617,7 @@ var Port_1 = __webpack_require__(/*! ./Port */ "./src/lenguage/Application/Port/
 Object.defineProperty(exports, "LanguageRepositoryPort", ({ enumerable: true, get: function () { return Port_1.LanguageRepositoryPort; } }));
 exports.LanguagePortServices = __webpack_require__(/*! ./Port/Services */ "./src/lenguage/Application/Port/Services/index.ts");
 const UseCases_1 = __webpack_require__(/*! ./UseCases */ "./src/lenguage/Application/UseCases/index.ts");
-exports.QueryHandlers = [UseCases_1.GetLanguageHandler];
+exports.QueryHandlers = [UseCases_1.GetLanguageHandler, UseCases_1.GetManyLanguagesHandler];
 
 
 /***/ }),
@@ -1671,6 +1762,62 @@ exports.FindByCodeController = FindByCodeController;
 
 /***/ }),
 
+/***/ "./src/lenguage/controllers/Event/FindManyByCodeCollectionEventController.ts":
+/*!***********************************************************************************!*\
+  !*** ./src/lenguage/controllers/Event/FindManyByCodeCollectionEventController.ts ***!
+  \***********************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a, _b, _c, _d;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.FindManyByCodeCollectionEventController = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
+const EventConstants_1 = __webpack_require__(/*! src/shared/Domain/Constants/Events/EventConstants */ "./src/shared/Domain/Constants/Events/EventConstants.ts");
+const cqrs_1 = __webpack_require__(/*! @nestjs/cqrs */ "@nestjs/cqrs");
+const GetMany_1 = __webpack_require__(/*! ../../Application/UseCases/GetMany */ "./src/lenguage/Application/UseCases/GetMany/index.ts");
+let FindManyByCodeCollectionEventController = class FindManyByCodeCollectionEventController {
+    constructor(commandBus, queryBus) {
+        this.commandBus = commandBus;
+        this.queryBus = queryBus;
+    }
+    async getLanguageByCode(codes, context) {
+        console.log(`Code: ${codes}. Pattern: ${context.getPattern()})}`);
+        const languages = await this.queryBus.execute(new GetMany_1.GetManyLanguagesQuery(codes));
+        console.log(languages);
+        return languages;
+    }
+};
+__decorate([
+    (0, microservices_1.MessagePattern)(EventConstants_1.default.messagePatterns.language.findCollectionByCodes),
+    __param(0, (0, microservices_1.Payload)()),
+    __param(1, (0, microservices_1.Ctx)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [typeof (_a = typeof Array !== "undefined" && Array) === "function" ? _a : Object, typeof (_b = typeof microservices_1.RmqContext !== "undefined" && microservices_1.RmqContext) === "function" ? _b : Object]),
+    __metadata("design:returntype", Promise)
+], FindManyByCodeCollectionEventController.prototype, "getLanguageByCode", null);
+FindManyByCodeCollectionEventController = __decorate([
+    (0, common_1.Controller)(),
+    __metadata("design:paramtypes", [typeof (_c = typeof cqrs_1.CommandBus !== "undefined" && cqrs_1.CommandBus) === "function" ? _c : Object, typeof (_d = typeof cqrs_1.QueryBus !== "undefined" && cqrs_1.QueryBus) === "function" ? _d : Object])
+], FindManyByCodeCollectionEventController);
+exports.FindManyByCodeCollectionEventController = FindManyByCodeCollectionEventController;
+
+
+/***/ }),
+
 /***/ "./src/lenguage/controllers/Event/index.ts":
 /*!*************************************************!*\
   !*** ./src/lenguage/controllers/Event/index.ts ***!
@@ -1694,6 +1841,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 __exportStar(__webpack_require__(/*! ./FindByCodeEventController */ "./src/lenguage/controllers/Event/FindByCodeEventController.ts"), exports);
+__exportStar(__webpack_require__(/*! ./FindManyByCodeCollectionEventController */ "./src/lenguage/controllers/Event/FindManyByCodeCollectionEventController.ts"), exports);
 
 
 /***/ }),
@@ -3249,7 +3397,8 @@ let CreateUserCommandHandler = class CreateUserCommandHandler extends Applicatio
     }
     async execute(command) {
         const { data } = command;
-        const languages = (await (0, rxjs_1.lastValueFrom)(this.client.send(EventConstants_1.default.messagePatterns.language.findCollectionByCodes, data.languages)));
+        console.log('enter command', data.languages.map((lang) => lang.code));
+        const languages = (await (0, rxjs_1.lastValueFrom)(this.client.send(EventConstants_1.default.messagePatterns.language.findCollectionByCodes, data.languages.map((lang) => lang.code))));
         await this.finder.findOneByEmail(data.email);
         const userDto = Object.assign(Object.assign({}, data), { languages });
         const user = await User_1.User.create(User_1.User.fromObject(userDto));
@@ -3294,6 +3443,176 @@ __exportStar(__webpack_require__(/*! ./CreateUserCommandHandler */ "./src/user/A
 
 /***/ }),
 
+/***/ "./src/user/Application/UseCases/Services/UserFactoryVO.ts":
+/*!*****************************************************************!*\
+  !*** ./src/user/Application/UseCases/Services/UserFactoryVO.ts ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.UpdateUserFactoryVO = void 0;
+const ValueObjects_1 = __webpack_require__(/*! ../../../Domain/ValueObjects */ "./src/user/Domain/ValueObjects/index.ts");
+const stringNullableVO_1 = __webpack_require__(/*! ../../../../shared/Domain/ValueObjects/stringNullableVO */ "./src/shared/Domain/ValueObjects/stringNullableVO.ts");
+const UpdateUserFactoryVO = async (data) => {
+    return {
+        name: new ValueObjects_1.NameVO(data.name),
+        surname: new ValueObjects_1.SurnameVO(data.surname),
+        avatar: new ValueObjects_1.AvatarVO(data.avatar),
+        age: new ValueObjects_1.AgeVO(data.age),
+        description: stringNullableVO_1.StringNullableVO.create(data.description),
+        country: stringNullableVO_1.StringNullableVO.create(data.country),
+        gender: ValueObjects_1.GenderVO.create(data.gender),
+        languages: data.languages,
+        learningLanguages: data.learningLanguages,
+        ctx: data.ctx,
+    };
+};
+exports.UpdateUserFactoryVO = UpdateUserFactoryVO;
+
+
+/***/ }),
+
+/***/ "./src/user/Application/UseCases/Services/index.ts":
+/*!*********************************************************!*\
+  !*** ./src/user/Application/UseCases/Services/index.ts ***!
+  \*********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./UserFactoryVO */ "./src/user/Application/UseCases/Services/UserFactoryVO.ts"), exports);
+
+
+/***/ }),
+
+/***/ "./src/user/Application/UseCases/Update/UpdateUserCommand.ts":
+/*!*******************************************************************!*\
+  !*** ./src/user/Application/UseCases/Update/UpdateUserCommand.ts ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.UpdateUserCommand = void 0;
+class UpdateUserCommand {
+    constructor(id, data) {
+        this.id = id;
+        this.data = data;
+    }
+}
+exports.UpdateUserCommand = UpdateUserCommand;
+
+
+/***/ }),
+
+/***/ "./src/user/Application/UseCases/Update/UpdateUserCommandHandler.ts":
+/*!**************************************************************************!*\
+  !*** ./src/user/Application/UseCases/Update/UpdateUserCommandHandler.ts ***!
+  \**************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a, _b, _c;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.UpdateUserCommandHandler = void 0;
+const Services_1 = __webpack_require__(/*! ../../Port/Services */ "./src/user/Application/Port/Services/index.ts");
+const User_1 = __webpack_require__(/*! src/user/Domain/User */ "./src/user/Domain/User.ts");
+const Application_1 = __webpack_require__(/*! ../../../../shared/Application */ "./src/shared/Application/index.ts");
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const Infrastructure_1 = __webpack_require__(/*! ../../../../shared/Infrastructure */ "./src/shared/Infrastructure/index.ts");
+const microservices_1 = __webpack_require__(/*! @nestjs/microservices */ "@nestjs/microservices");
+const UpdateUserCommand_1 = __webpack_require__(/*! ./UpdateUserCommand */ "./src/user/Application/UseCases/Update/UpdateUserCommand.ts");
+const rxjs_1 = __webpack_require__(/*! rxjs */ "rxjs");
+const EventConstants_1 = __webpack_require__(/*! ../../../../shared/Domain/Constants/Events/EventConstants */ "./src/shared/Domain/Constants/Events/EventConstants.ts");
+const Services_2 = __webpack_require__(/*! ../Services */ "./src/user/Application/UseCases/Services/index.ts");
+let UpdateUserCommandHandler = class UpdateUserCommandHandler extends Application_1.AppCommandHandler {
+    constructor(saver, finder, client) {
+        super();
+        this.saver = saver;
+        this.finder = finder;
+        this.client = client;
+    }
+    async onModuleInit() {
+        await this.client.connect();
+    }
+    async onModuleDestroy() {
+        await this.client.close();
+    }
+    async execute(command) {
+        const { data } = command;
+        const userExistingData = await this.finder.findOne(data.id);
+        const factoryVO = await (0, Services_2.UpdateUserFactoryVO)(data);
+        const languages = (await (0, rxjs_1.lastValueFrom)(this.client.send(EventConstants_1.default.messagePatterns.language.findCollectionByCodes, factoryVO.languages)));
+        const userEntity = await User_1.User.create(User_1.User.fromObject(Object.assign(Object.assign({}, userExistingData), { languages })));
+        userEntity.update(factoryVO);
+        await this.saver.save(userEntity.toPersistence());
+    }
+};
+UpdateUserCommandHandler = __decorate([
+    (0, Application_1.AppCommandHandlerDecorator)(UpdateUserCommand_1.UpdateUserCommand),
+    __param(2, (0, common_1.Inject)(Infrastructure_1.QueueConstants.USER_CLIENT)),
+    __metadata("design:paramtypes", [typeof (_a = typeof Services_1.UserSaver !== "undefined" && Services_1.UserSaver) === "function" ? _a : Object, typeof (_b = typeof Services_1.UserFinder !== "undefined" && Services_1.UserFinder) === "function" ? _b : Object, typeof (_c = typeof microservices_1.ClientProxy !== "undefined" && microservices_1.ClientProxy) === "function" ? _c : Object])
+], UpdateUserCommandHandler);
+exports.UpdateUserCommandHandler = UpdateUserCommandHandler;
+
+
+/***/ }),
+
+/***/ "./src/user/Application/UseCases/Update/index.ts":
+/*!*******************************************************!*\
+  !*** ./src/user/Application/UseCases/Update/index.ts ***!
+  \*******************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__webpack_require__(/*! ./UpdateUserCommand */ "./src/user/Application/UseCases/Update/UpdateUserCommand.ts"), exports);
+__exportStar(__webpack_require__(/*! ./UpdateUserCommandHandler */ "./src/user/Application/UseCases/Update/UpdateUserCommandHandler.ts"), exports);
+
+
+/***/ }),
+
 /***/ "./src/user/Application/UseCases/index.ts":
 /*!************************************************!*\
   !*** ./src/user/Application/UseCases/index.ts ***!
@@ -3317,6 +3636,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 __exportStar(__webpack_require__(/*! ./Create */ "./src/user/Application/UseCases/Create/index.ts"), exports);
+__exportStar(__webpack_require__(/*! ./Update */ "./src/user/Application/UseCases/Update/index.ts"), exports);
 
 
 /***/ }),
@@ -3349,7 +3669,10 @@ var Port_1 = __webpack_require__(/*! ./Port */ "./src/user/Application/Port/inde
 Object.defineProperty(exports, "UserRepositoryPort", ({ enumerable: true, get: function () { return Port_1.UserRepositoryPort; } }));
 exports.PortServices = __webpack_require__(/*! ./Port/Services */ "./src/user/Application/Port/Services/index.ts");
 const UseCases_1 = __webpack_require__(/*! ./UseCases */ "./src/user/Application/UseCases/index.ts");
-exports.CommandHandlers = [UseCases_1.CreateUserCommandHandler];
+exports.CommandHandlers = [
+    UseCases_1.CreateUserCommandHandler,
+    UseCases_1.UpdateUserCommandHandler,
+];
 
 
 /***/ }),
@@ -3381,7 +3704,7 @@ class User extends AggregateRoot_1.AggregateRoot {
         this.age = properties.age;
         this.isGoogleUser = properties.isGoogleUser;
         this.description = properties.description;
-        this.role = new ValueObjects_1.RolesVO(properties.roles);
+        this.role = properties.roles;
         this.isActive = properties.isActive;
         this.gender = properties.gender;
         this.country = properties.country;
@@ -3472,7 +3795,7 @@ class AgeVO extends numberNullableVO_1.NumberNullableVO {
     }
     validate() {
         if (this.valuePrimitive && this.valuePrimitive < AgeVO.MIN) {
-            throw new common_1.BadRequestException(`Age field cannot be empty or less than ${AgeVO.MIN} `);
+            throw new common_1.BadRequestException(`Age field if its present, it cannot be less than ${AgeVO.MIN} `);
         }
     }
 }
@@ -3876,7 +4199,7 @@ let PrismaUserRepository = class PrismaUserRepository {
             where: { id: user.id },
         });
         console.log('after save', userObject);
-        return (_a = User_1.User.fromObject(userObject)) === null || _a === void 0 ? void 0 : _a.id;
+        return (_a = User_1.User.fromObject(userObject)) === null || _a === void 0 ? void 0 : _a.id.value();
     }
 };
 PrismaUserRepository = __decorate([

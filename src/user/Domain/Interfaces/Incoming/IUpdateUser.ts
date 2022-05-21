@@ -1,5 +1,5 @@
-import { Languages, LearningLanguages } from '../../dto/create-user.dto';
-import { IRequestDetail } from '../../../shared/Util';
+import { Languages, LearningLanguages } from '../../../dto/create-user.dto';
+import { IRequestDetail } from '../../../../shared/Util';
 
 export interface IUpdateUser {
   id: string;

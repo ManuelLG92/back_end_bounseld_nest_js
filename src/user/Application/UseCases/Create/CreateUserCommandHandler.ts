@@ -33,10 +33,14 @@ export class CreateUserCommandHandler extends AppCommandHandler {
 
   async execute(command: CreateUserCommand): Promise<void> {
     const { data } = command;
+    console.log(
+      'enter command',
+      data.languages.map((lang) => lang.code),
+    );
     const languages = (await lastValueFrom(
       this.client.send(
         EventConstants.messagePatterns.language.findCollectionByCodes,
-        data.languages,
+        data.languages.map((lang) => lang.code),
       ),
     )) as unknown as ILanguage[];
 

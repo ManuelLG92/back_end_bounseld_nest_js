@@ -30,7 +30,6 @@ import { QueueConstants, RepositoryProviders } from '../shared/Infrastructure';
   providers: [
     ...Object.values(PortServices),
     ...Object.values(CommandHandlers),
-    // ...Object.values(UserService),
     {
       provide: RepositoryProviders.USER_REPOSITORY,
       useClass: PrismaUserRepository,

@@ -17,6 +17,7 @@ import { StringNullableVO } from 'src/shared/Domain/ValueObjects/stringNullableV
 import { CollectionVO } from 'src/shared/Domain/ValueObjects/collectionVO';
 import { GlobalsService } from 'src/globals/globals.service';
 import { AggregateRoot } from '../../shared/Domain/Entity/AggregateRoot';
+import { ICreateUser } from './Interfaces/Incoming';
 
 export interface IUser {
   id: ID;
@@ -28,7 +29,7 @@ export interface IUser {
   age?: AgeVO;
   isGoogleUser?: BooleanVO;
   description?: StringNullableVO;
-  roles?: [];
+  roles?: RolesVO;
   isActive?: BooleanVO;
   isBanish?: BooleanVO;
   country?: StringNullableVO;
@@ -40,7 +41,6 @@ export interface IUser {
 }
 
 export interface IUpdateUser {
-  id: ID;
   name: NameVO;
   surname: SurnameVO;
   avatar: AvatarVO;
@@ -84,7 +84,7 @@ export class User extends AggregateRoot {
     this.age = properties.age;
     this.isGoogleUser = properties.isGoogleUser;
     this.description = properties.description;
-    this.role = new RolesVO(properties.roles);
+    this.role = properties.roles;
     this.isActive = properties.isActive;
     this.gender = properties.gender;
     this.country = properties.country;
@@ -142,7 +142,7 @@ export class User extends AggregateRoot {
     } as unknown as IUser;
   }
 
-  toPersistence(): IUser {
+  toPersistence(): ICreateUser {
     return {
       id: this.id.value(),
       name: this.name.value(),
@@ -158,6 +158,6 @@ export class User extends AggregateRoot {
       languages: this.languages,
       learningLanguages: this.learningLanguages,
       ctx: this.ctx,
-    } as unknown as IUser;
+    } as unknown as ICreateUser;
   }
 }
