@@ -3399,9 +3399,11 @@ let CreateUserCommandHandler = class CreateUserCommandHandler extends Applicatio
         const { data } = command;
         console.log('enter command', data.languages.map((lang) => lang.code));
         const languages = (await (0, rxjs_1.lastValueFrom)(this.client.send(EventConstants_1.default.messagePatterns.language.findCollectionByCodes, data.languages.map((lang) => lang.code))));
-        await this.finder.findOneByEmail(data.email);
+        if (await this.finder.findOneByEmail(data.email)) {
+            throw new common_1.BadRequestException('This email is already used. Pick up another one.');
+        }
         const userDto = Object.assign(Object.assign({}, data), { languages });
-        const user = await User_1.User.create(User_1.User.fromObject(userDto));
+        const user = await User_1.User.create(User_1.User.fromObject(userDto, true));
         await this.saver.save(user.toPersistence());
     }
 };
@@ -3729,25 +3731,23 @@ class User extends AggregateRoot_1.AggregateRoot {
         this.learningLanguages = props.learningLanguages;
         this.ctx = props.ctx;
     }
-    static fromObject(props) {
-        var _a, _b, _c, _d, _e;
+    static fromObject(props, createId = false) {
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
         if (!props) {
             return null;
         }
         return {
-            id: new idVO_1.ID((_a = props.id) !== null && _a !== void 0 ? _a : ''),
-            name: new ValueObjects_1.NameVO((_b = props.name) !== null && _b !== void 0 ? _b : ''),
-            surname: new ValueObjects_1.SurnameVO((_c = props.surname) !== null && _c !== void 0 ? _c : ''),
-            email: ValueObjects_1.EmailVo.create((_d = props.email) !== null && _d !== void 0 ? _d : ''),
-            roles: new ValueObjects_1.RolesVO((_e = props.roles) !== null && _e !== void 0 ? _e : ['user']),
+            id: createId ? idVO_1.ID.generate() : new idVO_1.ID(props.id),
+            name: new ValueObjects_1.NameVO((_a = props.name) !== null && _a !== void 0 ? _a : ''),
+            surname: new ValueObjects_1.SurnameVO((_b = props.surname) !== null && _b !== void 0 ? _b : ''),
+            email: ValueObjects_1.EmailVo.create((_c = props.email) !== null && _c !== void 0 ? _c : ''),
+            roles: new ValueObjects_1.RolesVO((_d = props.roles) !== null && _d !== void 0 ? _d : ['user']),
             password: props.password ? new ValueObjects_1.PasswordVO(props.password) : null,
-            age: props.age ? new ValueObjects_1.AgeVO(props.age) : null,
-            avatar: props.avatar ? new ValueObjects_1.AvatarVO(props.avatar) : null,
-            description: props.description
-                ? stringNullableVO_1.StringNullableVO.create(props.description)
-                : null,
-            gender: props.gender ? new ValueObjects_1.GenderVO(props.gender) : null,
-            country: props.country ? stringNullableVO_1.StringNullableVO.create(props.country) : null,
+            age: new ValueObjects_1.AgeVO((_e = props.age) !== null && _e !== void 0 ? _e : null),
+            avatar: new ValueObjects_1.AvatarVO((_f = props.avatar) !== null && _f !== void 0 ? _f : null),
+            description: stringNullableVO_1.StringNullableVO.create((_g = props.description) !== null && _g !== void 0 ? _g : null),
+            gender: new ValueObjects_1.GenderVO((_h = props.gender) !== null && _h !== void 0 ? _h : null),
+            country: stringNullableVO_1.StringNullableVO.create((_j = props.country) !== null && _j !== void 0 ? _j : null),
             languages: props.languages,
             learningLanguages: props.learningLanguages,
             ctx: props.ctx,
@@ -4150,7 +4150,7 @@ let PrismaUserRepository = class PrismaUserRepository {
             },
         });
         if (!user) {
-            throw new common_1.BadRequestException('an user already exists with this email');
+            return null;
         }
         return User_1.User.fromObject(user);
     }
@@ -4163,22 +4163,21 @@ let PrismaUserRepository = class PrismaUserRepository {
     }
     async save(user) {
         var _a;
-        console.log('after');
         const userObject = await this.prismaService.user.upsert({
             create: Object.assign(Object.assign({}, user), { languages: {
                     connect: user.languages.map((item) => {
                         return { code: item.code };
                     }),
                 }, learningLanguages: {
-                    create: user.learningLanguages.map((item) => ({
-                        level: item.level,
-                        user: {
-                            connect: { id: user.id },
-                        },
-                        language: {
-                            connect: { code: item.code },
-                        },
-                    })),
+                    create: user.learningLanguages.map((item) => {
+                        var _a;
+                        return ({
+                            level: (_a = item.level) === null || _a === void 0 ? void 0 : _a.toString(),
+                            language: {
+                                connect: { code: item.code },
+                            },
+                        });
+                    }),
                 } }),
             update: Object.assign(Object.assign({}, user), { languages: {
                     connect: user.languages.map((item) => {
@@ -4186,19 +4185,18 @@ let PrismaUserRepository = class PrismaUserRepository {
                     }),
                 }, learningLanguages: {
                     deleteMany: {},
-                    create: user.learningLanguages.map((item) => ({
-                        level: item.level,
-                        language: {
-                            connect: { code: item.code },
-                        },
-                        user: {
-                            connect: { id: user.id },
-                        },
-                    })),
+                    create: user.learningLanguages.map((item) => {
+                        var _a;
+                        return ({
+                            level: (_a = item.level) === null || _a === void 0 ? void 0 : _a.toString(),
+                            language: {
+                                connect: { code: item.code },
+                            },
+                        });
+                    }),
                 } }),
             where: { id: user.id },
         });
-        console.log('after save', userObject);
         return (_a = User_1.User.fromObject(userObject)) === null || _a === void 0 ? void 0 : _a.id.value();
     }
 };
@@ -4431,20 +4429,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var _a, _b;
+var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.UserUpdater = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const update_user_dto_1 = __webpack_require__(/*! ../dto/update-user.dto */ "./src/user/dto/update-user.dto.ts");
-const Services_1 = __webpack_require__(/*! ../Application/Port/Services */ "./src/user/Application/Port/Services/index.ts");
-const User_1 = __webpack_require__(/*! ../Domain/User */ "./src/user/Domain/User.ts");
 let UserUpdater = class UserUpdater {
-    constructor(userRestService) {
-        this.userRestService = userRestService;
-    }
     update(id, updateUserRestDto) {
-        console.log('user id patch', id);
-        return this.userRestService.save(Object.assign({}, User_1.User.fromObject(updateUserRestDto)));
+        console.log('user id patch', id, 'data', updateUserRestDto);
+        return 'ok';
     }
 };
 __decorate([
@@ -4456,8 +4449,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UserUpdater.prototype, "update", null);
 UserUpdater = __decorate([
-    (0, common_1.Controller)('user'),
-    __metadata("design:paramtypes", [typeof (_b = typeof Services_1.UserSaver !== "undefined" && Services_1.UserSaver) === "function" ? _b : Object])
+    (0, common_1.Controller)('user')
 ], UserUpdater);
 exports.UserUpdater = UserUpdater;
 

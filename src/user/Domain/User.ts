@@ -118,24 +118,22 @@ export class User extends AggregateRoot {
     this.ctx = props.ctx;
   }
 
-  static fromObject(props: any | null): IUser | null {
+  static fromObject(props: any | null, createId = false): IUser | null {
     if (!props) {
       return null;
     }
     return {
-      id: new ID(props.id ?? ''),
+      id: createId ? ID.generate() : new ID(props.id),
       name: new NameVO(props.name ?? ''),
       surname: new SurnameVO(props.surname ?? ''),
       email: EmailVo.create(props.email ?? ''),
       roles: new RolesVO(props.roles ?? ['user']),
       password: props.password ? new PasswordVO(props.password) : null,
-      age: props.age ? new AgeVO(props.age) : null,
-      avatar: props.avatar ? new AvatarVO(props.avatar) : null,
-      description: props.description
-        ? StringNullableVO.create(props.description)
-        : null,
-      gender: props.gender ? new GenderVO(props.gender) : null,
-      country: props.country ? StringNullableVO.create(props.country) : null,
+      age: new AgeVO(props.age ?? null),
+      avatar: new AvatarVO(props.avatar ?? null),
+      description: StringNullableVO.create(props.description ?? null),
+      gender: new GenderVO(props.gender ?? null),
+      country: StringNullableVO.create(props.country ?? null),
       languages: props.languages,
       learningLanguages: props.learningLanguages,
       ctx: props.ctx,

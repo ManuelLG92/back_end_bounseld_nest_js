@@ -18,6 +18,6 @@
       "@shared/*" : ["shared/*"],
     },
     "incremental": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
   }
 }

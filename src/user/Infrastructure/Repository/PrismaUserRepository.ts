@@ -1,7 +1,7 @@
 import { UserRepositoryPort } from '../../Application';
 import { IUser, User } from '../../Domain/User';
 import { PrismaService } from '../../../prisma/prisma.service';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ICreateUser } from '../../Domain/Interfaces/Incoming';
 
 @Injectable()
@@ -24,7 +24,7 @@ export class PrismaUserRepository implements UserRepositoryPort {
     return User.fromObject(user);
   }
 
-  async findOneByEmail(email: string): Promise<IUser> {
+  async findOneByEmail(email: string): Promise<IUser | null> {
     const user = await this.prismaService.user.findFirst({
       where: {
         email,
@@ -32,7 +32,7 @@ export class PrismaUserRepository implements UserRepositoryPort {
     });
 
     if (!user) {
-      throw new BadRequestException('an user already exists with this email');
+      return null;
     }
     return User.fromObject(user);
   }
@@ -46,12 +46,6 @@ export class PrismaUserRepository implements UserRepositoryPort {
   }
 
   async save(user: ICreateUser): Promise<string | null> {
-    /*    console.log(
-      'enter on save prisma',
-      // this.appRepositoryService.user.create({ data: user }),
-      this.appRepositoryService.us,
-    );*/
-    console.log('after');
     const userObject = await this.prismaService.user.upsert({
       create: {
         ...user,
@@ -62,10 +56,7 @@ export class PrismaUserRepository implements UserRepositoryPort {
         },
         learningLanguages: {
           create: user.learningLanguages.map((item) => ({
-            level: item.level,
-            user: {
-              connect: { id: user.id },
-            },
+            level: item.level?.toString(),
             language: {
               connect: { code: item.code },
             },
@@ -83,19 +74,15 @@ export class PrismaUserRepository implements UserRepositoryPort {
         learningLanguages: {
           deleteMany: {},
           create: user.learningLanguages.map((item) => ({
-            level: item.level,
+            level: item.level?.toString(),
             language: {
               connect: { code: item.code },
-            },
-            user: {
-              connect: { id: user.id },
             },
           })),
         },
       },
       where: { id: user.id },
     });
-    console.log('after save', userObject);
     return User.fromObject(userObject)?.id.value();
   }
 }

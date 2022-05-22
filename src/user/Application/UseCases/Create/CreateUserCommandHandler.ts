@@ -5,7 +5,7 @@ import {
   AppCommandHandler,
   AppCommandHandlerDecorator,
 } from '../../../../shared/Application';
-import { Inject } from '@nestjs/common';
+import { BadRequestException, Inject } from '@nestjs/common';
 import { QueueConstants } from '../../../../shared/Infrastructure';
 import { ClientProxy } from '@nestjs/microservices';
 import EventConstants from '../../../../shared/Domain/Constants/Events/EventConstants';
@@ -44,9 +44,13 @@ export class CreateUserCommandHandler extends AppCommandHandler {
       ),
     )) as unknown as ILanguage[];
 
-    await this.finder.findOneByEmail(data.email);
+    if (await this.finder.findOneByEmail(data.email)) {
+      throw new BadRequestException(
+        'This email is already used. Pick up another one.',
+      );
+    }
     const userDto = { ...data, languages };
-    const user = await User.create(User.fromObject(userDto));
+    const user = await User.create(User.fromObject(userDto, true));
     await this.saver.save(user.toPersistence());
   }
 }
