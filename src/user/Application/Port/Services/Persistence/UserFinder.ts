@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UserRepositoryPort } from '../../UserRepositoryPort';
-import { RepositoryProviders } from '../../../../../shared/Infrastructure';
-import { IUser } from '../../../../Domain/User';
+import { UserRepositoryPort } from 'src/user/Application';
+import { RepositoryProviders } from 'src/shared/Infrastructure';
+import { IUser } from 'src/user/Domain/Interfaces';
 
 @Injectable()
 export class UserFinder {

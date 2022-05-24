@@ -4,21 +4,22 @@ import { User } from 'src/user/Domain/User';
 import {
   AppCommandHandler,
   AppCommandHandlerDecorator,
-} from '../../../../shared/Application';
+} from 'src/shared/Application';
 import { BadRequestException, Inject } from '@nestjs/common';
-import { QueueConstants } from '../../../../shared/Infrastructure';
+import { QueueConstants, RepositoryProviders } from 'src/shared/Infrastructure';
 import { ClientProxy } from '@nestjs/microservices';
 import EventConstants from '../../../../shared/Domain/Constants/Events/EventConstants';
 import { ILanguage } from '../../../../lenguage/Domain/language';
 import { lastValueFrom } from 'rxjs';
+import { UserRepositoryPort } from '../../Port';
 
 @AppCommandHandlerDecorator(CreateUserCommand)
 export class CreateUserCommandHandler extends AppCommandHandler {
   constructor(
-    private readonly saver: UserSaver,
-    private readonly finder: UserFinder,
+    @Inject(RepositoryProviders.USER_REPOSITORY)
+    private repo: UserRepositoryPort,
     @Inject(QueueConstants.USER_CLIENT)
-    private client: ClientProxy,
+    private readonly client: ClientProxy,
   ) {
     super();
   }
@@ -44,13 +45,13 @@ export class CreateUserCommandHandler extends AppCommandHandler {
       ),
     )) as unknown as ILanguage[];
 
-    if (await this.finder.findOneByEmail(data.email)) {
+    if (await this.repo.findOneByEmail(data.email)) {
       throw new BadRequestException(
         'This email is already used. Pick up another one.',
       );
     }
     const userDto = { ...data, languages };
     const user = await User.create(User.fromObject(userDto, true));
-    await this.saver.save(user.toPersistence());
+    await this.repo.save(user.toPersistence());
   }
 }

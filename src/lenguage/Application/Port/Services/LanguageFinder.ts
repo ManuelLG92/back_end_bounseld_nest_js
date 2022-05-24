@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { LanguageRepositoryPort } from '../LanguageRepositoryPort';
 import { ILanguage } from '../../../Domain/language';
-import { RepositoryProviders } from '../../../../shared/Infrastructure';
+import { RepositoryProviders } from 'src/shared/Infrastructure';
 
 @Injectable()
 export class LanguageFinder {

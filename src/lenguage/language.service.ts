@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { RepositoryProviders } from '../shared/Infrastructure';
+import { RepositoryProviders } from 'src/shared/Infrastructure';
 import { LanguageRepositoryPort } from './Application';
 import { Language } from './Domain/language';
 

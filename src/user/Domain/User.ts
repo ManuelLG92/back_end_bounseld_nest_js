@@ -1,6 +1,11 @@
-import { LearningLanguages, Languages } from '../dto/create-user.dto';
-import { IRequestDetail } from '../../shared/Util';
-import { ID } from 'src/shared/Domain/ValueObjects/idVO';
+import { Languages, LearningLanguages } from '../dto/create-user.dto';
+import { IRequestDetail } from 'src/shared/Util';
+import {
+  BooleanVO,
+  CollectionVO,
+  ID,
+  StringNullableVO,
+} from 'src/shared/Domain/ValueObjects';
 import {
   AgeVO,
   AvatarVO,
@@ -12,46 +17,9 @@ import {
   RolesVO,
   SurnameVO,
 } from './ValueObjects';
-import { BooleanVO } from 'src/shared/Domain/ValueObjects/booleanVO';
-import { StringNullableVO } from 'src/shared/Domain/ValueObjects/stringNullableVO';
-import { CollectionVO } from 'src/shared/Domain/ValueObjects/collectionVO';
 import { GlobalsService } from 'src/globals/globals.service';
-import { AggregateRoot } from '../../shared/Domain/Entity/AggregateRoot';
-import { ICreateUser } from './Interfaces/Incoming';
-
-export interface IUser {
-  id: ID;
-  name: NameVO;
-  surname: SurnameVO;
-  email: EmailVo;
-  password: PasswordVO;
-  avatar: AvatarVO;
-  age?: AgeVO;
-  isGoogleUser?: BooleanVO;
-  description?: StringNullableVO;
-  roles?: RolesVO;
-  isActive?: BooleanVO;
-  isBanish?: BooleanVO;
-  country?: StringNullableVO;
-  blackList?: BlackListVO;
-  gender?: GenderVO;
-  languages: Languages[];
-  learningLanguages: LearningLanguages[];
-  ctx: IRequestDetail;
-}
-
-export interface IUpdateUser {
-  name: NameVO;
-  surname: SurnameVO;
-  avatar: AvatarVO;
-  age?: AgeVO;
-  description?: StringNullableVO;
-  country?: StringNullableVO;
-  gender?: GenderVO;
-  languages: Languages[];
-  learningLanguages: LearningLanguages[];
-  ctx: IRequestDetail;
-}
+import { AggregateRoot } from 'src/shared/Domain/Entity/AggregateRoot';
+import { ICreateUserPrimitives, IUpdateUser, IUser } from './Interfaces';
 
 export class User extends AggregateRoot {
   public readonly id: ID;
@@ -127,35 +95,43 @@ export class User extends AggregateRoot {
       name: new NameVO(props.name ?? ''),
       surname: new SurnameVO(props.surname ?? ''),
       email: EmailVo.create(props.email ?? ''),
-      roles: new RolesVO(props.roles ?? ['user']),
       password: props.password ? new PasswordVO(props.password) : null,
-      age: new AgeVO(props.age ?? null),
       avatar: new AvatarVO(props.avatar ?? null),
+      age: new AgeVO(props.age ?? null),
+      isGoogleUser: BooleanVO.create(props.isGoogleUser ?? false),
       description: StringNullableVO.create(props.description ?? null),
-      gender: new GenderVO(props.gender ?? null),
+      roles: new RolesVO(props.roles ?? ['user']),
+      isActive: BooleanVO.create(props.isActive ?? false),
+      isBanish: BooleanVO.create(props.isBanish ?? false),
       country: StringNullableVO.create(props.country ?? null),
+      blackList: BlackListVO.create(props.blackList ?? []),
+      gender: new GenderVO(props.gender ?? null),
       languages: props.languages,
       learningLanguages: props.learningLanguages,
       ctx: props.ctx,
     } as unknown as IUser;
   }
 
-  toPersistence(): ICreateUser {
+  toPersistence(): ICreateUserPrimitives {
     return {
       id: this.id.value(),
       name: this.name.value(),
       surname: this.surname.value(),
       email: this.email.value(),
-      roles: this.role.items(),
       password: this.password.value(),
-      age: this.age.value(),
       avatar: this.avatar.value(),
+      age: this.age.value(),
+      isGoogleUser: this.isGoogleUser.value(),
       description: this.description.value(),
-      gender: this.gender.value(),
+      roles: this.role.items(),
+      isActive: this.isActive.value(),
+      isBanish: this.isBanish.value(),
       country: this.country.value(),
+      blackList: this.blackList.items(),
+      gender: this.gender.value(),
       languages: this.languages,
       learningLanguages: this.learningLanguages,
       ctx: this.ctx,
-    } as unknown as ICreateUser;
+    } as unknown as ICreateUserPrimitives;
   }
 }

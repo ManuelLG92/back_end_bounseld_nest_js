@@ -1,4 +1,4 @@
-import { LearningLanguages, Languages } from './create-user.dto';
+import { Languages, LearningLanguages } from './create-user.dto';
 
 export interface IUserInterface {
   id: string;

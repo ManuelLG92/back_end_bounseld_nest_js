@@ -1,2 +1,2 @@
-export * from './ICreateUser';
-export * from './IUpdateUser';
+export * from './ICreateUserPrimitives';
+export * from './IUpdateUserPrimitives';

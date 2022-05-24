@@ -7,7 +7,7 @@ import {
 } from '@nestjs/microservices';
 import EventConstants from 'src/shared/Domain/Constants/Events/EventConstants';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { GetManyLanguagesQuery } from '../../Application/UseCases/GetMany';
+import { GetManyLanguagesQuery } from '../../Application';
 
 @Controller()
 export class FindManyByCodeCollectionEventController {

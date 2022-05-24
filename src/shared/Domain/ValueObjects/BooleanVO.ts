@@ -14,11 +14,11 @@ export class BooleanVO extends BaseVO {
     return new this(value ?? false);
   }
 
-  protected value(): boolean {
+  public value(): boolean {
     return this.valuePrimitive;
   }
 
-  protected isTrue(): boolean {
+  public isTrue(): boolean {
     return this.valuePrimitive === true;
   }
 

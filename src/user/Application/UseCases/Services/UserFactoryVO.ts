@@ -1,13 +1,13 @@
-import { IUpdateUser as IUpdateUserPrimitives } from '../../../Domain/Interfaces/Incoming';
+import { IUpdateUserPrimitives as IUpdateUserPrimitives } from '../../../Domain/Interfaces/Incoming';
 import {
   AgeVO,
   AvatarVO,
   GenderVO,
   NameVO,
   SurnameVO,
-} from '../../../Domain/ValueObjects';
-import { StringNullableVO } from '../../../../shared/Domain/ValueObjects/stringNullableVO';
-import { IUpdateUser } from '../../../Domain/User';
+} from 'src/user/Domain/ValueObjects';
+import { StringNullableVO } from 'src/shared/Domain/ValueObjects';
+import { IUpdateUser } from 'src/user/Domain/Interfaces';
 
 export const UpdateUserFactoryVO = async (data: IUpdateUserPrimitives) => {
   return {

@@ -18,6 +18,7 @@ model User {
   isGoogleUser      Boolean?            @default(false)
   description       String?
   roles             String[]
+  blackList             String[]
   createdAt         DateTime?           @default(now())
   updatedAt         DateTime?           @updatedAt
   isActive          Boolean?            @default(false)

@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { IUser } from '../../Domain/User';
-import { ICreateUser } from '../../Domain/Interfaces/Incoming';
+import { ICreateUserPrimitives } from 'src/user/Domain/Interfaces';
+import { IUser } from '../../Domain/Interfaces';
 
 @Injectable()
 export abstract class UserRepositoryPort {
-  abstract save(user: ICreateUser): Promise<string | null>;
+  abstract save(user: ICreateUserPrimitives): Promise<string | null>;
   abstract findAll(): Promise<IUser[]>;
   abstract findOne(id: string): Promise<IUser>;
   abstract findOneByEmail(email: string): Promise<IUser | null>;

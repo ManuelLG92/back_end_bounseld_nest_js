@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { NativeLanguagesService } from './native-languages.service';
 import { NativeLanguagesController } from './native-languages.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { QueueConstants } from '../shared/Infrastructure';
+import { QueueConstants } from 'src/shared/Infrastructure';
 import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({

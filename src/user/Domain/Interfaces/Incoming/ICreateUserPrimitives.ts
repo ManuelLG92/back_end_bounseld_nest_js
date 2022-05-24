@@ -1,7 +1,7 @@
-import { Languages, LearningLanguages } from '../../../dto/create-user.dto';
-import { IRequestDetail } from '../../../../shared/Util';
+import { Languages, LearningLanguages } from 'src/user/dto/create-user.dto';
+import { IRequestDetail } from 'src/shared/Util';
 
-export interface ICreateUser {
+export interface ICreateUserPrimitives {
   id: string;
   name: string;
   surname: string;

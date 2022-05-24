@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UserRepositoryPort } from '../../UserRepositoryPort';
-import { RepositoryProviders } from '../../../../../shared/Infrastructure';
-import { ICreateUser } from '../../../../Domain/Interfaces/Incoming';
+import { UserRepositoryPort } from 'src/user/Application';
+import { RepositoryProviders } from 'src/shared/Infrastructure';
+import { ICreateUserPrimitives } from 'src/user/Domain/Interfaces';
 
 @Injectable()
 export class UserSaver {
@@ -10,7 +10,7 @@ export class UserSaver {
     private userRepositoryPort: UserRepositoryPort,
   ) {}
 
-  async save(user: ICreateUser): Promise<string> {
+  async save(user: ICreateUserPrimitives): Promise<string> {
     return await this.userRepositoryPort.save({ ...user });
   }
 }

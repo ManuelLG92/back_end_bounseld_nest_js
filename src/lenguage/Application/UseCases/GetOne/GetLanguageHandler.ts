@@ -1,7 +1,7 @@
 import {
   AppQueryHandler,
   AppQueryHandlerDecorator,
-} from '../../../../shared/Application';
+} from 'src/shared/Application';
 import { GetLanguageQuery } from './GetLanguageQuery';
 import { LanguageFinder } from '../../Port/Services';
 import { ILanguage, Language } from '../../../Domain/language';

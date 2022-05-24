@@ -1,8 +1,9 @@
 import { UserRepositoryPort } from '../../Application';
-import { IUser, User } from '../../Domain/User';
+import { User } from '../../Domain/User';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { ICreateUser } from '../../Domain/Interfaces/Incoming';
+import { ICreateUserPrimitives } from '../../Domain/Interfaces/Incoming';
+import { IUser } from '../../Domain/Interfaces';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepositoryPort {
@@ -45,7 +46,7 @@ export class PrismaUserRepository implements UserRepositoryPort {
     });
   }
 
-  async save(user: ICreateUser): Promise<string | null> {
+  async save(user: ICreateUserPrimitives): Promise<string | null> {
     const userObject = await this.prismaService.user.upsert({
       create: {
         ...user,

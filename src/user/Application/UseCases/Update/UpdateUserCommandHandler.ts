@@ -5,19 +5,20 @@ import {
   AppCommandHandlerDecorator,
 } from '../../../../shared/Application';
 import { Inject } from '@nestjs/common';
-import { QueueConstants } from '../../../../shared/Infrastructure';
+import { QueueConstants, RepositoryProviders } from 'src/shared/Infrastructure';
 import { ClientProxy } from '@nestjs/microservices';
 import { UpdateUserCommand } from './UpdateUserCommand';
 import { lastValueFrom } from 'rxjs';
 import EventConstants from '../../../../shared/Domain/Constants/Events/EventConstants';
 import { ILanguage } from '../../../../lenguage/Domain/language';
 import { UpdateUserFactoryVO } from '../Services';
+import { UserRepositoryPort } from '../../Port';
 
 @AppCommandHandlerDecorator(UpdateUserCommand)
 export class UpdateUserCommandHandler extends AppCommandHandler {
   constructor(
-    private readonly saver: UserSaver,
-    private readonly finder: UserFinder,
+    @Inject(RepositoryProviders.USER_REPOSITORY)
+    private repo: UserRepositoryPort,
     @Inject(QueueConstants.USER_CLIENT)
     private client: ClientProxy,
   ) {
@@ -33,9 +34,9 @@ export class UpdateUserCommandHandler extends AppCommandHandler {
   }
 
   async execute(command: UpdateUserCommand): Promise<void> {
-    const { data } = command;
+    const { id, data } = command;
 
-    const userExistingData = await this.finder.findOne(data.id);
+    const userExistingData = await this.repo.findOne(id);
 
     const factoryVO = await UpdateUserFactoryVO(data);
 
@@ -52,6 +53,6 @@ export class UpdateUserCommandHandler extends AppCommandHandler {
 
     userEntity.update(factoryVO);
 
-    await this.saver.save(userEntity.toPersistence());
+    await this.repo.save(userEntity.toPersistence());
   }
 }
