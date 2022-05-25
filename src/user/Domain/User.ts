@@ -100,7 +100,7 @@ export class User extends AggregateRoot {
       age: new AgeVO(props.age ?? null),
       isGoogleUser: BooleanVO.create(props.isGoogleUser ?? false),
       description: StringNullableVO.create(props.description ?? null),
-      roles: new RolesVO(props.roles ?? ['user']),
+      roles: RolesVO.byDefault(),
       isActive: BooleanVO.create(props.isActive ?? false),
       isBanish: BooleanVO.create(props.isBanish ?? false),
       country: StringNullableVO.create(props.country ?? null),

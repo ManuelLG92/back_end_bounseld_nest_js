@@ -1,5 +1,5 @@
 import { AppCommand } from '../../../../shared/Application';
-import { IUpdateUserPrimitives } from '../../../Domain/Interfaces/Incoming';
+import { IUpdateUserPrimitives } from '../../../Domain/Interfaces';
 
 export class UpdateUserCommand implements AppCommand {
   constructor(

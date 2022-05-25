@@ -1,5 +1,4 @@
 import { CreateUserCommand } from './CreateUserCommand';
-import { UserFinder, UserSaver } from '../../Port/Services';
 import { User } from 'src/user/Domain/User';
 import {
   AppCommandHandler,
@@ -32,7 +31,7 @@ export class CreateUserCommandHandler extends AppCommandHandler {
     await this.client.close();
   }
 
-  async execute(command: CreateUserCommand): Promise<void> {
+  async execute(command: CreateUserCommand): Promise<string> {
     const { data } = command;
     console.log(
       'enter command',
@@ -52,6 +51,6 @@ export class CreateUserCommandHandler extends AppCommandHandler {
     }
     const userDto = { ...data, languages };
     const user = await User.create(User.fromObject(userDto, true));
-    await this.repo.save(user.toPersistence());
+    return await this.repo.save(user.toPersistence());
   }
 }

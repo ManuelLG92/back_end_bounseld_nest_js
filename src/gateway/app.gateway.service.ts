@@ -26,7 +26,7 @@ export class AppGatewayService {
   }
 
   async getUser(socket: string): Promise<SocketConnection> {
-    return this.socketList?.find((el) => (el.socket = socket));
+    return this.socketList?.find((el) => el.socket === socket);
   }
   /*constructor(private readonly redisService: RedisService) {}
 
