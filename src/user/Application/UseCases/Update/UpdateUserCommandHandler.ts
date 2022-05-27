@@ -4,21 +4,21 @@ import {
   AppCommandHandlerDecorator,
 } from '../../../../shared/Application';
 import { BadRequestException, Inject } from '@nestjs/common';
-import { QueueConstants, RepositoryProviders } from 'src/shared/Infrastructure';
+import { QueueConstants } from 'src/shared/Infrastructure';
 import { ClientProxy } from '@nestjs/microservices';
 import { UpdateUserCommand } from './UpdateUserCommand';
 import { lastValueFrom } from 'rxjs';
 import EventConstants from '../../../../shared/Domain/Constants/Events/EventConstants';
-import { ILanguage } from '../../../../lenguage/Domain/language';
 import { IUserToObject, UpdateUserFactoryVO } from '../Services';
-import { UserRepositoryPort } from '../../Port';
 import { IUpdateUser, IUser } from '../../../Domain/Interfaces';
+import { UserFinder, UserSaver } from '../../Port/Services';
+import { ILanguage } from '../../../../lenguage/Domain/language';
 
 @AppCommandHandlerDecorator(UpdateUserCommand)
 export class UpdateUserCommandHandler extends AppCommandHandler {
   constructor(
-    @Inject(RepositoryProviders.USER_REPOSITORY)
-    private repo: UserRepositoryPort,
+    private readonly saver: UserSaver,
+    private readonly finder: UserFinder,
     @Inject(QueueConstants.USER_CLIENT)
     private client: ClientProxy,
   ) {
@@ -36,7 +36,7 @@ export class UpdateUserCommandHandler extends AppCommandHandler {
   async execute(command: UpdateUserCommand): Promise<void> {
     const { id, data } = command;
 
-    const userExistingData = await this.repo.findOne(id);
+    const userExistingData = await this.finder.findOne(id);
 
     await this.handlerUserNotFoundException(userExistingData);
 
@@ -48,16 +48,23 @@ export class UpdateUserCommandHandler extends AppCommandHandler {
 
     userEntity.update(factoryVO);
 
-    await this.repo.save(userEntity.toPersistence());
+    await this.saver.save(userEntity.toPersistence());
   }
 
   async getLanguages(factoryVO: IUpdateUser) {
-    return (await lastValueFrom(
-      this.client.send(
-        EventConstants.messagePatterns.language.findCollectionByCodes,
-        factoryVO.languages.map((lang) => lang.code),
-      ),
-    )) as unknown as ILanguage[];
+    const languageCodes = factoryVO.languages.map((lang) => lang.code);
+
+    let languages = [];
+    if (languageCodes.length) {
+      languages = (await lastValueFrom(
+        this.client.send(
+          EventConstants.messagePatterns.language.findCollectionByCodes,
+          factoryVO.languages.map((lang) => lang.code),
+        ),
+      )) as unknown as ILanguage[];
+    }
+
+    return languages;
   }
 
   async handlerUserNotFoundException(

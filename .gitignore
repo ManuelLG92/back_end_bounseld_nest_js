@@ -6,3 +6,4 @@ db_data/
 rabbitmq.conf/
 yarn-error.log
 .idea/
+documentation/
