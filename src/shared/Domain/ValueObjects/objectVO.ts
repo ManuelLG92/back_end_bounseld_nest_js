@@ -10,7 +10,9 @@ export class ObjectVO {
   }
 
   add(value: Record<string, unknown>): void {
-    Object.assign(this.valuePrimitive, value);
+    const key = Object.keys(value).shift();
+    this.valuePrimitive[key] = Object.values(value);
+    // Object.assign(this.valuePrimitive, value);
   }
 
   reset() {
@@ -18,7 +20,7 @@ export class ObjectVO {
   }
 
   getItem<T>(key: string): T {
-    return this.valuePrimitive[key];
+    return this.valuePrimitive[key] ?? null;
   }
 
   deleteItem(key: string): void {

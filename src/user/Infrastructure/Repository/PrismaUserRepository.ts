@@ -2,7 +2,7 @@ import { UserRepositoryPort } from '../../Application';
 import { User } from '../../Domain/User';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { ICreateUserPrimitives } from '../../Domain/Interfaces/Incoming';
+import { ICreateUserPrimitives } from '../../Domain/Interfaces';
 import { IUser } from '../../Domain/Interfaces';
 
 @Injectable()

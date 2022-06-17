@@ -10,9 +10,8 @@ import { UpdateUserCommand } from './UpdateUserCommand';
 import { lastValueFrom } from 'rxjs';
 import EventConstants from '../../../../shared/Domain/Constants/Events/EventConstants';
 import { IUserToObject, UpdateUserFactoryVO } from '../Services';
-import { IUpdateUser, IUser } from '../../../Domain/Interfaces';
+import { IUpdateUser, IUser, IUserLanguage } from '../../../Domain/Interfaces';
 import { UserFinder, UserSaver } from '../../Port/Services';
-import { ILanguage } from '../../../../lenguage/Domain/language';
 
 @AppCommandHandlerDecorator(UpdateUserCommand)
 export class UpdateUserCommandHandler extends AppCommandHandler {
@@ -61,7 +60,7 @@ export class UpdateUserCommandHandler extends AppCommandHandler {
           EventConstants.messagePatterns.language.findCollectionByCodes,
           factoryVO.languages.map((lang) => lang.code),
         ),
-      )) as unknown as ILanguage[];
+      )) as unknown as IUserLanguage[];
     }
 
     return languages;
@@ -75,7 +74,10 @@ export class UpdateUserCommandHandler extends AppCommandHandler {
     }
   }
 
-  async userTransformer(user: IUser, languages: ILanguage[]): Promise<User> {
+  async userTransformer(
+    user: IUser,
+    languages: IUserLanguage[],
+  ): Promise<User> {
     return await User.create(
       User.fromObject({ ...(await IUserToObject(user)), languages }, false),
       user.id,

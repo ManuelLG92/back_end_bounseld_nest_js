@@ -8,9 +8,9 @@ import { BadRequestException, Inject } from '@nestjs/common';
 import { QueueConstants } from 'src/shared/Infrastructure';
 import { ClientProxy } from '@nestjs/microservices';
 import EventConstants from '../../../../shared/Domain/Constants/Events/EventConstants';
-import { ILanguage } from '../../../../lenguage/Domain/language';
 import { lastValueFrom } from 'rxjs';
 import { UserFinder, UserSaver } from '../../Port/Services';
+import { IUserLanguage } from '../../../Domain/Interfaces';
 
 @AppCommandHandlerDecorator(CreateUserCommand)
 export class CreateUserCommandHandler extends AppCommandHandler {
@@ -47,7 +47,7 @@ export class CreateUserCommandHandler extends AppCommandHandler {
           EventConstants.messagePatterns.language.findCollectionByCodes,
           data.languages.map((lang) => lang.code),
         ),
-      )) as unknown as ILanguage[];
+      )) as unknown as IUserLanguage[];
     }
     /*const languages = (await lastValueFrom(
       this.client.send(

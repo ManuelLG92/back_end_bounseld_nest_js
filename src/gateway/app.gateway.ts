@@ -31,12 +31,14 @@ export class AppGateway
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async handleConnection(client: Socket, ...args: any[]): Promise<any> {
-    const userId = client.handshake.query['userId'] as string;
+    const userId = await getValueFromQuery(client, 'userId');
+
+    await this.service.setUserAndSocket(userId, client.id);
+
     this.wss.emit('newConnection', {
       user: userId,
       list: await this.service.getUsersList(),
     });
-    await this.service.setUserAndSocket(userId, client.id);
     /*    const beforeInsert = this.socketList ?? [];
     !this.socketList
       ? (this.socketList = [{ id: userId, socket: client.id }])
@@ -86,5 +88,5 @@ export class AppGateway
 }
 
 async function getValueFromQuery(client: Socket, queryName: string) {
-  return (await client.handshake.query[queryName]) as string;
+  return client.handshake.query[queryName] as string;
 }

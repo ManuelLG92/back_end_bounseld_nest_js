@@ -1,10 +1,10 @@
 import { Body, Controller, Param, Patch } from '@nestjs/common';
 //import { JwtAuthGuard } from 'src/auth/guards';
-import { UpdateUserDto } from '../dto/update-user.dto';
+import { UpdateUserDto } from '../../dto/update-user.dto';
 import { CommandBus } from '@nestjs/cqrs';
-import { UpdateUserCommand } from '../Application';
-import { RequestDetails } from '../../decorators';
-import { IRequestDetail } from '../../shared/Util';
+import { UpdateUserCommand } from '../../Application';
+import { RequestDetails } from '../../../decorators';
+import { IRequestDetail } from '../../../shared/Util';
 
 // import { UserSaver } from '../Application/Port/Services';
 

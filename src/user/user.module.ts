@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import * as Controllers from './Controller';
+import * as Controllers from './Controller/Rest';
 // import * as UserService from './user.service';
-import { CommandHandlers, PortServices } from './Application';
+import { CommandHandlers, QueryHandlers, PortServices } from './Application';
 import { PrismaUserRepository } from './Infrastructure/Repository/PrismaUserRepository';
 import { CqrsModule } from '@nestjs/cqrs';
 import { PrismaModule } from '../prisma/prisma.module';
@@ -31,6 +31,7 @@ console.log(PortServices);
   providers: [
     ...Object.values(PortServices),
     ...Object.values(CommandHandlers),
+    ...Object.values(QueryHandlers),
     {
       provide: RepositoryProviders.USER_REPOSITORY,
       useClass: PrismaUserRepository,

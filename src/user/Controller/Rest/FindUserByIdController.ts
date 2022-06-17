@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { UserFinder } from '../Application/Port/Services';
+import { UserFinder } from '../../Application/Port/Services';
 
 @Controller('user')
 export class FindUserByIdController {

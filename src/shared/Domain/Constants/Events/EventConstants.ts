@@ -4,6 +4,9 @@ const EventConstants = () => ({
       findByCode: 'event.language.findByCode',
       findCollectionByCodes: 'event.language.findCollectionByCodes',
     },
+    user: {
+      findById: 'event.user.findById',
+    },
   },
 });
 
