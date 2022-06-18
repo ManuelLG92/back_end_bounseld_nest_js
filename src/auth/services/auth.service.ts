@@ -33,14 +33,12 @@ export class AuthService {
   }
 
   async jwtCreateAndRefresh(user: any, ctx: IRequestDetail) {
-    return {
-      accessToken: this.jwtService.sign({
-        id: user.id,
-        email: user.email,
-        password: user.password,
-        ...ctx,
-      }),
-    };
+    return this.jwtService.sign({
+      id: user.id,
+      email: user.email,
+      password: user.password,
+      ...ctx,
+    });
   }
 
   async checkData(jwt: TJwt, ctx: IRequestDetail) {

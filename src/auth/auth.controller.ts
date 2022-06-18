@@ -1,7 +1,14 @@
-import { Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Req,
+  UseGuards,
+  Response,
+} from '@nestjs/common';
 import { AuthService } from './services';
 import { AuthGuard } from '@nestjs/passport';
-import { LocalAuthGuard } from './guards';
+import { JwtAuthGuard, LocalAuthGuard } from './guards';
 import { RequestDetails } from '../decorators';
 import { IRequestDetail } from '../shared/Util';
 import { UserDto } from '../user/dto/userDto';
@@ -24,13 +31,28 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Req() req, @RequestDetails() ctx: IRequestDetail) {
+  async login(
+    @Req() req,
+    @RequestDetails() ctx: IRequestDetail,
+    @Response() res,
+  ) {
     console.warn(
       `Login: user: ${JSON.stringify(req.user)} | ctx: ${JSON.stringify(ctx)}`,
     );
-    return {
+
+    const JWT = await this.authService.jwtCreateAndRefresh(req.user, ctx);
+    const id = new UserDto(req.user).id;
+    return res.set({ 'x-access-token': JWT }).json({ id });
+    /*return {
       ...(await this.authService.jwtCreateAndRefresh(req.user, ctx)),
       id: new UserDto(req.user).id,
-    };
+    };*/
+  }
+
+  @Get('guard')
+  @UseGuards(JwtAuthGuard)
+  // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars
+  async testJwtGuard(@Req() req) {
+    return 'allowed';
   }
 }
