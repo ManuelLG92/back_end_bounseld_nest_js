@@ -28,10 +28,6 @@ export class AppGatewayService {
 
     this.socketList.set(socket, { user, socket });
     return this.socketList.get(user);
-    /*!this.socketList
-      ? (this.socketList = [{ id: user, socket: socket }])
-      : this.socketList.push({ id: user, socket: socket });
-    return this.socketList;*/
   }
 
   async getUsersList(): Promise<SocketConnection[] | []> {

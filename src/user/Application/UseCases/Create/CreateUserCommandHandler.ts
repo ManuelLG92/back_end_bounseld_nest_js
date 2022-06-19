@@ -11,6 +11,7 @@ import EventConstants from '../../../../shared/Domain/Constants/Events/EventCons
 import { lastValueFrom } from 'rxjs';
 import { UserFinder, UserSaver } from '../../Port/Services';
 import { IUserLanguage } from '../../../Domain/Interfaces';
+import { IdentifierResponse } from 'src/shared/Infrastructure/HttpHandlers/Response';
 
 @AppCommandHandlerDecorator(CreateUserCommand)
 export class CreateUserCommandHandler extends AppCommandHandler {
@@ -31,7 +32,7 @@ export class CreateUserCommandHandler extends AppCommandHandler {
     await this.client.close();
   }
 
-  async execute(command: CreateUserCommand): Promise<string> {
+  async execute(command: CreateUserCommand): Promise<IdentifierResponse> {
     const { data } = command;
     console.log(
       'enter command',
@@ -63,6 +64,8 @@ export class CreateUserCommandHandler extends AppCommandHandler {
     }
     const userDto = { ...data, languages };
     const user = await User.create(User.fromObject(userDto, true));
-    return await this.saver.save(user.toPersistence());
+    await this.saver.save(user.toPersistence());
+
+    return { id: user.id.value() };
   }
 }

@@ -12,7 +12,9 @@ export class PrismaUserRepository implements UserRepositoryPort {
   async findAll(): Promise<IUser[]> {
     const users = await this.prismaService.user.findMany();
 
-    return users?.map((user) => User.fromObject(user));
+    return users
+      ?.map((user) => ({ ...user, password: null }))
+      .map((userModified) => User.fromObject(userModified));
   }
 
   async findOne(id: string): Promise<IUser> {
@@ -21,6 +23,8 @@ export class PrismaUserRepository implements UserRepositoryPort {
         id,
       },
     });
+
+    user.password = '';
 
     return User.fromObject(user);
   }

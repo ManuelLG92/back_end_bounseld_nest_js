@@ -1,9 +1,5 @@
-import { ID } from '../ValueObjects/idVO';
+import { ID } from '../ValueObjects';
 
-export class AggregateRoot {
-  public readonly id: ID;
-
-  constructor(id: ID) {
-    this.id = id;
-  }
+export abstract class AggregateRoot {
+  protected constructor(protected readonly id: ID) {}
 }

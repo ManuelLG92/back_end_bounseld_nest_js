@@ -9,6 +9,8 @@ import { GlobalsModule } from './globals/globals.module';
 //import { LoggerModule } from 'nestjs-pino';
 import { LearningLanguagesModule } from './learning-lenguages/learning-languages.module';
 import { LanguageModule } from './lenguage/language.module';
+// import { JwtAuthGuard } from './auth/guards';
+// import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -22,6 +24,12 @@ import { LanguageModule } from './lenguage/language.module';
     LanguageModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    /*{
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },*/
+  ],
 })
 export class AppModule {}
