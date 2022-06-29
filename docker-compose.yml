@@ -10,6 +10,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3500"
+      - "3005:3005"
     depends_on:
       - db_chat
       - rabbitmq

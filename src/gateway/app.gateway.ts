@@ -39,10 +39,7 @@ export class AppGateway
       user: userId,
       list: await this.service.getUsersList(),
     });
-    /*    const beforeInsert = this.socketList ?? [];
-    !this.socketList
-      ? (this.socketList = [{ id: userId, socket: client.id }])
-      : this.socketList.push({ id: userId, socket: client.id });*/
+
     this.logger.log(`Client connected ${client.id}`);
   }
 
