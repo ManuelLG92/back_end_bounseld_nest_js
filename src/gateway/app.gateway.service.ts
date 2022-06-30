@@ -34,6 +34,14 @@ export class AppGatewayService {
     return [...this.socketList.values()] ?? [];
   }
 
+  async getUsersListWithoutCurrent(
+    socket: string,
+  ): Promise<SocketConnection[] | []> {
+    return [...this.socketList.values()].filter(
+      (item) => item.socket !== socket,
+    );
+  }
+
   async removeUserFromList(socket: string): Promise<string | null> {
     const user = await this.getUser(socket);
 
