@@ -28,12 +28,13 @@ export class AppGateway
   async handleConnection(client: Socket, ...args: any[]): Promise<any> {
     const userId = await getValueFromQuery(client, 'userId');
 
+    console.log(client.handshake.headers.token2, 'tok');
     await this.service.setUserAndSocket(userId ?? 'no id', client.id);
 
     client.join([this.defaultRoom, client.id]);
 
-    this.wss.emit('newConnection', {
-      user: userId,
+    client.broadcast.emit('newConnection', {
+      user: 'userId',
       list: await this.service.getUsersList(),
     });
 
@@ -50,7 +51,10 @@ export class AppGateway
 
   @SubscribeMessage('messageToServer')
   async handleMessageBroadCast(client: Socket, data: string): Promise<void> {
-    console.log('current', client.id);
+    console.log(' client.rooms bf', client.rooms);
+    client.join([...client.rooms, 'new room' + Math.random().toString()]);
+    console.log(' client.rooms af', client.rooms);
+
     const usersToNotify = await this.service.getUsersListWithoutCurrent(
       client.id,
     );

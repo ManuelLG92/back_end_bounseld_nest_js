@@ -4,7 +4,7 @@ services:
   app:
     image: chat-back:local
     container_name: chat-back
-    restart: always
+    restart: on-failure
     build:
       context: .
       dockerfile: Dockerfile
@@ -23,7 +23,7 @@ services:
   db_chat:
     container_name: pg_container_chat
     image: postgres:alpine
-    restart: always
+    restart: on-failure
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
@@ -36,7 +36,7 @@ services:
   pgadmin_chat:
     container_name: pgadmin4_container_chat
     image: dpage/pgadmin4
-    restart: always
+    restart: on-failure
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: root
@@ -46,7 +46,7 @@ services:
   rabbitmq:
     container_name: rabbitmq
     image: rabbitmq:3.9-management
-    restart: always
+    restart: on-failure
     hostname: rabbitmq
     volumes:
       - /var/lib/rabbitmq
