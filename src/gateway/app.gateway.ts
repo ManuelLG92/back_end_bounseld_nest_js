@@ -19,6 +19,7 @@ export class AppGateway
   @WebSocketServer() wss: Server;
 
   private logger: Logger = new Logger();
+  private socketList: Socket[] = [];
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   afterInit(server: Server): any {
     this.logger.log('Initialized');
@@ -27,22 +28,25 @@ export class AppGateway
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async handleConnection(client: Socket, ...args: any[]): Promise<any> {
     const userId = await getValueFromQuery(client, 'userId');
-
     console.log(client.handshake.headers.token2, 'tok');
-    await this.service.setUserAndSocket(userId ?? 'no id', client.id);
+    await this.service.setUserAndSocket(
+      userId ?? 'no -id' + client.id,
+      client.id,
+    );
 
     client.join([this.defaultRoom, client.id]);
 
-    client.broadcast.emit('newConnection', {
-      user: 'userId',
+    this.wss.emit('newConnection', {
+      user: client.id,
       list: await this.service.getUsersList(),
     });
+
+    this.socketList[client.id] = client;
 
     this.logger.log(`Client connected ${client.id}`);
   }
 
   async handleDisconnect(client: Socket): Promise<any> {
-    // const userId = this.socketList?.filter((el) => el.socket === client.id);
     const userId = await this.service.removeUserFromList(client.id);
     console.log(userId);
     this.wss.emit('disconnectedClient', { user: userId });
@@ -68,21 +72,22 @@ export class AppGateway
     client: Socket,
     data: string,
   ): Promise<void> {
-    const from = await getValueFromQuery(client, 'from');
-    const to = await getValueFromQuery(client, 'to');
-    if (from?.length && to?.length) {
-      this.wss.to(to).emit('requestToChat', {
-        data: `${from} Wanna chat. Do you want accept?`,
-      });
-    }
-    /*
-      console.log('received message top chat req');
-    this.list.filter((el) => {
-      el != client.id &&
-        this.wss.to(el).emit('requestToChat', {
-          data: 'Wanna chat',
-        });
-    });*/
+    console.log('wanna chat', data);
+    this.wss.to(data).emit('requestToChat', {
+      data: `${client.id} Wanna chat. Do you want accept?`,
+      from: client.id,
+    });
+  }
+
+  @SubscribeMessage('messageToChatResponse')
+  async handleMessageToChatResponse(
+    client: Socket,
+    data: Record<string, string>,
+  ): Promise<void> {
+    console.log('data', data);
+    this.wss.to(data['from']).emit('requestToChatResponse', {
+      data: `${client.id} replied: ${data['answer']}`,
+    });
   }
 }
 

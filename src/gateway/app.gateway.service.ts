@@ -21,13 +21,13 @@ export class AppGatewayService {
   private socketList = new Map();
 
   async setUserAndSocket(
-    user: string,
+    id: string,
     socket: string,
   ): Promise<SocketConnection[]> {
-    this.socketList[user] = socket;
+    this.socketList[id] = socket;
 
-    this.socketList.set(socket, { user, socket });
-    return this.socketList.get(user);
+    this.socketList.set(socket, { id, socket, name: `name-${id}` });
+    return this.socketList.get(id);
   }
 
   async getUsersList(): Promise<SocketConnection[] | []> {

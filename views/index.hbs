@@ -47,12 +47,19 @@
     socket.emit('messageToChat')
   })
 
-  socket.on('requestToChat', (msg) => console.log(msg))
+  socket.on('requestToChat', (msg) => {
+    console.log('mesage to chat', msg);
+    socket.emit('messageToChatResponse', {
+      from: msg.from,
+      answer: true
+    })
+  })
 
   socket.on('newConnection', ({user, list}) => {
 
     document.getElementById('title').innerHTML += ' ' + user
     console.log(list);
+    users.innerHTML =``
     Array.isArray(list) && list.map(el => {
       if (currentUser.toString() !== el.id) {
         console.log(typeof currentUser, typeof  el.id)
