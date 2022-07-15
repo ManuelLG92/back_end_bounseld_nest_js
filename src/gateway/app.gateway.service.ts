@@ -26,7 +26,7 @@ export class AppGatewayService {
   ): Promise<SocketConnection[]> {
     this.socketList[id] = socket;
 
-    this.socketList.set(socket, { id, socket, name: `name-${id}` });
+    this.socketList.set(id, { id, socket, name: `name-${id}` });
     return this.socketList.get(id);
   }
 

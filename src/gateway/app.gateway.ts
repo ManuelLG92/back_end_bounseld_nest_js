@@ -20,6 +20,7 @@ export class AppGateway
 
   private logger: Logger = new Logger();
   private socketList: Socket[] = [];
+  private requests: { from: string; to: string }[] = [];
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   afterInit(server: Server): any {
     this.logger.log('Initialized');
@@ -28,9 +29,12 @@ export class AppGateway
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async handleConnection(client: Socket, ...args: any[]): Promise<any> {
     const userId = await getValueFromQuery(client, 'userId');
-    console.log(client.handshake.headers.token2, 'tok');
+    //console.log(client.handshake.headers, 'tok');
+    this.socketList = [...this.socketList, client];
+    const token = client.handshake.headers.token2 as unknown as string;
     await this.service.setUserAndSocket(
-      userId ?? 'no -id' + client.id,
+      // userId ?? 'no -id' + client.id,
+      token,
       client.id,
     );
 
@@ -62,6 +66,7 @@ export class AppGateway
     const usersToNotify = await this.service.getUsersListWithoutCurrent(
       client.id,
     );
+    console.log('user to notify', usersToNotify);
     usersToNotify.forEach((user) => {
       this.wss.to(user.socket).emit('messageToClient', data);
     });
@@ -73,6 +78,7 @@ export class AppGateway
     data: string,
   ): Promise<void> {
     console.log('wanna chat', data);
+
     this.wss.to(data).emit('requestToChat', {
       data: `${client.id} Wanna chat. Do you want accept?`,
       from: client.id,
