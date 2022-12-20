@@ -1,15 +1,13 @@
-import { IsoCode, LanguageNameVO } from './ValueObjects';
-
 export interface ILanguage {
   code: string;
   name: string;
 }
 
 export class Language {
-  public readonly code: IsoCode;
-  public readonly name: LanguageNameVO;
+  public readonly code: string;
+  public readonly name: string;
 
-  constructor(code: IsoCode, name: LanguageNameVO) {
+  constructor(code: string, name: string) {
     this.code = code;
     this.name = name;
   }

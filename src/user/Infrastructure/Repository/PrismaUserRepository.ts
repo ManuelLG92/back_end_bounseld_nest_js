@@ -61,7 +61,7 @@ export class PrismaUserRepository implements UserRepositoryPort {
         },
         learningLanguages: {
           create: user.learningLanguages?.map((item) => ({
-            level: item.level?.toString(),
+            level: item.level,
             language: {
               connect: { code: item.code },
             },
@@ -79,7 +79,7 @@ export class PrismaUserRepository implements UserRepositoryPort {
         learningLanguages: {
           deleteMany: {},
           create: user.learningLanguages?.map((item) => ({
-            level: item.level?.toString(),
+            level: item.level,
             language: {
               connect: { code: item.code },
             },

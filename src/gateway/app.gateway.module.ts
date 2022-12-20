@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { AppGateway } from './app.gateway';
-//import { RedisClient } from '../redis';
 import { AppGatewayService } from './app.gateway.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { QueueConstants } from '../shared/Infrastructure';

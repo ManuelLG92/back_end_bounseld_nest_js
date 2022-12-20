@@ -11,19 +11,6 @@ async function bootstrap() {
     cors: true,
   });
 
-  /*    app.connectMicroservice({
-      transport: Transport.KAFKA,
-      options: {
-        client: {
-          clientId: 'hero', // hero-server
-          brokers: ['localhost:9094'],
-        },
-        consumer: {
-          groupId: 'my-consumer-' + Math.random(),
-        },
-      },
-    });*/
-
   app.connectMicroservice({
     transport: Transport.RMQ,
     options: {
@@ -45,10 +32,10 @@ async function bootstrap() {
     }),
   );
   app.enableCors();
+
   await app.startAllMicroservices();
   await app.listen(3500);
+  console.info(`Application started listening on port 3500 🚀`);
 }
 
 bootstrap();
-// .then((r) => console.log('r', r))
-// .catch((er) => console.log('err', er));

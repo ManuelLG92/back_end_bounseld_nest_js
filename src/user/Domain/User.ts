@@ -1,43 +1,40 @@
-import { Languages, LearningLanguages } from '../dto/create-user.dto';
+import { LearningLanguages } from '../dto/create-user.dto';
 import { IRequestDetail } from 'src/shared/Util';
-import {
-  BooleanVO,
-  CollectionVO,
-  ID,
-  StringNullableVO,
-} from 'src/shared/Domain/ValueObjects';
+import { CollectionVO, ID } from 'src/shared/Domain/ValueObjects';
 import {
   AgeVO,
-  AvatarVO,
   BlackListVO,
   EmailVo,
-  GenderVO,
-  NameVO,
+  gender,
   PasswordVO,
   RolesVO,
-  SurnameVO,
 } from './ValueObjects';
 import { GlobalsService } from 'src/globals/globals.service';
 import { AggregateRoot } from 'src/shared/Domain/Entity/AggregateRoot';
-import { ICreateUserPrimitives, IUpdateUser, IUser } from './Interfaces';
+import {
+  ICreateUserPrimitives,
+  IUpdateUser,
+  IUser,
+  IUserPrimitives,
+} from './Interfaces';
 
 export class User extends AggregateRoot {
   public readonly id: ID;
-  name: NameVO;
-  surname: SurnameVO;
+  name: string;
+  surname: string;
   email: EmailVo;
   password: PasswordVO;
-  avatar: AvatarVO;
+  avatar?: string;
   age?: AgeVO;
-  isGoogleUser?: BooleanVO;
-  description?: StringNullableVO;
+  isGoogleUser?: boolean;
+  description?: string;
   role?: CollectionVO;
-  isActive?: BooleanVO;
-  isBanish?: BooleanVO;
-  country?: StringNullableVO;
+  isActive?: boolean;
+  isBanish?: boolean;
+  country?: string;
   blackList?: BlackListVO;
-  gender?: GenderVO;
-  languages: Languages[];
+  gender?: gender;
+  languages: string[];
   learningLanguages: LearningLanguages[];
   ctx: IRequestDetail;
 
@@ -59,7 +56,7 @@ export class User extends AggregateRoot {
     this.languages = properties.languages;
     this.learningLanguages = properties.learningLanguages;
     this.ctx = properties.ctx;
-    this.isBanish = BooleanVO.create(false);
+    this.isBanish = false;
     this.blackList = BlackListVO.create();
   }
 
@@ -86,26 +83,29 @@ export class User extends AggregateRoot {
     this.ctx = props.ctx;
   }
 
-  static fromObject(props: any | null, createId = false): IUser | null {
+  static fromObject(
+    props: any | IUserPrimitives,
+    createId = false,
+  ): IUser | null {
     if (!props) {
       return null;
     }
     return {
       id: createId ? ID.generate() : new ID(props.id),
-      name: new NameVO(props.name ?? ''),
-      surname: new SurnameVO(props.surname ?? ''),
+      name: props.name,
+      surname: props.surname,
       email: EmailVo.create(props.email ?? ''),
       password: props.password ? new PasswordVO(props.password) : null,
-      avatar: new AvatarVO(props.avatar ?? null),
+      avatar: props.avatar ?? null,
       age: new AgeVO(props.age ?? null),
-      isGoogleUser: BooleanVO.create(props.isGoogleUser ?? false),
-      description: StringNullableVO.create(props.description ?? null),
+      isGoogleUser: props.isGoogleUser ?? false,
+      description: props.description ?? null,
       roles: RolesVO.byDefault(),
-      isActive: BooleanVO.create(props.isActive ?? false),
-      isBanish: BooleanVO.create(props.isBanish ?? false),
-      country: StringNullableVO.create(props.country ?? null),
+      isActive: props.isActive ?? false,
+      isBanish: props.isBanish ?? false,
+      country: props.country ?? null,
       blackList: BlackListVO.create(props.blackList ?? []),
-      gender: new GenderVO(props.gender ?? null),
+      gender: props.gender,
       languages: props.languages,
       learningLanguages: props.learningLanguages,
       ctx: props.ctx,
@@ -115,20 +115,20 @@ export class User extends AggregateRoot {
   toPersistence(): ICreateUserPrimitives {
     return {
       id: this.id.value(),
-      name: this.name.value(),
-      surname: this.surname.value(),
+      name: this.name,
+      surname: this.surname,
       email: this.email.value(),
       password: this.password.value(),
-      avatar: this.avatar.value(),
+      avatar: this.avatar,
       age: this.age.value(),
-      isGoogleUser: this.isGoogleUser.value(),
-      description: this.description.value(),
+      isGoogleUser: this.isGoogleUser,
+      description: this.description,
       roles: this.role.items(),
-      isActive: this.isActive.value(),
-      isBanish: this.isBanish.value(),
-      country: this.country.value(),
+      isActive: this.isActive,
+      isBanish: this.isBanish,
+      country: this.country,
       blackList: this.blackList.items(),
-      gender: this.gender.value(),
+      gender: this.gender,
       languages: this.languages,
       learningLanguages: this.learningLanguages,
       ctx: this.ctx,

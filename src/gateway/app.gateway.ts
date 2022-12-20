@@ -20,21 +20,19 @@ export class AppGateway
 
   private logger: Logger = new Logger();
   private socketList: Socket[] = [];
-  private requests: { from: string; to: string }[] = [];
+  //private requests: { from: string; to: string }[] = [];
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   afterInit(server: Server): any {
     this.logger.log('Initialized');
   }
   private defaultRoom = 'defaultRoom';
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async handleConnection(client: Socket, ...args: any[]): Promise<any> {
+    console.log('args', args);
     const userId = await getValueFromQuery(client, 'userId');
-    //console.log(client.handshake.headers, 'tok');
     this.socketList = [...this.socketList, client];
-    const token = client.handshake.headers.token2 as unknown as string;
     await this.service.setUserAndSocket(
       // userId ?? 'no -id' + client.id,
-      token,
+      userId,
       client.id,
     );
 
@@ -52,7 +50,6 @@ export class AppGateway
 
   async handleDisconnect(client: Socket): Promise<any> {
     const userId = await this.service.removeUserFromList(client.id);
-    console.log(userId);
     this.wss.emit('disconnectedClient', { user: userId });
     this.logger.log(`Client disconnected ${client.id}`);
   }
@@ -63,13 +60,14 @@ export class AppGateway
     client.join([...client.rooms, 'new room' + Math.random().toString()]);
     console.log(' client.rooms af', client.rooms);
 
-    const usersToNotify = await this.service.getUsersListWithoutCurrent(
-      client.id,
-    );
-    console.log('user to notify', usersToNotify);
-    usersToNotify.forEach((user) => {
-      this.wss.to(user.socket).emit('messageToClient', data);
-    });
+    // const usersToNotify = await this.service.getUsersListWithoutCurrent(
+    //   client.id,
+    // );
+    client.broadcast.emit('messageToClient', data);
+    // console.log('user to notify', usersToNotify);
+    // usersToNotify.forEach((user) => {
+    //   this.wss.to(user.socket).emit('messageToClient', data);
+    // });
   }
 
   @SubscribeMessage('messageToChat')

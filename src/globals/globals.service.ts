@@ -8,6 +8,6 @@ export class GlobalsService {
   }
 
   static async compareEncryptedData(value: string, hash: string) {
-    return await bcrypt.compare(value, hash);
+    return bcrypt.compare(value, hash);
   }
 }

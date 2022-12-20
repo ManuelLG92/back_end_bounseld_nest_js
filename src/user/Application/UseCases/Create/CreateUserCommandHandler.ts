@@ -34,38 +34,33 @@ export class CreateUserCommandHandler extends AppCommandHandler {
 
   async execute(command: CreateUserCommand): Promise<IdentifierResponse> {
     const { data } = command;
-    console.log(
-      'enter command',
-      data.languages.map((lang) => lang.code),
-    );
 
+    await this.checkIfUserAlreadyExistsByEmail(data.email);
     const languageCodes = data.languages.map((lang) => lang.code);
-
     let languages = [];
     if (languageCodes.length) {
-      languages = (await lastValueFrom(
-        this.client.send(
-          EventConstants.messagePatterns.language.findCollectionByCodes,
-          data.languages.map((lang) => lang.code),
-        ),
-      )) as unknown as IUserLanguage[];
-    }
-    /*const languages = (await lastValueFrom(
-      this.client.send(
-        EventConstants.messagePatterns.language.findCollectionByCodes,
-        data.languages.map((lang) => lang.code),
-      ),
-    )) as unknown as ILanguage[];*/
-
-    if (await this.finder.findOneByEmail(data.email)) {
-      throw new BadRequestException(
-        'This email is already used. Pick up another one.',
-      );
+      languages = await this.getLanguagesByCode(languageCodes);
     }
     const userDto = { ...data, languages };
     const user = await User.create(User.fromObject(userDto, true));
     await this.saver.save(user.toPersistence());
-
     return { id: user.id.value() };
+  }
+
+  private async checkIfUserAlreadyExistsByEmail(email: string): Promise<void> {
+    if (await this.finder.findOneByEmail(email)) {
+      throw new BadRequestException(
+        'This email is already used. Pick up another one.',
+      );
+    }
+  }
+
+  private async getLanguagesByCode(codes: string[]) {
+    return (await lastValueFrom(
+      this.client.send(
+        EventConstants.messagePatterns.language.findCollectionByCodes,
+        codes,
+      ),
+    )) as unknown as IUserLanguage[];
   }
 }

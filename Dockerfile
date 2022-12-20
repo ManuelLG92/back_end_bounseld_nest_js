@@ -1,5 +1,5 @@
 # Vamos a tomar la imagen de node versión 16 como base
-FROM node:16 as install
+FROM node:18 as install
 LABEL stage=install
 
 # Debemos de establecer el directorio de trabajo
@@ -15,7 +15,7 @@ RUN yarn install
 
 # En un siguiente paso vamos a compilar la aplicación.
 # Usamos la misma imagen como base.
-FROM node:16 as compile
+FROM node:18 as compile
 LABEL stage=compile
 
 # Establecemos el directorio de trabajo.
@@ -31,7 +31,7 @@ RUN yarn build
 RUN yarn install --production=true
 
 # Por último, usaremos la versión alpine
-FROM node:16-alpine as deploy
+FROM node:18-alpine as deploy
 
 # Establecemos el directorio donde vivirá nuestra app
 WORKDIR /app

@@ -31,7 +31,7 @@ export class UserDto implements IUserInterface {
     this.email = props.email;
     this.age = props?.age;
     this.description = props?.description;
-    this.gender = props?.gender && props.gen();
+    this.gender = props?.gender;
     this.country = props?.country;
     this.nativeLanguages = props?.nativeLanguages;
     this.learningLanguages = props?.learningLanguages;

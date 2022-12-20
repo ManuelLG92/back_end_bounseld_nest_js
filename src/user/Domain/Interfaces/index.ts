@@ -1,50 +1,66 @@
 import {
   AgeVO,
-  AvatarVO,
   BlackListVO,
   EmailVo,
-  GenderVO,
-  NameVO,
+  gender,
   PasswordVO,
   RolesVO,
-  SurnameVO,
 } from '../ValueObjects';
-import { StringNullableVO } from 'src/shared/Domain/ValueObjects';
-import { Languages, LearningLanguages } from '../../dto/create-user.dto';
+import { LearningLanguages } from '../../dto/create-user.dto';
 import { IRequestDetail } from 'src/shared/Util';
 import { ID } from 'src/shared/Domain/ValueObjects';
-import { BooleanVO } from 'src/shared/Domain/ValueObjects/BooleanVO';
 
 export interface IUser {
   id: ID;
-  name: NameVO;
-  surname: SurnameVO;
+  name: string;
+  surname: string;
   email: EmailVo;
   password: PasswordVO;
-  avatar: AvatarVO;
+  avatar: string;
   age: AgeVO;
-  isGoogleUser: BooleanVO;
-  description: StringNullableVO;
+  isGoogleUser: boolean;
+  description?: string;
   roles: RolesVO;
-  isActive: BooleanVO;
-  isBanish: BooleanVO;
-  country: StringNullableVO;
+  isActive: boolean;
+  isBanish: boolean;
+  country: string;
   blackList: BlackListVO;
-  gender: GenderVO;
-  languages: Languages[];
+  gender: gender;
+  languages: string[];
   learningLanguages: LearningLanguages[];
   ctx: IRequestDetail;
 }
 
+export interface IUserPrimitives {
+  id: string;
+  name: string;
+  surname: string;
+  email: string;
+  password: string;
+  avatar: string;
+  age: number;
+  isGoogleUser: boolean;
+  description?: string;
+  roles: string[];
+  isActive: boolean;
+  isBanish: boolean;
+  country: string;
+  blackList: string[];
+  gender: string;
+  languages: string[];
+  learningLanguages: [];
+  ctx: IRequestDetail;
+}
+
 export interface IUpdateUser {
-  name: NameVO;
-  surname: SurnameVO;
-  avatar: AvatarVO;
+  name: string;
+  surname: string;
+  avatar: string;
   age: AgeVO;
-  description: StringNullableVO;
-  country: StringNullableVO;
-  gender: GenderVO;
-  languages: Languages[];
+  description: string;
+  country: string;
+  gender: gender;
+  languages: string[];
   learningLanguages: LearningLanguages[];
   ctx: IRequestDetail;
 }

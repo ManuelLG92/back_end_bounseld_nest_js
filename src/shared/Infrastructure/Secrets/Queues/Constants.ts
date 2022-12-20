@@ -1,6 +1,6 @@
 export enum QueueConstants {
   // URL = 'amqp://localhost:5672',
-  URL = 'amqp://rabbitmq:5672',
+  URL = 'amqp://localhost:5672',
   MAIN_QUEUE = 'module_communication',
   LANGUAGE_CLIENT = 'language_client_queue',
   GATEWAY_CLIENT = 'gateway_client_queue',
