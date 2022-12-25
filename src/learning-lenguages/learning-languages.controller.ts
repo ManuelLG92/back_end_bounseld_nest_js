@@ -17,8 +17,8 @@ import { QueueConstants } from '../shared/Infrastructure';
 import EventConstants from '../shared/Domain/Constants/Events/EventConstants';
 import { lastValueFrom } from 'rxjs';
 
-@Controller('learning-lenguages')
-export class LearningLaguagesController implements OnModuleInit {
+@Controller('learning-languages')
+export class LearningLanguagesController implements OnModuleInit {
   constructor(
     private readonly learningLanguagesService: LearningLanguagesService,
     @Inject(QueueConstants.LEARNING_LANGUAGE_CLIENT)
@@ -31,11 +31,6 @@ export class LearningLaguagesController implements OnModuleInit {
   @Post()
   create(@Body() createLearningLanguageDto: CreateLearningLanguageDto) {
     return this.learningLanguagesService.create(createLearningLanguageDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.learningLanguagesService.findAll();
   }
 
   @Get(':code')

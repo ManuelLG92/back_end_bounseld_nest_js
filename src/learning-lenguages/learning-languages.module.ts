@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { LearningLanguagesService } from './learning-languages.service';
-import { LearningLaguagesController } from './learning-laguages.controller';
+import { LearningLanguagesController } from './learning-languages.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { QueueConstants } from '../shared/Infrastructure';
 import { CqrsModule } from '@nestjs/cqrs';
@@ -22,7 +22,7 @@ import { CqrsModule } from '@nestjs/cqrs';
     ]),
     CqrsModule,
   ],
-  controllers: [LearningLaguagesController],
+  controllers: [LearningLanguagesController],
   providers: [LearningLanguagesService],
 })
 export class LearningLanguagesModule {}

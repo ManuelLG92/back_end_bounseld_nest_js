@@ -4,7 +4,12 @@ import {
   AppCommandHandler,
   AppCommandHandlerDecorator,
 } from 'src/shared/Application';
-import { BadRequestException, Inject } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  OnModuleDestroy,
+  OnModuleInit,
+} from '@nestjs/common';
 import { QueueConstants } from 'src/shared/Infrastructure';
 import { ClientProxy } from '@nestjs/microservices';
 import EventConstants from '../../../../shared/Domain/Constants/Events/EventConstants';
@@ -14,7 +19,10 @@ import { IUserLanguage } from '../../../Domain/Interfaces';
 import { IdentifierResponse } from 'src/shared/Infrastructure/HttpHandlers/Response';
 
 @AppCommandHandlerDecorator(CreateUserCommand)
-export class CreateUserCommandHandler extends AppCommandHandler {
+export class CreateUserCommandHandler
+  extends AppCommandHandler
+  implements OnModuleInit, OnModuleDestroy
+{
   constructor(
     private readonly saver: UserSaver,
     private readonly finder: UserFinder,
