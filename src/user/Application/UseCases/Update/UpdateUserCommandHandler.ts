@@ -1,16 +1,12 @@
 import { User } from 'src/user/Domain/User';
-import {
-  AppCommandHandler,
-  AppCommandHandlerDecorator,
-} from '../../../../shared/Application';
-import { BadRequestException } from '@nestjs/common';
-import { UpdateUserCommand } from './UpdateUserCommand';
+import { AppCommandHandler } from '../../../../shared/Application';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { IUserToObject, UpdateUserFactoryVO } from '../Services';
 import { IUser, IUserLanguage } from '../../../Domain/Interfaces';
 import { UserFinder, UserSaver } from '../../Port/Services';
 import { GetLanguages } from '../Services';
 
-@AppCommandHandlerDecorator(UpdateUserCommand)
+@Injectable()
 export class UpdateUserCommandHandler extends AppCommandHandler {
   constructor(
     private readonly saver: UserSaver,
@@ -20,7 +16,7 @@ export class UpdateUserCommandHandler extends AppCommandHandler {
     super();
   }
 
-  async execute(command: UpdateUserCommand): Promise<void> {
+  async execute(command: any): Promise<void> {
     const { id, data } = command;
 
     const user = await this.getUserOrThrowException(id);

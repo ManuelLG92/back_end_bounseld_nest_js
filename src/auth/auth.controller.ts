@@ -8,10 +8,11 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './services';
 import { AuthGuard } from '@nestjs/passport';
-import { JwtAuthGuard, LocalAuthGuard } from './guards';
+import { JwtAuthGuard } from './guards';
 import { RequestDetails } from '../decorators';
 import { IRequestDetail } from '../shared/Util';
 import { UserDto } from '../user/dto/userDto';
+import { LocalStrategy } from './strategies';
 
 @Controller('auth')
 export class AuthController {
@@ -29,7 +30,7 @@ export class AuthController {
     return this.authService.googleLogin(req);
   }
 
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(LocalStrategy)
   @Post('login')
   async login(
     @Req() req,
@@ -43,10 +44,6 @@ export class AuthController {
     const JWT = await this.authService.jwtCreateAndRefresh(req.user, ctx);
     const id = new UserDto(req.user).id;
     return res.set({ 'x-access-token': JWT }).json({ id });
-    /*return {
-      ...(await this.authService.jwtCreateAndRefresh(req.user, ctx)),
-      id: new UserDto(req.user).id,
-    };*/
   }
 
   @Get('guard')

@@ -1,12 +1,9 @@
-import { CreateUserCommand } from './CreateUserCommand';
 import { User } from 'src/user/Domain/User';
-import {
-  AppCommandHandler,
-  AppCommandHandlerDecorator,
-} from 'src/shared/Application';
+import { AppCommandHandler } from 'src/shared/Application';
 import {
   BadRequestException,
   Inject,
+  Injectable,
   OnModuleDestroy,
   OnModuleInit,
 } from '@nestjs/common';
@@ -15,10 +12,13 @@ import { ClientProxy } from '@nestjs/microservices';
 import EventConstants from '../../../../shared/Domain/Constants/Events/EventConstants';
 import { lastValueFrom } from 'rxjs';
 import { UserFinder, UserSaver } from '../../Port/Services';
-import { IUserLanguage } from '../../../Domain/Interfaces';
+import {
+  ICreateUserPrimitives,
+  IUserLanguage,
+} from '../../../Domain/Interfaces';
 import { IdentifierResponse } from 'src/shared/Infrastructure/HttpHandlers/Response';
 
-@AppCommandHandlerDecorator(CreateUserCommand)
+@Injectable()
 export class CreateUserCommandHandler
   extends AppCommandHandler
   implements OnModuleInit, OnModuleDestroy
@@ -40,17 +40,16 @@ export class CreateUserCommandHandler
     await this.client.close();
   }
 
-  async execute(command: CreateUserCommand): Promise<IdentifierResponse> {
-    const { data } = command;
-
+  async execute(data: ICreateUserPrimitives): Promise<IdentifierResponse> {
     await this.checkIfUserAlreadyExistsByEmail(data.email);
-    const languageCodes = data.languages.map((lang) => lang.code);
+    const languageCodes = data.languages?.map((lang) => lang.code) ?? [];
     let languages = [];
     if (languageCodes.length) {
       languages = await this.getLanguagesByCode(languageCodes);
     }
-    const userDto = { ...data, languages };
-    const user = await User.create(User.fromObject(userDto, true));
+    const user = await User.create(
+      User.fromObject({ ...data, languages }, true),
+    );
     await this.saver.save(user.toPersistence());
     return { id: user.id.value() };
   }

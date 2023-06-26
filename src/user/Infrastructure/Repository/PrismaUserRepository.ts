@@ -1,9 +1,9 @@
-import { UserRepositoryPort } from '../../Application';
 import { User } from '../../Domain/User';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { ICreateUserPrimitives } from '../../Domain/Interfaces';
 import { IUser } from '../../Domain/Interfaces';
+import { UserRepositoryPort } from '../../Application/Port';
 
 @Injectable()
 export class PrismaUserRepository implements UserRepositoryPort {

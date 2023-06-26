@@ -1,19 +1,21 @@
 import { Module } from '@nestjs/common';
 import * as Controllers from './Controller/Rest';
 // import * as UserService from './user.service';
-import {
-  CommandHandlers,
-  QueryHandlers,
-  PortServices,
-  GetLanguages,
-} from './Application';
+
 import { PrismaUserRepository } from './Infrastructure/Repository/PrismaUserRepository';
 import { CqrsModule } from '@nestjs/cqrs';
 import { PrismaModule } from '../prisma/prisma.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { QueueConstants, RepositoryProviders } from '../shared/Infrastructure';
+import { CreateUserCommandHandler } from './Application/UseCases/Create/CreateUserCommandHandler';
+import { FindUserByIdQueryHandler, GetLanguages } from './Application/UseCases';
+import { UpdateUserCommandHandler } from './Application/UseCases/Update/UpdateUserCommandHandler';
+import {
+  UserFinder,
+  UserRemover,
+  UserSaver,
+} from './Application/Port/Services';
 
-console.log(PortServices);
 @Module({
   imports: [
     ClientsModule.register([
@@ -34,9 +36,12 @@ console.log(PortServices);
   ],
   controllers: [...Object.values(Controllers)],
   providers: [
-    ...Object.values(PortServices),
-    ...Object.values(CommandHandlers),
-    ...Object.values(QueryHandlers),
+    CreateUserCommandHandler,
+    UpdateUserCommandHandler,
+    FindUserByIdQueryHandler,
+    UserSaver,
+    UserFinder,
+    UserRemover,
     GetLanguages,
     {
       provide: RepositoryProviders.USER_REPOSITORY,

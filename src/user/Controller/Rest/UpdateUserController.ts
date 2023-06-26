@@ -1,16 +1,12 @@
 import { Body, Controller, Param, Patch } from '@nestjs/common';
-//import { JwtAuthGuard } from 'src/auth/guards';
 import { UpdateUserDto } from '../../dto/update-user.dto';
-import { CommandBus } from '@nestjs/cqrs';
-import { UpdateUserCommand } from '../../Application';
 import { RequestDetails } from '../../../decorators';
 import { IRequestDetail } from '../../../shared/Util';
-
-// import { UserSaver } from '../Application/Port/Services';
+import { UpdateUserCommandHandler } from '../../Application/UseCases/Update/UpdateUserCommandHandler';
 
 @Controller('user')
 export class UpdateUserController {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(private readonly commandBus: UpdateUserCommandHandler) {}
   //@UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(
@@ -20,9 +16,11 @@ export class UpdateUserController {
   ) {
     console.log('user id patch', id, 'data', updateUserRestDto);
 
-    await this.commandBus.execute(
-      new UpdateUserCommand(id, { ...updateUserRestDto, ctx: ctx }),
-    );
+    const obj = {
+      id,
+      data: { ...updateUserRestDto, ctx: ctx },
+    };
+    await this.commandBus.execute(obj);
     return 'ok';
     /*return this.userRestService.save({
       ...User.fromObject(updateUserRestDto),

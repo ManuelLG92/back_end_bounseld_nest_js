@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UserRepositoryPort } from 'src/user/Application';
 import { RepositoryProviders } from 'src/shared/Infrastructure';
+import { UserRepositoryPort } from '../../UserRepositoryPort';
 
 @Injectable()
 export class UserRemover {

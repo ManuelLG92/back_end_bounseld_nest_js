@@ -6,9 +6,10 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { AppGatewayService } from './app.gateway.service';
+import { JwtSocketGuard } from '../auth/guards';
 
 @WebSocketGateway(3005, { cors: true })
 export class AppGateway
@@ -27,7 +28,7 @@ export class AppGateway
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async handleConnection(client: Socket, ...args: any[]): Promise<any> {
-    const userId = await getValueFromQuery(client, 'userid');
+    const userId = await getValueFromQuery(client, 'userId');
     await this.service.setUserAndSocket(userId, client.id);
 
     client.join([this.defaultRoom, client.id]);
@@ -44,7 +45,7 @@ export class AppGateway
     this.wss.emit('disconnectedClient', { user: userId });
     this.logger.log(`Client disconnected ${client.id}`);
   }
-
+  @UseGuards(JwtSocketGuard)
   @SubscribeMessage('messageToServer')
   async handleMessageBroadCast(client: Socket, data: string): Promise<void> {
     //const userId = await getValueFromQuery(client, 'userId');
