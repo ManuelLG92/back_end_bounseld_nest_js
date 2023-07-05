@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "postinstall": "husky install",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -19,7 +20,6 @@
     "eslint:fix": "eslint --fix --ext .ts --config .eslintrc src",
     "eslint:check": "eslint --ext .ts --config .eslintrc src",
     "precommit": "npm run prettier:fix && npm run eslint:fix && npm run prettier:check && npm run eslint:check",
-
     "test:unit": "jest --config=jest-unit.config.js",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
