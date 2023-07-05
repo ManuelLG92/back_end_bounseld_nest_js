@@ -1,24 +1,14 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "module": "commonjs",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
     "target": "es2017",
     "sourceMap": true,
     "outDir": "./dist",
-    "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": false,
     "baseUrl": "./",
     "paths": {
       "@user/*" : ["user/*"],
@@ -27,8 +17,7 @@
       "@learningLanguages/*" : ["learning-languages/*"],
       "@shared/*" : ["shared/*"],
     },
-  },
-  "ts-node": {
-  "esm": true
-}
+    "incremental": true,
+    "skipLibCheck": true,
+  }
 }
