@@ -4,6 +4,8 @@ node_modules/
 db_data/
 db_data_chat/
 rabbitmq.conf/
+.idea/
+dist/
 yarn-error.log
 documentation/
 .yarn

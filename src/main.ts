@@ -36,9 +36,8 @@ async function bootstrap() {
     }),
   );
 
-  await app.startAllMicroservices();
   await app.listen(3500);
   console.info(`Application started listening on port 3500 🚀`);
 }
 
-bootstrap();
+bootstrap().catch((e) => console.log(e));
