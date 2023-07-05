@@ -17,7 +17,6 @@ export function logger(req: Request, res: Response, next: NextFunction) {
 
 @Module({
   imports: [
-    //LoggerModule.forRoot(),
     GlobalsModule,
     AppGatewayModule,
     PrismaModule,
@@ -27,13 +26,7 @@ export function logger(req: Request, res: Response, next: NextFunction) {
     LanguageModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    /*{
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },*/
-  ],
+  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
