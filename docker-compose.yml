@@ -1,24 +1,24 @@
-version: "3.8"
+version: '3.8'
 
 services:
-#  app:
-#    image: chat-back:local
-#    container_name: chat-back
-#    restart: on-failure
-#    build:
-#      context: .
-#      dockerfile: Dockerfile.dev
-#    ports:
-#      - "3000:3500"
-#      - "3005:3005"
-#    depends_on:
-#      - db_chat
-#      - rabbitmq
-#    links:
-#        - rabbitmq
-#        - db_chat
-#    volumes:
-#      - .:/app
+  #  app:
+  #    image: chat-back:local
+  #    container_name: chat-back
+  #    restart: on-failure
+  #    build:
+  #      context: .
+  #      dockerfile: Dockerfile.dev
+  #    ports:
+  #      - "3000:3500"
+  #      - "3005:3005"
+  #    depends_on:
+  #      - db_chat
+  #      - rabbitmq
+  #    links:
+  #        - rabbitmq
+  #        - db_chat
+  #    volumes:
+  #      - .:/app
 
   db_chat:
     container_name: pg_container_chat
@@ -29,7 +29,7 @@ services:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: lang_ex
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - ./db_data_chat:/var/lib/postgresql/data/
 
@@ -41,7 +41,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
-      - "5050:80"
+      - '5050:80'
 
   rabbitmq:
     container_name: rabbitmq
@@ -52,5 +52,5 @@ services:
       - /var/lib/rabbitmq
       - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - '5672:5672'
+      - '15672:15672'

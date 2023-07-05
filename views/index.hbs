@@ -1,107 +1,63 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Welcome</title>
-</head>
-<body>
-<h1 style="text-align: center">Welcome NestJs API</h1>
-<p id='title'>Here we're</p>
-<div>
-  <div id="messages">
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta
+      name='viewport'
+      content='width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0'
+    />
+    <meta http-equiv='X-UA-Compatible' content='ie=edge' />
+    <title>Welcome</title>
+  </head>
+  <body>
+    <h1 style='text-align: center'>Welcome NestJs API</h1>
+    <p id='title'>Here we're</p>
+    <div>
+      <div id='messages'>
 
-  </div>
-  <label for="msg"></label>
-  <input type="text" name="msg" id="msg">
-  <button id="send">Send</button>
+      </div>
+      <label for='msg'></label>
+      <input type='text' name='msg' id='msg' />
+      <button id='send'>Send</button>
 
-  <button id='req'>Wanna chat</button>
-  <div id='users'>
-    <ol>
-    </ol>
-  </div>
-</div>
-<script src="http://localhost:3005/socket.io/socket.io.js"></script>
-<script>
-  fetch("http://localhost:3500/auth/login", {
-        method: "POST",
-        headers: {
-                "Content-Type": "application/json",
-            },
-        body: JSON.stringify({
-                               email: "manuel5@manuel.com",
-                               password: "123456789"
-                             })
-        }).then(resp=>{
-               const currentUser = resp.headers.get('x-access-token')
-               console.log(currentUser)
-                 const socket = io('http://localhost:3005', { query: `userId=${currentUser}`, auth: `authTk=${currentUser}` });
-                 const users = document.querySelector('#users ol')
-                 const userList = [...document.querySelectorAll('#users ol li')]
+      <button id='req'>Wanna chat</button>
+      <div id='users'>
+        <ol>
+        </ol>
+      </div>
+    </div>
+    <script src='http://localhost:3005/socket.io/socket.io.js'></script>
+    <script>
+      fetch("http://localhost:3500/auth/login", { method: "POST", headers: {
+      "Content-Type": "application/json", }, body: JSON.stringify({ email:
+      "manuel5@manuel.com", password: "123456789" }) }).then(resp=>{ const
+      currentUser = resp.headers.get('x-access-token') console.log(currentUser)
+      const socket = io('http://localhost:3005', { query:
+      `userId=${currentUser}`, auth: `authTk=${currentUser}` }); const users =
+      document.querySelector('#users ol') const userList =
+      [...document.querySelectorAll('#users ol li')]
+      document.getElementById('send').addEventListener('click', (e) => {
+      e.preventDefault() socket.emit('messageToServer',
+      document.getElementById('msg').value, (msg) => { console.log(msg); })
+      document.getElementById('msg').value = '' })
+      document.getElementById('req').addEventListener('click', (e) => {
+      e.preventDefault() socket.emit('messageToChat') })
+      socket.on('requestToChat', (msg) => { console.log('mesage to chat', msg);
+      socket.emit('messageToChatResponse', { from: msg.from, answer: true }) })
+      socket.on('newConnection', ({user, list}) => {
+      document.getElementById('title').innerHTML += ' ' + user
+      console.log(list); users.innerHTML =`` Array.isArray(list) && list.map(el
+      => { if (currentUser.toString() !== el.id) { console.log(typeof
+      currentUser, typeof el.id) users.innerHTML += `<li style='cursor: pointer'
+      id=${el.id} onclick='sentChatReq(${el.id})'>User: ${el.id}</li>` } }) })
+      socket.on('disconnectedClient', ({user}) => { console.log('disconected',
+      typeof user,user); document.getElementById(user).remove() })
+      socket.on('messageToClient', (msg) =>
+      document.getElementById('messages').innerHTML += `<p>${msg}</p>`) function
+      randomNum() { return Math.floor(Math.random() * (1000 - 1)) + 1 } function
+      sentChatReq(toReq) { console.log('to chat id ' , toReq) } function
+      addEvent(el) { el.addEventListener('click', () => { sentChatReq(el) }) }
+      })
 
-                 document.getElementById('send').addEventListener('click', (e) => {
-                   e.preventDefault()
-                   socket.emit('messageToServer', document.getElementById('msg').value, (msg) => {
-
-                     console.log(msg);
-                   })
-
-                   document.getElementById('msg').value = ''
-                 })
-
-
-                 document.getElementById('req').addEventListener('click', (e) => {
-                   e.preventDefault()
-                   socket.emit('messageToChat')
-                 })
-
-                 socket.on('requestToChat', (msg) => {
-                   console.log('mesage to chat', msg);
-                   socket.emit('messageToChatResponse', {
-                     from: msg.from,
-                     answer: true
-                   })
-                 })
-
-                 socket.on('newConnection', ({user, list}) => {
-                   document.getElementById('title').innerHTML += ' ' + user
-                   console.log(list);
-                   users.innerHTML =``
-                   Array.isArray(list) && list.map(el => {
-                     if (currentUser.toString() !== el.id) {
-                       console.log(typeof currentUser, typeof  el.id)
-                       users.innerHTML
-                         += `<li style='cursor: pointer' id=${el.id} onclick='sentChatReq(${el.id})'>User: ${el.id}</li>`
-                     }
-                   })
-
-                 })
-
-                 socket.on('disconnectedClient', ({user}) => {
-                   console.log('disconected', typeof user,user);
-                   document.getElementById(user).remove()
-                 })
-
-                 socket.on('messageToClient', (msg) => document.getElementById('messages').innerHTML += `<p>${msg}</p>`)
-                 function randomNum() {
-                   return Math.floor(Math.random() * (1000 - 1)) + 1
-                 }
-
-                 function sentChatReq(toReq) {
-                 console.log('to chat id ' , toReq)
-                 }
-
-                 function addEvent(el) {
-                   el.addEventListener('click', () => {
-                     sentChatReq(el)
-                   })
-                 }
-           })
-
-
-</script>
-</body>
+    </script>
+  </body>
 </html>
