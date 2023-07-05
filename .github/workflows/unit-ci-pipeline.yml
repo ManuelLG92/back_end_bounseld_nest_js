@@ -22,7 +22,7 @@ jobs:
           node-version: 18.14.0
 
       - name: Install dependencies
-        run: yarn install
+        run: npm ci
 
       - name: Run unit tests
-        run: yarn test:unit
+        run: npm run test:unit
