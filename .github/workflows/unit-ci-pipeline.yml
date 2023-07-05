@@ -9,7 +9,7 @@ on:
       - edited
 
 jobs:
-  test:
+  unit-ci:
     runs-on: ubuntu-latest
 
     steps:
