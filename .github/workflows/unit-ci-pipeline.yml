@@ -21,8 +21,17 @@ jobs:
         with:
           node-version: 18.14.0
 
+      - name: Restore node_modules cache if exist
+        id: cache-nodemodules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules-${{ env.node-version }}
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/yarn.json') }}
+
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn
 
       - name: Run unit tests
         run: yarn test:unit
