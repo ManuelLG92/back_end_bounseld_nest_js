@@ -1,5 +1,6 @@
 {
   "name": "lang-ex-nest",
+  "type": "module",
   "version": "0.0.1",
   "description": "",
   "author": "Manuel Leon",

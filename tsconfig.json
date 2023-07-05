@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -26,5 +27,8 @@
       "@learningLanguages/*" : ["learning-languages/*"],
       "@shared/*" : ["shared/*"],
     },
-  }
+  },
+  "ts-node": {
+  "esm": true
+}
 }
