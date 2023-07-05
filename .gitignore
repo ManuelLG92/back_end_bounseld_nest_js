@@ -1,12 +1,10 @@
 node_modules/
-dist/
 # Keep environment variables out of version control
 .env
 db_data/
 db_data_chat/
 rabbitmq.conf/
 yarn-error.log
-.idea/
 documentation/
 .yarn
 prisma/migrations
