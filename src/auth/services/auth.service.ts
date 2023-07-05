@@ -4,8 +4,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { IRequestDetail, TJwt } from '../../util';
-import { PrismaService } from '../../prisma/prisma/prisma.service';
+import { IRequestDetail, TJwt } from '../../shared/Util';
+import { PrismaService } from '../../prisma/prisma.service';
 import { GlobalsService } from '../../globals/globals.service';
 import * as _ from 'lodash';
 
@@ -20,7 +20,6 @@ export class AuthService {
   constructor(
     private jwtService: JwtService,
     private prismaService: PrismaService,
-    private globalsService: GlobalsService,
   ) {}
   googleLogin(req) {
     if (!req.user) {
@@ -34,14 +33,12 @@ export class AuthService {
   }
 
   async jwtCreateAndRefresh(user: any, ctx: IRequestDetail) {
-    return {
-      accessToken: this.jwtService.sign({
-        id: user.id,
-        email: user.email,
-        password: user.password,
-        ...ctx,
-      }),
-    };
+    return this.jwtService.sign({
+      id: user.id,
+      email: user.email,
+      password: user.password,
+      ...ctx,
+    });
   }
 
   async checkData(jwt: TJwt, ctx: IRequestDetail) {
@@ -70,7 +67,7 @@ export class AuthService {
   }
 
   async validateLogin(passwordPlain: string, passwordHashed: string) {
-    return await this.globalsService.compareEncryptedData(
+    return await GlobalsService.compareEncryptedData(
       passwordPlain,
       passwordHashed,
     );

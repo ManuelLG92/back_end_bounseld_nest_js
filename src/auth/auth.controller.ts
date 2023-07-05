@@ -1,10 +1,18 @@
-import { Controller, Get, UseGuards, Req, Post } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Req,
+  UseGuards,
+  Response,
+} from '@nestjs/common';
 import { AuthService } from './services';
 import { AuthGuard } from '@nestjs/passport';
-import { LocalAuthGuard } from './guards';
+import { JwtAuthGuard } from './guards';
 import { RequestDetails } from '../decorators';
-import { IRequestDetail } from '../util';
+import { IRequestDetail } from '../shared/Util';
 import { UserDto } from '../user/dto/userDto';
+import { LocalStrategy } from './strategies';
 
 @Controller('auth')
 export class AuthController {
@@ -22,15 +30,26 @@ export class AuthController {
     return this.authService.googleLogin(req);
   }
 
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(LocalStrategy)
   @Post('login')
-  async login(@Req() req, @RequestDetails() ctx: IRequestDetail) {
+  async login(
+    @Req() req,
+    @RequestDetails() ctx: IRequestDetail,
+    @Response() res,
+  ) {
     console.warn(
       `Login: user: ${JSON.stringify(req.user)} | ctx: ${JSON.stringify(ctx)}`,
     );
-    return {
-      ...(await this.authService.jwtCreateAndRefresh(req.user, ctx)),
-      id: new UserDto(req.user).id,
-    };
+
+    const JWT = await this.authService.jwtCreateAndRefresh(req.user, ctx);
+    const id = new UserDto(req.user).id;
+    return res.set({ 'x-access-token': JWT }).json({ id });
+  }
+
+  @Get('guard')
+  @UseGuards(JwtAuthGuard)
+  // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars
+  async testJwtGuard(@Req() req) {
+    return 'allowed';
   }
 }

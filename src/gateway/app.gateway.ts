@@ -6,60 +6,60 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
-import { ChatRoom, SocketConnection } from './interfaces';
 import { AppGatewayService } from './app.gateway.service';
+import { JwtSocketGuard } from '../auth/guards';
 
 @WebSocketGateway(3005, { cors: true })
 export class AppGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
-  constructor(private service: AppGatewayService) {}
+  private readonly logger: Logger = new Logger();
+  constructor(private readonly service: AppGatewayService) {}
 
   @WebSocketServer() wss: Server;
 
-  private list: Array<string> = [];
-  private socketList: Array<SocketConnection>;
-  private chatList: Array<ChatRoom>;
-  private logger: Logger = new Logger();
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private defaultRoom = 'defaultRoom';
+  //private requests: { from: string; to: string }[] = [];
   afterInit(server: Server): any {
-    this.logger.log('Initialized');
+    server.allSockets().then((s) => console.log(s));
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async handleConnection(client: Socket, ...args: any[]): Promise<any> {
-    const userId = client.handshake.query['userId'] as string;
+    const userId = await getValueFromQuery(client, 'userId');
+    await this.service.setUserAndSocket(userId, client.id);
+
+    client.join([this.defaultRoom, client.id]);
+
     this.wss.emit('newConnection', {
-      user: userId,
+      user: client.id,
       list: await this.service.getUsersList(),
     });
-    await this.service.setUserAndSocket(userId, client.id);
-    /*    const beforeInsert = this.socketList ?? [];
-    !this.socketList
-      ? (this.socketList = [{ id: userId, socket: client.id }])
-      : this.socketList.push({ id: userId, socket: client.id });*/
     this.logger.log(`Client connected ${client.id}`);
   }
 
   async handleDisconnect(client: Socket): Promise<any> {
-    // const userId = this.socketList?.filter((el) => el.socket === client.id);
     const userId = await this.service.removeUserFromList(client.id);
-    console.log(userId);
     this.wss.emit('disconnectedClient', { user: userId });
-    //this.socketList = this.socketList?.filter((el) => el.socket !== client.id);
-    // await this.service.removeUserFromList(client.id);
     this.logger.log(`Client disconnected ${client.id}`);
   }
-
+  @UseGuards(JwtSocketGuard)
   @SubscribeMessage('messageToServer')
-  handleMessageBroadCast(client: Socket, data: string): void {
-    this.list.filter((el) => el != client.id);
-    this.socketList.filter((c) => c.socket != client.id);
-    console.log(this.list);
-    this.wss.emit('messageToClient', data);
+  async handleMessageBroadCast(client: Socket, data: string): Promise<void> {
+    //const userId = await getValueFromQuery(client, 'userId');
+    console.log(' client.rooms bf', client.rooms);
+    client.join([...new Set(client.rooms)]);
+    console.log(' client.rooms af', client.rooms);
+
+    const usersToNotify = await this.service.getUsersListWithoutCurrent(
+      client.id,
+    );
+    console.log('users to notify', usersToNotify);
+    usersToNotify.forEach((user) => {
+      this.wss.to(user.socket).emit('messageToClient', data);
+    });
   }
 
   @SubscribeMessage('messageToChat')
@@ -67,24 +67,73 @@ export class AppGateway
     client: Socket,
     data: string,
   ): Promise<void> {
-    const from = await getValueFromQuery(client, 'from');
-    const to = await getValueFromQuery(client, 'to');
-    if (from?.length && to?.length) {
-      this.wss.to(to).emit('requestToChat', {
-        data: `${from} Wanna chat. Do you want accept?`,
+    console.log('wanna chat', data);
+    const clientId = client.id;
+
+    const newChatChannel = this.service.buildChatChannelId({
+      from: data,
+      to: clientId,
+    });
+    client.rooms.add(newChatChannel);
+    this.wss.to(data).emit('requestToChat', {
+      data: `${clientId} Wanna chat. Do you want to accept?`,
+      from: client.id,
+    });
+  }
+
+  @SubscribeMessage('messageToChatResponse')
+  async handleMessageToChatResponse(
+    client: Socket,
+    data: Record<string, unknown>,
+  ): Promise<void> {
+    console.log('data', data);
+    const fromUser = String(data['from']);
+    const response = Boolean(data['answer']);
+    const clientId = client.id;
+    let message = `${clientId} declined your invitation.`;
+
+    if (!response) {
+      this.wss.to(fromUser).emit('requestToChatResponse', {
+        user: client.id,
+        response,
+        message,
       });
+      return;
     }
-    /*
-      console.log('received message top chat req');
-    this.list.filter((el) => {
-      el != client.id &&
-        this.wss.to(el).emit('requestToChat', {
-          data: 'Wanna chat',
-        });
-    });*/
+
+    message = `${clientId} accepted your invitation.`;
+    const newChatChannel = this.service.buildChatChannelId({
+      from: fromUser,
+      to: clientId,
+    });
+    client.rooms.add(newChatChannel);
+    this.wss.to(fromUser).emit('requestToChatResponse', {
+      user: client.id,
+      response,
+      message,
+      newChatChannel,
+    });
+  }
+
+  @SubscribeMessage('messageBetweenChat')
+  async handleMessagesBetweenChat(
+    client: Socket,
+    data: unknown,
+  ): Promise<void> {
+    console.log('messageBetweenChat', data);
+    console.log('messageBetweenChat', client.rooms.values());
+
+    const clientId = client.id;
+    const to = data['to'];
+    const socketToSend = await this.service.getUser(to);
+    console.log('messageBetweenChat', socketToSend);
+    this.wss.to(socketToSend.socket).emit('messageBetweenChat', {
+      data: data['message'],
+      from: clientId,
+    });
   }
 }
 
 async function getValueFromQuery(client: Socket, queryName: string) {
-  return (await client.handshake.query[queryName]) as string;
+  return client.handshake.headers[queryName] as string;
 }

@@ -1,4 +1,3 @@
-
 ## Installation
 
 ```bash
@@ -17,5 +16,3 @@ $ yarn start:dev
 # production mode
 $ yarn start:prod
 ```
-
-

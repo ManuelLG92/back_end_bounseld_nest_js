@@ -3,39 +3,42 @@ import { SocketConnection } from './interfaces';
 
 @Injectable()
 export class AppGatewayService {
-  private socketList: Array<SocketConnection>;
+  private readonly socketList = new Map();
 
-  
   async setUserAndSocket(
-    user: string,
+    id: string,
     socket: string,
   ): Promise<SocketConnection[]> {
-    !this.socketList
-      ? (this.socketList = [{ id: user, socket: socket }])
-      : this.socketList.push({ id: user, socket: socket });
-    return this.socketList;
+    this.socketList.set(id, { id, socket, name: `name-${id}` });
+    return this.socketList.get(id);
   }
 
   async getUsersList(): Promise<SocketConnection[] | []> {
-    return this.socketList ?? [];
+    return [...this.socketList.values()] ?? [];
   }
 
-  async removeUserFromList(socket: string): Promise<string> {
+  async getUsersListWithoutCurrent(
+    socket: string,
+  ): Promise<SocketConnection[] | []> {
+    return [...this.socketList.values()].filter(
+      (item) => item.socket !== socket,
+    );
+  }
+
+  async removeUserFromList(socket: string): Promise<string | null> {
     const user = await this.getUser(socket);
-    this.socketList = this.socketList?.filter((el) => el.socket !== socket);
-    return user?.id;
+
+    if (user && this.socketList.delete(socket)) {
+      return user.id;
+    }
+    return null;
   }
 
   async getUser(socket: string): Promise<SocketConnection> {
-    return this.socketList?.find((el) => (el.socket = socket));
+    return this.socketList.get(socket);
   }
-  /*constructor(private readonly redisService: RedisService) {}
 
-  private test = this.redisService.getClient('test');
-
-  async root(): Promise<any> {
-    const client = this.redisService.getClient('test');
-    await client.lpush('test', 'test args');
-    return true;
-  }*/
+  buildChatChannelId({ from, to }: { from: string; to: string }): string {
+    return `${from}-${to}-${from}`;
+  }
 }

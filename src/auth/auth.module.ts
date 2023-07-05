@@ -14,6 +14,7 @@ import { JwtModule } from '@nestjs/jwt';
     }),
     CacheModule.register(),
   ],
+
   controllers: [AuthController],
   providers: [
     ...Object.values(services),

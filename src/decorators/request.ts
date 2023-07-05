@@ -1,5 +1,5 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { IRequestDetail } from '../util';
+import { IRequestDetail } from '../shared/Util';
 
 export const RequestDetails = createParamDecorator(
   (_data: string, context: ExecutionContext): IRequestDetail => {
