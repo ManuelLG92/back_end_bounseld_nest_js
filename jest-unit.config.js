@@ -12,5 +12,5 @@ module.exports = {
   },
   collectCoverageFrom: ['**/src/**/*.ts'],
   testRegex: 'test/.*\\.unit\\.ts$',
-  coveragePathIgnorePatterns: ['<rootDir>/dist/', '<rootDir>/node_modules/'],
+  coveragePathIgnorePatterns: ['<rootDir>/dist/'],
 };
