@@ -8,3 +8,5 @@ rabbitmq.conf/
 yarn-error.log
 .idea/
 documentation/
+.yarn
+
